@@ -10,10 +10,10 @@
 ############################
 
 # Name of website
-title: My website
+title: 
 
 # Your name to show in the footer
-author: Some Person
+author: Zeugnis04
 
 ###############################################
 # --- List of links in the navigation bar --- #
@@ -258,7 +258,7 @@ date_format: "%B %-d, %Y"
 #################################################################################
 
 # Output options (more information on Jekyll's site)
-timezone: "America/Toronto"
+timezone: "Asia/Seoul"
 markdown: kramdown
 highlighter: rouge
 permalink: /:year-:month-:day-:title/
