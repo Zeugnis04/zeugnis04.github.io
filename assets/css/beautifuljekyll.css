@@ -4,6 +4,10 @@ layout: null
 
 @import url("pygment_highlights.css");
 
+strong {
+  font-variation-settings: "wght" 550, "wdth" 100;
+}
+
 :root {
   /* config file CSS variables */
   --page-col: {{ site.page-col | default: "#FFFFFF" }};
@@ -19,19 +23,21 @@ layout: null
   --footer-hover-col: {{ site.footer-hover-col | default: "#0085A1" }};
 
   /* common CSS variables */
-  --body-font: 'Lora', 'Times New Roman', serif;
-  --header-font: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --body-font: adobe-aldine-variable, source-han-serif-tc, 'Times New Roman', serif;
+  --header-font: adobe-aldine-variable, source-han-serif-tc, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --mid-col: #808080;
 }
 
 /* --- General --- */
 
 html {
-  font-size: 100%
+  font-size: 125%
 }
 
 body {
   font-family: var(--body-font);
+  font-variation-settings: "wght" 400, "wdth" 100;
+  font-weight: 400;
   font-size: 1.125rem;
   color: var(--text-col);
   position: relative;
@@ -49,13 +55,20 @@ body > main {
   flex: 1;
 }
 p {
+  text-align: justify;
   line-height: 1.5;
   margin: 1.875rem 0;
+  hyphens: auto;
 }
+
+p + p {
+  text-indent: 2em;
+}
+
 h1,h2,h3,h4,h5,h6 {
   font-family: var(--header-font);
-  font-weight: 800;
-  line-height: 1.1;
+  font-variation-settings: "wght" 700, "wdth" 100;
+  line-height: 1.2;
 }
 h1 {
   font-size: 2.25rem;
@@ -155,6 +168,7 @@ img {
   background-color: var(--navbar-col);
   border-bottom: 1px solid var(--navbar-border-col);
   font-family: var(--header-font);
+  font-variation-settings: "wght" 650, "wdth" 100;
   {% if site.navbar-img %}
     background-image: url({{ site.navbar-img | relative_url }});
     background-attachment: fixed;
@@ -217,7 +231,7 @@ img {
 
 .navbar-custom .navbar-brand,
 .navbar-custom .navbar-nav .nav-link {
-  font-weight: 800;
+  font-weight: 500;
   color: var(--navbar-text-col);
 }
 
@@ -587,7 +601,7 @@ footer .footer-custom-content {
 }
 
 .post-preview .post-read-more {
-  font-weight: 800;
+  font-weight: 700;
 }
 
 @media (min-width: 768px) {
@@ -807,7 +821,7 @@ nav.top-nav-short-permanent ~ header > .intro-header.big-img {
   font-family: var(--header-font);
   text-transform: uppercase;
   font-size: 0.875rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 1px;
   padding: 0.625rem 0.3125rem;
   background-color: var(--page-col);
@@ -861,6 +875,12 @@ table tr td :last-child {
 }
 
 /* --- Code blocks --- */
+
+code, pre {
+  font-family: "Fira Code", monospace;
+  overflow-wrap:anywhere;
+  hyphens: auto;
+}
 
 code {
   padding: 0.125rem 0.25rem;
