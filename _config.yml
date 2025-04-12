@@ -21,9 +21,10 @@ author: Zeugnis
 
 navbar-links:
   About Me: "aboutme"
+  YouTube: "https://www.youtube.com/@StudioAmplitude"
   Resources:
-    - Beautiful Jekyll: "https://beautifuljekyll.com"
-    - Learn markdown: "https://www.markdowntutorial.com/"
+    - NINJAL-LWP for BCCWJ: "https://nlb.ninjal.ac.jp/"
+    - 台湾教育部 异体字字典: "https://dict.variants.moe.edu.tw/"
   Author's home: "https://deanattali.com"
 
 ################
@@ -35,10 +36,10 @@ navbar-links:
 avatar: "assets/img/Substitute.png"
 
 # By default, the image is cut into a circle. You can disable this behaviour by setting 'round-avatar: false'
-round-avatar: false
+round-avatar: true
 
 # If you want to have an image logo in the top-left corner instead of having the title of the website,
-# then specify the following parameter
+# then specify the following parameter 
 # title-img: "assets/img/Substitute.png"
 
 
@@ -85,7 +86,7 @@ social-network-links:
 
 # If you want your website to generate an RSS feed, provide a description
 # The URL for the feed will be https://<your_website>/feed.xml
-rss-description: This website is a virtual proof that I'm awesome
+# rss-description: This website is a virtual proof that I'm awesome
 
 ###########################
 # --- General options --- #

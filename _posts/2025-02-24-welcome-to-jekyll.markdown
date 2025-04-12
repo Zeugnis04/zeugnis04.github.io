@@ -1,9 +1,17 @@
 ---
 layout: post
-title:  "Welcome to Jekyll!"
+title:  "忘記他 English translation and Jyutping Transcription"
 date:   2025-02-24 21:02:26 +0900
 categories: jekyll update
 ---
+
+This is my new (actually old) video of English translation and Jyutping Transcription.
+
+[hi](https://www.youtube.com/watch?v=mOligV1dSLY)
+
+
+
+
 You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
 
 Jekyll requires blog post files to be named according to the following format:
