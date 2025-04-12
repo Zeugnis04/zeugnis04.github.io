@@ -12,5 +12,4 @@ Hi I am *Zeugnis* from South Korea. In my blog I randomly write about my interes
 and maybe much more.
 
 ### My story
-
-I have developed my interests in many different ways, even in some ways that I don't remember, but I will try my best to provide the best explanation of it. I speak Seoul Korean as a mother language and I also have near-to-mother-tongue fluency of English. I also study Japanese and Chinese (not to mention that they are both East Asian languages), and also have plans to post about them in the near future.
+I have developed my interests in various ways, some of which I can barely recall. My native language is Seoul Korean, and I am also highly fluent in English. Additionally, I am studying Japanese and Chinese, both of which are East Asian languages. I plan to share posts about these languages and my learning journey in the near future.

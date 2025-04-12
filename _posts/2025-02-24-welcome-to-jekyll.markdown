@@ -7,7 +7,14 @@ categories: jekyll update
 
 This is my new (actually old) video of English translation and Jyutping Transcription.
 
-[Link to the video](https://www.youtube.com/watch?v=mOligV1dSLY)
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 0 auto;">
+  <iframe src="https://www.youtube.com/embed/mOligV1dSLY?si=GHa46Q5cUn-9UnNv" 
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+          frameborder="0" allowfullscreen>
+  </iframe>
+</div>
+
+Or, in case it doesn't work: [Link to the video](https://www.youtube.com/watch?v=mOligV1dSLY)
 
 忘記他 等於忘掉了一切
 mong4 gei3 taa1 dang2 jyu1 mong4 diu6 liu5 jat1 cai3
@@ -40,28 +47,4 @@ He has been inscribed in my heart and bones to forever be remembered
 cung4 ci2 wing5 mou4 zeon6 kei4
 from now on to eternity
 
-
-
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
-
-Jekyll requires blog post files to be named according to the following format:
-
-`YEAR-MONTH-DAY-title.MARKUP`
-
-Where `YEAR` is a four-digit number, `MONTH` and `DAY` are both two-digit numbers, and `MARKUP` is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.
-
-Jekyll also offers powerful support for code snippets:
-
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
-
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
-
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
+Note that I am not a Cantonese speaker! My translations are based on basic Cantonese knowledge and assistance from some useful dictionaries like [粵典][words.hk].
