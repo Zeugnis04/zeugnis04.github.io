@@ -1,4 +1,8 @@
-# frozen_string_literal: true
+source "https://rubygems.org"
 
-source 'https://rubygems.org'
-gemspec name: 'jekyll-theme-tufte'
+gem "jekyll", "~> 4.3.2"
+gem "jekyll-theme-tufte"
+
+group :jekyll_plugins do
+  gem "webrick" # if you're using Ruby 3.x
+end
