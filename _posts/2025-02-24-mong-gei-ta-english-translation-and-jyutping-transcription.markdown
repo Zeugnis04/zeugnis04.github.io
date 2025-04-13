@@ -60,8 +60,8 @@ Or, in case it doesn't work: [Link to the video](https://www.youtube.com/watch?v
 <p style="margin: 0;">ming4 sam1 hak1 gwat1 loi4 wing5 gau2 gei3 zyu6</p>  
 <p style="margin: 0;">He has been engraved in my heart and bones to be remembered forever</p>  
 
-<p style="margin: 0;"><strong>從此永無盡期</strong></p>  
-<p style="margin: 0;"><strong>cung4 ci2 wing5 mou4 zeon6 kei4</strong></p>  
+<p style="margin: 0;">從此永無盡期</p>  
+<p style="margin: 0;">cung4 ci2 wing5 mou4 zeon6 kei4</p>  
 <p style="margin: 0;">From now on, for eternity</p>  
 
-Note that I am not a Cantonese speaker. My translations are based on basic Cantonese knowledge and assistance from some useful dictionaries like [粵典](words.hk). 
+Note that I am not a Cantonese speaker. My translations are based on basic Cantonese knowledge and assistance from some useful dictionaries like [粵典](https://words.hk). 
