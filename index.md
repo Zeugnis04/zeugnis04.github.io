@@ -37,6 +37,6 @@ I have developed my interests in various ways, some of which I can barely recall
     }
     .feature {
         width: 80%;
-        text-align: center;
+        text-align: center; 
     }
 </style>
