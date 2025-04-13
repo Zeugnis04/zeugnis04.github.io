@@ -1,11 +1,10 @@
 # Note: Remove the baseurl in order to deploy at the domain root
-baseurl: /jekyll-theme-tufte
-title: jekyll-theme-tufte
+title: Random Access Memories
 # Whether the header (with large title and subtitle) should be displayed
-header: true
-subtitle: A Jekyll theme based on tufte-css
-author: Andy Brody
-description: A Jekyll theme based on tufte-css
+header: false
+subtitle: Blogspace for anything
+author: Zeugnis
+description: Blogspace for anything
 show_author: true
 markdown: kramdown
 markdown_ext: "markdown,mkdown,mkdn,mkd,md"

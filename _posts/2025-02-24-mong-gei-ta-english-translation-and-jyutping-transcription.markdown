@@ -2,17 +2,24 @@
 layout: post
 title:  "忘記他 English translation and Jyutping Transcription"
 date:   2025-02-24 21:02:26 +0900
-categories: jekyll update
+tags: [cantonese, lyrics, music, jyutping]
 ---
 
-This is my new (actually old) video of English translation and Jyutping Transcription. Originally sung by 鄧麗君 (Teresa Teng), 忘記他 (Mong Gei Ta) by 關淑怡 (Shirley Kwan) is a rendition of the original song that plays a significant role in the 王家衛 (Wong Kar-Wai) movie 墮落天使 (*Fallen Angels*). The song is in Cantonese, which is a variety of 粵 (Yue), a Sinitic language mainly spoken in the current provinces of 廣東 (Guangdong) and 廣西 (Guangxi). Jyutping is one of the most popular romanization schemes for Cantonese. Lyrics in this video are transcribed in Jyutping. For more information regarding Jyutping, please refer to [Jyutping Cantonese Romanization Scheme - The Linguistic Society of Hong Kong](https://lshk.org/jyutping-scheme/), [Jyutping.org](https://jyutping.org/en/), or [Jyutping - Wikipedia](https://en.wikipedia.org/wiki/Jyutping).
+This is my new (actually old) video of English translation and Jyutping Transcription.
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 0 auto;">
-  <iframe src="https://www.youtube.com/embed/mOligV1dSLY?si=GHa46Q5cUn-9UnNv" 
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
-          frameborder="0" allowfullscreen>
+Originally sung by 鄧麗君 (Teresa Teng), 忘記他 (Mong Gei Ta) by 關淑怡 (Shirley Kwan) is a rendition of the original song that plays a significant role in the 王家衛 (Wong Kar-Wai) movie 墮落天使 (*Fallen Angels*). The song is in Cantonese, which is a variety of 粵 (Yue), a Sinitic language mainly spoken in the current provinces of 廣東 (Guangdong) and 廣西 (Guangxi). Jyutping is one of the most popular romanization schemes for Cantonese. Lyrics in this video are transcribed in Jyutping. For more information regarding Jyutping, please refer to [Jyutping Cantonese Romanization Scheme - The Linguistic Society of Hong Kong](https://lshk.org/jyutping-scheme/), [Jyutping.org](https://jyutping.org/en/), or [Jyutping - Wikipedia](https://en.wikipedia.org/wiki/Jyutping).
+
+<!-- <div class="video-container">
+  <iframe 
+    src="https://www.youtube.com/embed/mOligV1dSLY?si=GHa46Q5cUn-9UnNv" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
   </iframe>
-</div>
+</div> -->
+<figure class="iframe-wrapper">
+  <iframe src="https://www.youtube.com/embed/mOligV1dSLY?si=GHa46Q5cUn-9UnNv" frameborder="0" allowfullscreen></iframe>
+</figure>
 
 Or, in case it doesn't work: [Link to the video](https://www.youtube.com/watch?v=mOligV1dSLY)
 

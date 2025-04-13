@@ -33,7 +33,7 @@
     text-rendering: optimizeLegibility;
 }
 
-/* The old-style family has oldstyle numerals where numbers look like lowercase letters. */
+# The old-style family has oldstyle numerals where numbers look like lowercase letters. */
 @font-face {
     font-family: "et-book-roman-old-style";
     src: url("../fonts/et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.woff") format("woff");

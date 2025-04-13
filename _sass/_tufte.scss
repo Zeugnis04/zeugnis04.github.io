@@ -6,11 +6,12 @@ html {
 }
 
 body {
-    width: 87.5%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
     padding-left: 12.5%;
-    font-family: et-book, Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", Georgia, serif;
+    font-family: minion-pro-display, et-book, sandoll-myeongjoneo1, "source-han-serif-sc", "Book Antiqua", Georgia, serif;
+    font-variant-ligatures: common-ligatures;
     background-color: #fffff8;
     color: #111;
     max-width: 1400px;
@@ -211,6 +212,50 @@ a:link, .tufte-underline, .hover-tufte-underline:hover {
     background-position: 0% 93%, 100% 93%, 0% 93%;
 }
 
+  header nav a {
+    color: #111;
+    text-decoration: none;
+    position: relative;
+  }
+  nav.group a.active {
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Hover color change */
+  header nav a:hover {
+    color: teal; /* or use #008080 */
+  }
+  nav.group a.active {
+    white-space: nowrap;
+  }
+  /* Optional: animated underline (Tufte-style) */
+  header nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  header nav a:hover::after {
+    transform: scaleX(1);
+  }
+
+  a {
+    color: #111; // or your base text color
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  a:hover {
+    color: teal; // or any hover color you want
+  }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
     a:link, .tufte-underline, .hover-tufte-underline:hover {
         background-position-y: 87%, 87%, 87%;

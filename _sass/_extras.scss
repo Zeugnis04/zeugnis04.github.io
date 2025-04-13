@@ -43,8 +43,8 @@ p.backarrow {
 
 /* Style for active menu links: bold and with surrounding angle brackets */
 nav.group a.active { font-weight: bold; }
-nav.group a.active:before { content:"\27e8"; }
-nav.group a.active:after { content:"\27e9" ; }
+// nav.group a.active:before { content:"\27e8"; }
+// nav.group a.active:after { content:"\27e9" ; }
 
 header > nav ul {
   list-style-type: none;
