@@ -23,8 +23,8 @@ strong {
   --footer-hover-col: {{ site.footer-hover-col | default: "#0085A1" }};
 
   /* common CSS variables */
-  --body-font: adobe-aldine-variable, source-han-serif-tc, 'Times New Roman', serif;
-  --header-font: adobe-aldine-variable, source-han-serif-tc, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --body-font: adobe-aldine-display, source-han-serif-tc, 'Times New Roman', serif;
+  --header-font: adobe-aldine-display, source-han-serif-tc, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --mid-col: #808080;
 }
 
