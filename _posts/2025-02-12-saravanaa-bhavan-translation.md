@@ -5,6 +5,8 @@ date:   2025-02-12 21:02:26 +0900
 tags: [food-culture, south-indian, gourmet, translation]
 ---
 
+<em><strong>Please note that this is a translation (provided by ChatGPT) from an original post that I wrote in Korean for Instagram!</strong></em>
+
 (Feb 12 visit) A belated review of my visit to **Saravanaa Bhavan Itaewon**, one of the very few South Indian restaurants in Seoul{% sidenote 'toggles' 'Saravanaa Bhavan is one of the rare places in Seoul offering authentic South Indian cuisine. It’s part of an international chain originating in Tamil Nadu, with branches all around the world. Another notable South Indian restaurant in Seoul is Chakra, located near the Indian Embassy in Hannam-dong.' %}. While the chain specializes in Tamil Nadu–style dishes, they do serve North Indian fare as well — though I couldn’t help but feel it would be a missed opportunity not to go full South Indian here. So, that’s what we did: we ordered a full South Indian course.
 
 {% maincolumn 'assets/img/saravannabhavanitaewon.png' 'Saravanaa Bhavan in Itaewon, Seoul'%}
@@ -19,15 +21,15 @@ Known on the menu as *Idiyappam*, this is a type of steamed rice noodle, soft in
 
 ## ஊத்தப்பம் *ūttappam* (Uthappam)
 
-I ordered the *Onion & Chili Uthappam*. A cousin of the dosa, uthappam is thicker and typically comes with toppings. This one had onions and chilies and was cooked to a nice balance of crisp and soft. According to my South Indian friend, this is a typical Tamil Nadu comfort food — and it lived up to the hype.
+I ordered the *Onion & Chili Uthappam*. A cousin of the dosa, uthappam{% marginfigure 'uthappam' 'assets/img/uthappam.jpg' 'Uthappam'%} is thicker and typically comes with toppings. This one had onions and chilies and was cooked to a nice balance of crisp and soft. According to my South Indian friend, this is a typical Tamil Nadu comfort food — and it lived up to the hype.
 
 ## தோசை *tōcai* (Dosa)
 
-Ah, the dosa. I went for the *Paneer Butter Cheese Masala Dosa*, which was exactly as indulgent as it sounds. A thin, crepe-like fermented rice pancake stuffed with paneer, butter, and cheese masala — how could it not be amazing? Served with three kinds of chutneys and curry on the side, this was heavenly. A while back, I had a plain dosa at Chakra in Hannam and thought it lacked a bit of punch for the price, so this time I decided to go big — and it was the right move.
+Ah, the dosa. I went for the *Paneer Butter Cheese Masala Dosa*{% marginfigure 'idiyappamdosa' 'assets/img/idiyappamdosa.jpg' 'Idiyappam and Paneer Butter Cheese Masala Dosa'%}, which was exactly as indulgent as it sounds. A thin, crepe-like fermented rice pancake stuffed with paneer, butter, and cheese masala — how could it not be amazing? Served with three kinds of chutneys and curry on the side, this was heavenly. A while back, I had a plain dosa at Chakra in Hannam and thought it lacked a bit of punch for the price, so this time I decided to go big — and it was the right move.
 
 ## ரவா கேசரி *rāva kēsari* (Rava Kesari)
 
-Dessert time! This is a semolina-based sweet dish also known across India by names like *suji ka halwa* (Hindi), *mohan bhog* (Bengali), or *kesari bath* (Kannada). It's a mix of semolina, ghee, and sugar — warm, rich, and comforting. I’ve had something similar before at Burmese restaurants in both the U.S. and Korea, called *Shwe Kyi* (ရွှေချီ), and this brought back similar vibes.
+Dessert time! This is a semolina-based sweet dish also known across India by names like *suji ka halwa* (Hindi), *mohan bhog* (Bengali), or *kesari bath* (Kannada){% marginfigure 'ravakesari' 'assets/img/ravakesari.jpg' 'Rava Kesari'%}. It's a mix of semolina, ghee, and sugar — warm, rich, and comforting. I’ve had something similar before at Burmese restaurants in both the U.S. and Korea, called *Shwe Kyi* (ရွှေချီ), and this brought back similar vibes.
 
 ---
 
