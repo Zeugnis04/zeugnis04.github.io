@@ -3,6 +3,7 @@ layout: page
 title: Tufte CSS
 subtitle: Reproduction of the tufte-css demo site by Dave Liepmann
 weight: 3
+nav_exclude: true
 ---
 
 *<strong>Note:</strong> This is a recreation in markdown of the upstream tufte-css demo page. The usage instructions here are for standalone tufte-css, not jekyll-theme-tufte. See the [markdown source code](https://github.com/ab/jekyll-theme-tufte/blob/main/page/tufte-css.md) for usage hints.*
