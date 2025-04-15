@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Aoba-Ichiko in Seoul — Luminescent Creatures World Tour"
+title: "Aoba Ichiko in Seoul — Luminescent Creatures World Tour"
 date: 2025-04-15
 tags: [aoba-ichiko, concert, music]
 ---
