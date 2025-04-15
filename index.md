@@ -7,7 +7,7 @@ subtitle: Blogspace for anything
 weight: 1
 ---
 ---
-<div class="index-title">🕮 Recent Posts</div>
+<div class="index-title"><span class="ornament">•</span> Recent Posts</div>
 {% assign today = site.time | date: "%s" | plus: 0 %}
 {% assign new_cutoff = today | minus: 5184000 %}
 <div class="recent-posts">
@@ -23,7 +23,7 @@ weight: 1
       <div class="post-meta">
         {{ post.date | date: "%Y-%m-%d" }}
         {% if post.tags %}
-          <strong> Tags</strong>:
+          <strong><span class="tag-ornament">•</span> Tags</strong>:
           {% for tag in post.tags %}
             <a href="/tags#{{ tag | slugify }}" class="tag">{{tag}}</a>{% unless forloop.last %}, {% endunless %}
           {% endfor %}
@@ -35,8 +35,8 @@ weight: 1
 </div>
 
 ---
-<div class="index-title">♫ Featured Albums</div>
-<div class="album-grid inside-text-width">
+<div class="index-title"><span class="ornament">•</span> Featured Albums</div>
+<div class="album-flex inside-text-width">
   <div class="album">
     <img src="assets/img/featured_albums/luminiscentcreatures.png">
     <div class="album-info">
@@ -44,7 +44,6 @@ weight: 1
       <body><em>a deep dive into Mother Earth</em></body>
     </div>
   </div>
-
   <div class="album">
     <img src="assets/img/featured_albums/foreverhowlong.png" alt="Forever Howlong">
     <div class="album-info">

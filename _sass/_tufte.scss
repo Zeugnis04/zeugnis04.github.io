@@ -21,10 +21,51 @@ body {
 /* Adds dark mode */
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #151515;
-        color: #ddd;
+      background-color: #151515;
+      color: #ddd;
     }
-}
+
+    a:hover {
+      color: #64ffda;
+    }
+  
+    .index-title,
+    .recent-post h4,
+    .post-excerpt,
+    .post-meta,
+    .album-info h4,
+    .album-info p,
+    .ornament,
+    .tag-ornament {
+      color: #e0e0e0;
+    }
+  
+    .recent-posts {
+      color: #ccc;
+    }
+  
+    .tag {
+      background: #2a2a2a;
+      color: #ccc;
+    }
+  
+    .new-badge {
+      background-color: #ff4d4d;
+      color: white;
+    }
+  
+    .album img {
+      box-shadow: 0 2px 6px rgba(255, 255, 255, 0.08);
+    }
+
+    .meta-tags {
+        color: #ccc;
+      }
+      .tag:hover {
+        background: #355e6d;
+        color: #aef1f1;
+      }
+  }
 
 h1 {
     font-weight: 400;
@@ -254,7 +295,7 @@ a:link, .tufte-underline, .hover-tufte-underline:hover {
   }
   
   a:hover {
-    color: teal; // or any hover color you want
+    color: #006666; // or any hover color you want
   }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
     a:link, .tufte-underline, .hover-tufte-underline:hover {

@@ -65,19 +65,41 @@
     line-height: 1;
 }
 
+.ornament {
+    font-family: 'Minion Pro', serif;
+    font-feature-settings: "ornm" 11;
+    font-size: 1.5rem;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    user-select: none;
+    background: transparent;
+    padding: 0 0.25em;
+  }
+  .tag-ornament {
+    font-family: 'Minion Pro', serif;
+    font-feature-settings: "ornm" 18;
+    font-size: 1.3rem;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+    user-select: none;
+    background: transparent;
+    padding: 0 0em;
+  }
 /*Album lists*/
 
 .inside-text-width {
     width: 55%;
   }
   
-  .album-grid {
+  .album-flex {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1.2rem;
-    justify-items: center;
+    justify-content: center;
     margin-top: 1rem;
-    width: 55%;
+    width: 55%; // Consider using 100% or `inside-text-width` if it's constrained
   }
   
   .album {
@@ -103,3 +125,38 @@
     font-size: 0.85rem;
     color: #555;
   }
+
+  /* Tags */
+
+  .meta-tags {
+    font-size: 0.85em;
+    color: #666;
+    margin-bottom: 1em;
+  }
+  
+  .tag {
+    display: inline-block;
+    background: #f2f2f2;
+    padding: 2px 6px;
+    margin: 0 4px 4px 0;
+    border-radius: 4px;
+    font-family: monospace;
+    color: #333;
+    text-decoration: none;
+
+    .meta-tags {
+        font-size: 0.9em;
+        margin-bottom: 1.2em;
+        color: #444;
+      }
+      
+      .post-tags {
+        margin: 0.4em 0;
+      }
+        
+      .tag:hover {
+        background: #dfefff;
+        color: #005577;
+      }
+  }
+  
