@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Visit to Saravanaa Bhavan, Itaewon <br> — A South Indian Feast in Seoul (English Translation)"
+title:  "Visit to Saravanaa Bhavan, Itaewon — A South Indian Feast in Seoul (English Translation)"
 date:   2025-02-12 21:02:26 +0900
 tags: [food-culture, south-indian, gourmet, translation]
 ---

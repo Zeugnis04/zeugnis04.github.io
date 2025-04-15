@@ -4,6 +4,7 @@ full_width: true
 nav_title: Layouts
 title: Available Page Layouts
 weight: 4
+nav_exclude: true
 ---
 
 The *jekyll-theme-tufte* includes two layouts by default. Choose your layout in the YAML front matter at the top of the file, which is where Jekyll expects to find page metadata.

@@ -14,8 +14,6 @@ permalink: /blog/:categories/:slug
 timezone: Asia/Seoul
 excerpt_separator: <!--more-->
 exclude: ['Gemfile', 'Gemfile.lock', 'Rakefile', 'README.md']
-remote_theme: ab/jekyll-theme-tufte
-
 plugins:
   - jekyll-feed
-  - jekyll-remote-theme
+  - jekyll-sitemap
