@@ -6,7 +6,7 @@ html {
 }
 
 body {
-    width: 95%;
+    width: 85%;
     margin-left: auto;
     margin-right: auto;
     padding-left: 12.5%;
@@ -87,7 +87,6 @@ ul {
     font-size: 1.4rem;
     line-height: 2rem;
 }
-
 p {
     margin-top: 1.4rem;
     margin-bottom: 1.4rem;
@@ -279,7 +278,7 @@ img {
 
 .sidenote-number:after,
 .sidenote:before {
-    font-family: minion-pro;
+    font-family: minion-pro-display;
     position: relative;
     vertical-align: baseline;
 }
@@ -320,9 +319,9 @@ div.table-wrapper {
 }
 
 code, pre > code {
-    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    font-size: 1.0rem;
-    line-height: 1.42;
+    font-family: "Fira Code", "San Francisco Mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 0.9rem;
+    line-height: 1.2rem;
     -webkit-text-size-adjust: 100%; /* Prevent adjustments of font size after orientation changes in iOS. See https://github.com/edwardtufte/tufte-css/issues/81#issuecomment-261953409 */
 }
 

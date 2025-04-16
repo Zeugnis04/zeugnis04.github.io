@@ -14,7 +14,7 @@ layout: default
 {%- if page.tags -%}
   <div class="meta-tags">
     <p class="post-tags">
-      <strong><span class="tag-ornament">•</span> Tags</strong>:
+      <strong><span class="tag-ornament">✴</span> Tags</strong>:
       {% for tag in page.tags %}
         <a href="/tags#{{ tag | slugify }}" class="tag">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
       {% endfor %}
