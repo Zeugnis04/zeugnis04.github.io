@@ -10,12 +10,14 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding-left: 12.5%;
-    font-family: minion-pro-display, et-book, "source-han-serif-sc", sandoll-myeongjoneo1, "Book Antiqua", Georgia, serif;
+    font-family: minion-pro-display, et-book, "source-han-serif-sc", sandoll-myeongjoneo1, Georgia, serif;
     font-variant-ligatures: common-ligatures;
     background-color: #fffff8;
     color: #111;
     max-width: 1400px;
     counter-reset: sidenote-counter;
+    // // Trim both sides to the capital letters
+    // text-box: trim-both cap alphabetic; 
 }
 
 h1 {

@@ -40,14 +40,16 @@ weight: 1
 <div class="index-title"><span class="ornament">❧</span> Featured Albums</div>
 <div class="album-flex inside-text-width">
   <div class="album">
-    <img src="assets/img/featured_albums/luminiscentcreatures.png">
+  <a href="blog/album-review/luminescent-creatures">
+    <img src="assets/img/featured_albums/luminiscentcreatures.png"></a>
     <div class="album-info">
       <h4>Luminescent Creatures - 青葉市子  </h4>
       <body><em>a deep dive into Mother Earth</em></body>
     </div>
   </div>
   <div class="album">
-    <img src="assets/img/featured_albums/foreverhowlong.png" alt="Forever Howlong">
+  <a href="blog/album-review/forever-howlong  ">
+    <img src="assets/img/featured_albums/foreverhowlong.png" alt="Forever Howlong"></a>
     <div class="album-info">
       <h4>Forever Howlong - Black Country, New Road</h4>
       <body><em>communal and baroque</em></body>
