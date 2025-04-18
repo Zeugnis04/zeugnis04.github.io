@@ -125,6 +125,14 @@
     color: #555;
   }
 
+  .album-link {
+    text-decoration: none;
+    color: inherit;
+    &:hover h4 {
+      // text-decoration: underline; // Optional subtle hover effect
+    }
+  }
+
   /* Tags */
 
   .meta-tags {

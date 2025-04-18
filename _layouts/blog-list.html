@@ -6,25 +6,29 @@ full_width: true
 
 <h1>Writings</h1>
 <p class=subtitle>by {{ site.author }}</p>
-
 {{ content }}
 
-{%- for post in site.posts -%}
-{%- assign currentyear = post.date | date: "%Y" -%}
-{%- if currentyear != prevyear -%}
-  {% unless forloop.first %}
+{%- assign filtered_posts = site.posts | where_exp: "post", "post.category != 'album-review'" -%}
+
+{%- if filtered_posts.size > 0 -%}
+  {%- assign prevyear = "" -%}
+  {%- for post in filtered_posts -%}
+    {%- assign currentyear = post.date | date: "%Y" -%}
+    {%- if currentyear != prevyear -%}
+      {% unless forloop.first %}
 </ul>
-  {% endunless %}
+      {% endunless %}
 <h2 id="{{ currentyear }}">{{ currentyear }}</h2>
 <ul>
-  {%- assign prevyear = currentyear -%}
-{% endif %}
-  <li>
-    <p><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a> — <span style="font-style: italic">{{ post.date | date: '%B %-d' }}</span></p>
-  </li>
-{%- if forloop.last %}
+      {%- assign prevyear = currentyear -%}
+    {% endif %}
+    <li>
+      <p><a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a> — <span style="font-style: italic">{{ post.date | date: '%B %-d' }}</span></p>
+    </li>
+    {%- if forloop.last %}
 </ul>
-{%- endif -%}
-{% else %}
+    {%- endif -%}
+  {%- endfor -%}
+{%- else -%}
 <p>Watch this space for the first post!</p>
-{% endfor %}
+{%- endif -%}

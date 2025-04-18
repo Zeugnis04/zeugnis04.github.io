@@ -9,9 +9,11 @@ weight: 1
 ---
 <div class="index-title"><span class="ornament">❧</span> Recent Posts</div>
 {% assign today = site.time | date: "%s" | plus: 0 %}
-{% assign new_cutoff = today | minus: 5184000 %}
+{% assign new_cutoff = today | minus: 518400 %}
+
 <div class="recent-posts">
-  {% for post in site.posts limit:5 %}
+  {% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" %}
+  {% for post in visible_posts limit:5 %}
     {% assign post_date = post.date | date: "%s" | plus: 0 %}
     <div class="recent-post">
       <h4>
@@ -25,7 +27,7 @@ weight: 1
         {% if post.tags %}
           <strong><span class="tag-ornament">❦</span> Tags</strong>:
           {% for tag in post.tags %}
-            <a href="/tags#{{ tag | slugify }}" class="tag">{{tag}}</a>{% unless forloop.last %}, {% endunless %}
+            <a href="/tags#{{ tag | slugify }}" class="tag">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
           {% endfor %}
         {% endif %}
       </div>
@@ -52,6 +54,10 @@ weight: 1
     </div>
   </div>
 </div>
+<section>
+  <div style="clear: both"></div>
+  <p class="backarrow" style="text-align: right;"><a href="featured-albums-archive">→ Featured albums archive</a></p>
+</section>
 
 ---
 
