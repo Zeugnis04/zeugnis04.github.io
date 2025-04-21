@@ -10,7 +10,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding-left: 12.5%;
-    font-family: minion-pro-display, et-book, "source-han-serif-sc", sandoll-myeongjoneo1, Georgia, serif;
+    font-family: adobe-caslon-pro, hoefler-text-fleurons, et-book, "source-han-serif-sc", sandoll-myeongjoneo1, Georgia, serif;
     font-variant-ligatures: common-ligatures;
     background-color: #fffff8;
     color: #111;
@@ -66,7 +66,7 @@ p.subtitle {
 }
 
 .numeral {
-    font-family: et-book-roman-old-style;
+    font-family: adobe-caslon-pro;
 }
 
 .danger {
@@ -280,7 +280,7 @@ img {
 
 .sidenote-number:after,
 .sidenote:before {
-    font-family: minion-pro-display;
+    font-family: adobe-caslon-pro;
     position: relative;
     vertical-align: baseline;
 }
@@ -321,7 +321,7 @@ div.table-wrapper {
 }
 
 code, pre > code {
-    font-family: "Fira Code", "San Francisco Mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-family: "Fira Code", "SF Mono", Consolas, "Liberation Mono", Menlo, Courier, monospace;
     font-size: 0.9rem;
     line-height: 1.2rem;
     -webkit-text-size-adjust: 100%; /* Prevent adjustments of font size after orientation changes in iOS. See https://github.com/edwardtufte/tufte-css/issues/81#issuecomment-261953409 */
