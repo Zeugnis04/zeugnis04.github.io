@@ -36,14 +36,21 @@
     white-space: nowrap;
   }
 
-  .post-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
+  a.tag {
+    display: inline-block;
+    padding: 0 0em;
+    margin: -0.1 0.1em;
+    text-decoration: none;
+    font-size: 0.85rem;
+    // line-height: 1;
+    vertical-align: middle;
   }
 
+
+
   .new-badge {
-    display: inline-block;
+    display: inline-flex;
+    text-align: center;
     background-color: #ff6666;
     color: white;
     font-size: 0.65em;
@@ -65,24 +72,12 @@
 }
 
 .ornament {
-    font-family: 'Minion Pro', serif;
-    font-feature-settings: "ornm" 11;
+    font-family: adobe-caslon-pro, serif;
+    font-feature-settings: "ornm";
     font-size: 1.5rem;
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: baseline;
     line-height: 1;
-    user-select: none;
-    background: transparent;
-    padding: 0 0.25em;
-  }
-  .tag-ornament {
-    font-family: 'Minion Pro', serif;
-    font-feature-settings: "ornm" 18;
-    font-size: 1.4rem;
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 1;
-    user-select: none;
     background: transparent;
     padding: 0 0em;
   }
@@ -128,12 +123,46 @@
   .album-link {
     text-decoration: none;
     color: inherit;
-    &:hover h4 {
-      // text-decoration: underline; // Optional subtle hover effect
-    }
   }
 
   /* Tags */
+
+    /* Ornament before Tags */
+.tag-ornament {
+  font-family: adobe-caslon-pro, serif;
+  font-feature-settings: "ornm";
+  font-size: 1.8rem;
+  vertical-align: baseline;
+  display: inline-block;
+  line-height: 1;
+  background: transparent;
+  margin-right: 0.3em;
+}
+
+.post-meta .tag-ornament {
+    font-size: 0.85rem;
+  }
+
+/* Individual Tags */
+.post-tag {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.95rem;
+  text-decoration: none;
+  padding: 0.5px 0px;
+  margin: 0 4px 4px 0;
+  border-radius: 4px;
+  // background: #f2f2f2;
+  color: #333;
+  white-space: nowrap;
+  vertical-align: middle;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect */
+.post-tag:hover {
+  color: #006666;
+}
 
   .meta-tags {
     font-size: 0.85em;
@@ -145,7 +174,7 @@
     display: inline-block;
     background: #f2f2f2;
     padding: 2px 6px;
-    margin: 0 4px 4px 0;
+    margin: 0 0.1px 4px 0;
     border-radius: 4px;
     font-family: monospace;
     color: #333;
@@ -163,7 +192,7 @@
         
       .tag:hover {
         background: #dfefff;
-        color: #005577;
+        color: #006666;
       }
   }
   
