@@ -31,9 +31,11 @@
   }
 
   .tag {
+    display: inline-block;
     padding: 0px 0px;
     font-family: monospace;
     white-space: nowrap;
+    vertical-align: middle;
   }
 
   a.tag {
@@ -74,9 +76,10 @@
 .ornament {
     font-family: adobe-caslon-pro, serif;
     font-feature-settings: "ornm";
-    font-size: 1.5rem;
+    font-size: 2.0rem;
     display: inline-block;
     vertical-align: baseline;
+    vertical-align: -webkit-baseline-middle;
     line-height: 1;
     background: transparent;
     padding: 0 0em;
@@ -132,7 +135,8 @@
   font-family: adobe-caslon-pro, serif;
   font-feature-settings: "ornm";
   font-size: 1.8rem;
-  vertical-align: baseline;
+  vertical-align: middle; /* fallback for non-WebKit */
+  vertical-align: -webkit-baseline-middle; /* only applied in WebKit */
   display: inline-block;
   line-height: 1;
   background: transparent;

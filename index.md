@@ -25,7 +25,7 @@ weight: 1
       <div class="post-meta">
         {{ post.date | date: "%Y-%m-%d" }}
         {% if post.tags %}
-          <strong><span class="tag-ornament">y</span>Tags</strong>:
+          <strong><span class="tag-ornament">j</span>Tags</strong>:
           {% for tag in post.tags %}
             <a href="/tags#{{ tag | slugify }}" class="tag">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
           {% endfor %}
