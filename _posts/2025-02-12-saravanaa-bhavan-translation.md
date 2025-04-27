@@ -11,19 +11,19 @@ tags: [food-culture, south-indian, gourmet, translation]
 
 {% maincolumn 'assets/img/saravannabhavanitaewon.png' 'Saravanaa Bhavan in Itaewon, Seoul'%}
 
-## வடை *vaṭai* (Medhu Vada)
+## வடை vaṭai (Medhu Vada)
 
 Listed on the menu as *Medhu Vada*{% marginfigure 'vadapicture' 'assets/img/vada.jpg' 'Medhu Vada'%}, this is a beloved snack or breakfast item across South India (so the name and spelling vary widely). It's essentially a spiced lentil doughnut made from black gram (urad dal) and deep-fried. At the restaurant, it came with **sambar** (a lentil-based vegetable stew — *not* to be confused with Indonesian *sambal*) and a side of coconut chutney, both of which were excellent.
 
-## இடியப்பம் *iṭiyappam* (Idiyappam)
+## இடியப்பம் iṭiyappam (Idiyappam)
 
 Known on the menu as *Idiyappam*, this is a type of steamed rice noodle, soft in texture and almost rice-like in mouthfeel. You dip it in your choice of curry — either korma or vegetable stew — and it was simple but satisfying.
 
-## ஊத்தப்பம் *ūttappam* (Uthappam)
+## ஊத்தப்பம் ūttappam (Uthappam)
 
 I ordered the *Onion & Chili Uthappam*. A cousin of the dosa, uthappam{% marginfigure 'uthappam' 'assets/img/uthappam.jpg' 'Uthappam'%} is thicker and typically comes with toppings. This one had onions and chilies and was cooked to a nice balance of crisp and soft. According to my South Indian friend, this is a typical Tamil Nadu comfort food — and it lived up to the hype.
 
-## தோசை *tōcai* (Dosa)
+## தோசை tōcai (Dosa)
 
 Ah, the dosa. I went for the *Paneer Butter Cheese Masala Dosa*{% marginfigure 'idiyappamdosa' 'assets/img/idiyappamdosa.jpg' 'Idiyappam and Paneer Butter Cheese Masala Dosa'%}, which was exactly as indulgent as it sounds. A thin, crepe-like fermented rice pancake stuffed with paneer, butter, and cheese masala — how could it not be amazing? Served with three kinds of chutneys and curry on the side, this was heavenly. A while back, I had a plain dosa at Chakra in Hannam and thought it lacked a bit of punch for the price, so this time I decided to go big — and it was the right move.
 
