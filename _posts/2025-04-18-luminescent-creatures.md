@@ -4,7 +4,6 @@ title: "Luminescent Creatures – 青葉市子 Review"
 category: album-review
 date: 2025-04-27
 cover: /assets/img/featured_albums/luminiscentcreatures.png
-excerpt: a deep dive into Mother Earth
 tags: [album-review, featured-albums-archive, music, aoba-ichiko, folk]
 # hidden: true
 ---
