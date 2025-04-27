@@ -7,7 +7,7 @@ tags: [food-culture, south-indian, gourmet, translation]
 
 <em><strong>Please note that this is a translation (provided by ChatGPT) from an original post that I wrote in Korean for Instagram!</strong></em>
 
-(Feb 12 visit) A belated review of my visit to **Saravanaa Bhavan Itaewon**, one of the very few South Indian restaurants in Seoul{% sidenote 'toggles' 'Saravanaa Bhavan is one of the rare places in Seoul offering authentic South Indian cuisine. It’s part of an international chain originating in Tamil Nadu, with branches all around the world. Another notable South Indian restaurant in Seoul is Chakra, located near the Indian Embassy in Hannam-dong.' %}. While the chain specializes in Tamil Nadu–style dishes, they do serve North Indian fare as well — though I couldn’t help but feel it would be a missed opportunity not to go full South Indian here. So, that’s what we did: we ordered a full South Indian course.
+(Feb 12 visit) {% newthought 'A belated review'%} of my visit to **Saravanaa Bhavan Itaewon**, one of the very few South Indian restaurants in Seoul{% sidenote 'toggles' 'Saravanaa Bhavan is one of the rare places in Seoul offering authentic South Indian cuisine. It’s part of an international chain originating in Tamil Nadu, with branches all around the world. Another notable South Indian restaurant in Seoul is Chakra, located near the Indian Embassy in Hannam-dong.' %}. While the chain specializes in Tamil Nadu–style dishes, they do serve North Indian fare as well — though I couldn’t help but feel it would be a missed opportunity not to go full South Indian here. So, that’s what we did: we ordered a full South Indian course.
 
 {% maincolumn 'assets/img/saravannabhavanitaewon.png' 'Saravanaa Bhavan in Itaewon, Seoul'%}
 

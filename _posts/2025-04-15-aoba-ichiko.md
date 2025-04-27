@@ -5,7 +5,7 @@ date: 2025-04-15
 tags: [aoba-ichiko, concert, music]
 ---
 
-This is a belated review of Aoba Ichiko's world tour in February 26th. I had the chance to attend Aoba Ichiko's concert here in Seoul.
+{% newthought 'This is a belated review' %} of Aoba Ichiko's world tour in February 26th. I had the chance to attend Aoba Ichiko's concert here in Seoul.
 
 Aoba is often described as a contemporary folk artist, but her music goes beyond simple categorization. Personally, I tend to be drawn toward more complex musical structures — perhaps music with more dense or layered arrangements. So I never thought I would be deeply captivated by any acoustic or folk-style music, which is more on the "popular" or "accessible" side. Yet, the moment I heard her 2018 album *qp*, I was completely absorbed. There's something deeply affecting about her voice, intertwined with a classical guitar — the combination is nothing short of powerful.
 

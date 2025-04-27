@@ -199,4 +199,17 @@
         color: #006666;
       }
   }
+
+/* POJ */
+
+@font-face {
+  font-family: 'POJGaramond';
+  src: url('../assets/fonts/POJ/POJGaramond-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.poj-text {
+  font-family: 'POJGaramond', serif;
+}
   

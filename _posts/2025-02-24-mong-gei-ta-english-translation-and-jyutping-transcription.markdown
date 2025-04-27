@@ -7,7 +7,9 @@ tags: [cantonese, lyrics, music, jyutping]
 
 This is my new (actually old) video of English translation and Jyutping Transcription.
 
-Originally sung by 鄧麗君 (Teresa Teng), 忘記他 (Mong Gei Ta) by 關淑怡 (Shirley Kwan) is a rendition of the original song that plays a significant role in the 王家衛 (Wong Kar-Wai) movie 墮落天使 (*Fallen Angels*). The song is in Cantonese, which is a variety of 粵 (Yue), a Sinitic language mainly spoken in the current provinces of 廣東 (Guangdong) and 廣西 (Guangxi). Jyutping is one of the most popular romanization schemes for Cantonese. Lyrics in this video are transcribed in Jyutping. For more information regarding Jyutping, please refer to [Jyutping Cantonese Romanization Scheme - The Linguistic Society of Hong Kong](https://lshk.org/jyutping-scheme/), [Jyutping.org](https://jyutping.org/en/), or [Jyutping - Wikipedia](https://en.wikipedia.org/wiki/Jyutping).
+Originally sung by 鄧麗君 (Teresa Teng), 忘記他 (Mong Gei Ta) by 關淑怡 (Shirley Kwan) is a rendition of the original song that plays a significant role in the 王家衛 (Wong Kar-Wai) movie 墮落天使 (*Fallen Angels*). The song is in Cantonese, which is a variety of 粵 (Yue), a Sinitic language mainly spoken in the current provinces of 廣東 (Guangdong) and 廣西 (Guangxi). Jyutping is one of the most popular romanization schemes for Cantonese. Lyrics in this video are transcribed in Jyutping. 
+ 
+For more information regarding Jyutping, please refer to [Jyutping Cantonese Romanization Scheme - The Linguistic Society of Hong Kong](https://lshk.org/jyutping-scheme/), [Jyutping.org](https://jyutping.org/en/), or [Jyutping - Wikipedia](https://en.wikipedia.org/wiki/Jyutping).
 
 <!-- <div class="video-container">
   <iframe 

@@ -9,7 +9,7 @@ weight: 1
 ---
 <div class="index-title"><span class="ornament">1</span> Recent Posts</div>
 {% assign today = site.time | date: "%s" | plus: 0 %}
-{% assign new_cutoff = today | minus: 5184000 %}
+{% assign new_cutoff = today | minus: 518400 %}
 
 <div class="recent-posts">
   {% assign visible_posts = site.posts | where_exp: "post", "post.hidden != true" %}
