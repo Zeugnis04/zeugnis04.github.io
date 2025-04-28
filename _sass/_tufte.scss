@@ -10,7 +10,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding-left: 12.5%;
-    font-family: adobe-caslon-pro, et-book, "source-han-serif-sc", sandoll-myeongjoneo1, adobe-tamil, linotype-devanagari, "Times New Roman", POJGaramond, serif;
+    font-family: adobe-caslon-pro, et-book, "source-han-serif-sc", sandoll-myeongjoneo1, adobe-tamil, linotype-devanagari, "Times New Roman", serif;
     font-variant-ligatures: common-ligatures;
     background-color: #fffff8;
     color: #111;
@@ -374,6 +374,7 @@ input.margin-toggle {
 label.sidenote-number {
     display: inline-block;
     max-height: 2rem; /* should be less than or equal to paragraph line-height */
+    margin-right: 0.2rem;
 }
 
 label.margin-toggle:not(.sidenote-number) {
