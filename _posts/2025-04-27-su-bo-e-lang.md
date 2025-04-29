@@ -6,14 +6,14 @@ category: lyric-video
 tags: [min-chinese, lyrics, music, poj]
 hidden: true
 ---
-Originally sung by 洪一峰 (Yi-Feng Hong), 思慕的人 (Mong Gei Ta) by 齊秦 (Chiy Chin) is a song from 王家衛 (Wong Kar-Wai)'s movie 墮落天使 (*Fallen Angels*). The song is in 閩南 (Minnan Chinese), which is a variety of 閩 (Min). POJ is one of the most popular romanization schemes for Minnan chinese. Lyrics in this video are transcribed in POJ. 
+Originally sung by 洪一峰 (Yi-Feng Hong), 思慕的人 (<span class="poj-text">Su-bō͘ ê lâng</span>) by 齊秦 (Chiy Chin) is a song from 王家衛 (Wong Kar-Wai)'s movie 墮落天使 (*Fallen Angels*). The song is in 閩南 (Minnan Chinese), which is a variety of 閩 (Min). POJ is one of the most popular romanization schemes for Minnan chinese. Lyrics in this video are transcribed in POJ. 
 
 我心內 思慕的儂{% sidenote 'min' 'In the title and many versions of lyrics of the song has 人 instead. 儂 serves as a vernacular reading of 人 in many Min dialects. Senses of *person; human being* are well attested in classic literature.'%}  
 <span class="poj-text">góa sim-lāi su-bō͘ ê lâng</span>  
 The one my heart longs for  
 내가 마음 속으로 사모했던 그대여  
 
-汝{% sidenote 'min' 'Sometimes written as 你, also meaning *you*. 你 is cognate to 汝 anyways.'%}怎{% sidenote 'min' 'Minnan counterpart of Mandarin 如何 rúhé, 爲什麼 wèi shénme *how come, why*.'%}樣離開 阮{% sidenote 'min' 'goán is a more popular when used as *we* --- Minnan counterpart of 我們 wǒmen *we*. When meaning *my* or *our*, usually read gún as in this case. 阮 is a contraction of 我儂.'%}的身邊  
+汝{% sidenote 'min' 'Sometimes written as 你, also meaning *you*. 你 is cognate to 汝 anyways.'%}怎{% sidenote 'min' 'Minnan counterpart of Mandarin 如何, 爲什麼 *how come, why*.'%}樣離開 阮{% sidenote 'min' 'goán is a more popular when used as *we* --- Minnan counterpart of 我們 *we*. When meaning *my* or *our*, usually read gún as in this case. 阮 is a contraction of 我儂.'%}的身邊  
 <span class="poj-text">lí chóaⁿ-iūⁿ lī-khui gún-ê sin-piⁿ</span>  
 Why did you leave my side  
 왜 내 곁에서 멀리 떠나가나요  
@@ -48,8 +48,8 @@ In my dream, hard to part and leave
 Guide me towards you  
 저를 당신에게로 이끌어  
 
-更加 心 綿綿 茫茫 過 日子  
-<span class="poj-text">kìng-ka sim mî-mî bâng-bâng kè jt-chí</span>  
+更加 心 綿綿 茫茫{% sidenote 'min' 'This rendition and the original song both use 白讀 (colloquial reading) bâng. 文讀 (Literary reading) is bông.'%} 過{% sidenote 'min' ' kuè is a more common reading in modern day Taiwan, and this rendition also uses this reading. Other common reading is kè.'%} 日子  
+<span class="poj-text">kìng-ka sim mî-mî bâng-bâng kuè jt-chí</span>  
 Make my heart tender and aimless as I pass the days  
 마음을 더 부드럽게 만들고 막막하게 날을 보내요  
 
@@ -59,17 +59,17 @@ My beloved, hurry back, hurry back to my side
 사랑하는 그대여, 어서 돌아와요, 어서 내 곁으로 돌아와요  
 
 好親像 思慕的儂  
-<span class="poj-text">Hó chhin-chhiūn su-bō͘ ê lâng</span>  
+<span class="poj-text">Hó chhin-chhiūⁿ su-bō͘ ê lâng</span>  
 Just like the one I yearn for  
 마치 사모하는 당신신처럼  
 
 優美的 歌聲 擾亂阮耳  
-<span class="poj-text">iu-bí ê koa-sian jiáu-loān gún hīn</span>  
+<span class="poj-text">iu-bí ê koa-siaⁿ jiáu-loān gún hīⁿ</span>  
 Beautiful singing voice disturbs my ears  
 아름다운 노랫소리가 내 귀를 어지럽혀요요  
 
 當{% sidenote 'min' 'Some write 動, but considered as wrong usage by some.'%}我想著汝  
-<span class="poj-text">Tōng góa siūn-tio̍h lí</span>  
+<span class="poj-text">Tōng góa siūⁿ-tio̍h lí</span>  
 Whenever I think of you  
 제가 당신을 생각할 때마다  
 
@@ -79,11 +79,15 @@ Gentle and kind feelings
 부드럽고 다정한 마음  
 
 聲聲 叫著汝  
-<span class="poj-text">sian-sian kiò-tio̍h lí</span>  
+<span class="poj-text">siaⁿ-siaⁿ kiò-tio̍h lí</span>  
 Every sound calls for you  
 모든 소리가 당신을 부르고 있어요  
 
 心愛的 緊轉來 緊轉來 阮身邊  
-<span class="poj-text">sim-ài-ê kín tńg-lâi kín tńg-lâi gún sin-pin</span>  
+<span class="poj-text">sim-ài-ê kín tńg-lâi kín tńg-lâi gún sin-piⁿ</span>  
 My beloved, hurry back, hurry back to my side  
 사랑하는 그대여, 어서 돌아와요, 어서 내 곁으로 돌아와요  
+
+---
+
+Special thanks to *aiongg* --- creator of [POJ Garamond](https://github.com/aiongg/POJFonts).  
