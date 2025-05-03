@@ -5,7 +5,6 @@ date: 2025-05-03
 tags: [guns-n-roses, concert, music]
 korean: true
 ---
-{% newthought "Guns n' Roses has finally come" %} to Korea --- for the first time, Axl and Slash together.
 
 밴드 Guns n' Roses가 내한했다. 내가 밴드 Guns n' Roses를 처음 알게 된 것은 내가 기억하기로는 중학교 2학년 때 쯤이다. 당시 다들 페이스북을 하던 시절, 페이스북에 있었던 동영상들을 넘겨 보다가 하이네켄의 어떤 광고 (인 줄 알았던 영상)를 본 기억이 난다. 바로 [이 영상](https://www.youtube.com/watch?v=U_dfIqmqSTw)인데, 물과 맥주의 차이라면서 한 남성이 맥주를 따르고 잔을 문지르자 Guns n' Roses의 **Sweet Child O' Mine**이 나오는 영상이다. 그 때 기타 리프를 듣고 다급하게 원곡을 찾던 그 시절 나의 모습이 아직도 생생하다. 사실 그때부터 바로 Guns n' Roses의 다른 곡들을 들었던 것은 아닌데, 음악을 본격적으로 듣기 시작한 이후에서야 이 때 생각이 나서 또 그 "광고" 영상을 찾아서 이 곡을 찾아 듣기 시작했다. 한참 락으로 장르를 넓혀가던 시기에 들었던 곡인만큼 내 음악 감상 역사(?)에 큰 영향을 끼쳤다고 할 수도 있겠다.
 
