@@ -1,31 +1,13 @@
 <!DOCTYPE html>
 <html>
   {% include head.html %}
-  <body {% if page.full_width or layout.full_width %}class="full-width"{% endif %}>
+  <body class="{% if page.full_width or layout.full_width %}full-width {% endif %}
+  {% if page.korean %}korean-font-post{% endif %}">
     {% include header.html %}
     <article class="group">
       {{ content }}
     </article>
     {% include print-footer.html %}
     {% include footer.html %}
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const test = document.createElement("span");
-        test.style.fontFeatureSettings = '"ornm" 18';
-        test.style.fontFamily = "'Minion Pro'";
-        test.innerText = "•";
-  
-        document.body.appendChild(test);
-        const ornamentRendered = test.offsetWidth !== 0 && test.offsetWidth !== 8;
-        document.body.removeChild(test);
-  
-        if (!ornamentRendered) {
-          document.querySelectorAll(".tag-ornament").forEach(el => {
-            el.innerText = "❧";
-            el.style.fontFeatureSettings = "normal";
-          });
-        }
-      });
-    </script>
   </body>
 </html>
