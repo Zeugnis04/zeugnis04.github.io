@@ -5,6 +5,7 @@ category: album-review
 date: 2025-04-27
 cover: /assets/img/featured_albums/luminiscentcreatures.png
 tags: [album-review, featured-albums-archive, music, aoba-ichiko, folk]
+excerpt: "a deep dive into Mother Earth"
 # hidden: true
 ---
 <figure class="ifrome-wrapper">

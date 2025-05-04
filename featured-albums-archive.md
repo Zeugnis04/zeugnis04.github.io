@@ -17,7 +17,7 @@ nav_exclude: true
       </a>
       <div class="album-info">
         <h4>{{ post.title }}</h4>
-        <body><em>{{ post.excerpt | strip_html }}</em></body>
+        <body><em>{{ post.excerpt | strip_html}}</em></body>
       </div>
     </div>
   {% endfor %}

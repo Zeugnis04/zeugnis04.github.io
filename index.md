@@ -43,7 +43,7 @@ weight: 1
   <a href="blog/album-review/luminescent-creatures">
     <img src="assets/img/featured_albums/luminiscentcreatures.png"></a>
     <div class="album-info">
-      <h4>Luminescent Creatures - 青葉市子  </h4>
+      <h4>Luminescent Creatures - 青葉市子</h4>
       <body><em>a deep dive into Mother Earth</em></body>
     </div>
   </div>
