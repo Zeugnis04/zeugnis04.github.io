@@ -10,7 +10,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     padding-left: 12.5%;
-    font-family: adobe-caslon-pro, et-book, "source-han-serif-sc", sandoll-myeongjoneo1, adobe-tamil, linotype-devanagari, "Times New Roman", serif;
+    font-family: adobe-caslon-pro, et-book, "source-han-serif-sc", "Times New Roman", serif;
     font-variant-ligatures: common-ligatures;
     background-color: #fffff8;
     color: #111;
@@ -18,6 +18,25 @@ body {
     counter-reset: sidenote-counter;
     // Trim both sides to the capital letters
     // text-box: trim-both cap alphabetic; 
+}
+/*<---- Various Languages ---->*/
+
+:lang(ta) 	{
+    font-family: adobe-tamil, serif;
+    font-style: normal;
+    }
+:lang(ko)   {
+    font-family: adobe-caslon-pro, sandoll-myeongjoneo1, serif;
+    line-height: 1.8;
+    font-size:95%;
+}
+:lang(ja)   {
+    font-family: kozuka-mincho-pr6n, serif;
+    font-size:95%;
+}
+:lang(hi)   {
+    font-family: linotype-devanagari, serif;
+    font-size:95%;
 }
 
 h1 {

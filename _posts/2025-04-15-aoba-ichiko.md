@@ -11,7 +11,7 @@ Aoba is often described as a contemporary folk artist, but her music goes beyond
 
 This concert was supposed to be consisted of songs from her upcoming album *Luminescent Creatures*, and new tracks from the album (other than the pre-released ones) were definitely mesmerizing. Her blending of “the sounds of nature” — often produced with her own voice — and her ethereal singing creates an experience that feels alive and elemental. True to the album title, her performance radiated a quiet luminescent ode to Mother Earth.
 
-Despite being a concert focused on the new album, she also performed some older and beloved tracks like いきのこり●ぼくら (Ikinokori●Bokura) and 月の丘 (Tsuki no Oka), which happens to be my personal favorite. The moment that surprised me most was when she played 機械仕掛乃宇宙 (Kikaijikake no Uchuu) — a song I never imagined hearing live. 
+Despite being a concert focused on the new album, she also performed some older and beloved tracks like <span lang="ja">**いきのこり●ぼくら**</span> (Ikinokori●Bokura) and <span lang="ja">**月の丘**</span> (Tsuki no Oka), which happens to be my personal favorite. The moment that surprised me most was when she played <span lang="ja">**機械仕掛乃宇宙**</span> (Kikaijikake no Uchuu) — a song I never imagined hearing live. 
 
 Someone seems to have uploaded videos from the concert on YouTube. It's definitely worth checking out.
 
@@ -19,18 +19,18 @@ Someone seems to have uploaded videos from the concert on YouTube. It's definite
 
 ## Setlist
 
-1. ココロノセカイ　Kokoro no Sekai  
-2. テリフリアメ　Terifuri Ame  
-3. いきのこり●ぼくら　Ikinokori・Bokura  
+1. <span lang="ja">ココロノセカイ</span> Kokoro no Sekai  
+2. <span lang="ja">テリフリアメ</span> Terifuri Ame  
+3. <span lang="ja">いきのこり●ぼくら</span> Ikinokori・Bokura  
 4. Sagu Palm's Song  
-5. アンディーヴと眠って　Asleep Among Endives  
-6. 海辺の葬列　Umibe no Sōretsu  
+5. <span lang="ja">アンディーヴと眠って</span> Asleep Among Endives  
+6. <span lang="ja">海辺の葬列</span> Umibe no Sōretsu  
 7. FLAG  
 8. Space Orphans  
 9. SONAR  
-10. 惑星の泪　Wakusei no Namida  
-11. 機械仕掛乃宇宙　Kikaijikake no Uchuu  
-12. 月の丘　Tsuki no Oka  
+10. <span lang="ja">惑星の泪</span> Wakusei no Namida  
+11. <span lang="ja">機械仕掛乃宇宙</span> Kikaijikake no Uchuu  
+12. <span lang="ja">月の丘</span> Tsuki no Oka   
 
 **Encore**  
 13. Sayonara Penguin  
