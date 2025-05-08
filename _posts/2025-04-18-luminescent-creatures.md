@@ -5,10 +5,10 @@ category: album-review
 date: 2025-04-27
 cover: /assets/img/featured_albums/luminiscentcreatures.png
 tags: [album-review, featured-albums-archive, music, aoba-ichiko, folk]
-excerpt: "a deep dive into Mother Earth"
+excerpt: a deep dive into Mother Earth
 # hidden: true
 ---
-<figure class="ifrome-wrapper">
+<figure>
 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/2mLrmtSEmIWLO6sLAq4lNH?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></figure>
 
 {% newthought 'Japanese folk artist' %} <span lang="ja">青葉市子</span> (Ichiko Aoba) takes yet another luminous leap in her newest album, Luminescent Creatures, venturing even deeper into the heart of Mother Earth. Following her mesmerizing Windswept Adan (2020), Aoba continues to weave intricate layers of sound, further enriching her folk-rooted and minimalistic musical language. We had already witnessed her capability to expand the quiet minimalism of her earlier work --- and with this album, she proves once more that her magic is far from a fleeting phenomenon.

@@ -27,13 +27,19 @@ body {
     }
 :lang(ko)   {
     font-family: adobe-caslon-pro, sandoll-myeongjoneo1, serif;
+    font-style: normal;
     line-height: 1.8;
     font-size:95%;
 }
 :lang(ja)   {
     font-family: kozuka-mincho-pr6n, serif;
     font-size:95%;
+    font-style: normal;
 }
+span[lang="ja"] ruby rt {
+    font-size: 0.55em;
+    font-weight: normal;
+  }
 :lang(hi)   {
     font-family: linotype-devanagari, serif;
     font-size:95%;
