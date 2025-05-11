@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Guns n' Roses in Incheon - World Tour: 2025 Summer (Korean and English)"
+title: "Guns n’ Roses in Incheon - World Tour: 2025 Summer (Korean and English)"
 date: 2025-05-03
 tags: [guns-n-roses, concert, music]
 korean: false
@@ -28,9 +28,9 @@ korean: false
 
 <em><strong>Please note that this is a translation from the post above!</strong></em>
 
-{% newthought "Guns N' Roses has finally come" %} to Korea — for the first time, Axl and Slash together.
+{% newthought "Guns n' Roses has finally come" %} to Korea — for the first time, Axl and Slash together.
 
-I first came across Guns N' Roses when I was in middle school — around 8th grade, if I remember correctly. It was back in the Facebook era when everyone was constantly scrolling through videos. One day, I stumbled upon a video I thought was a Heineken commercial — [this one](https://www.youtube.com/watch?v=U_dfIqmqSTw), where a man pours beer, rubs the glass, and suddenly **Sweet Child O’ Mine** starts playing. I still remember how I panicked in excitement, trying to find the original song after hearing that iconic guitar riff.
+I first came across Guns n' Roses when I was in middle school — around 8th grade, if I remember correctly. It was back in the Facebook era when everyone was constantly scrolling through videos. One day, I stumbled upon a video I thought was a Heineken commercial — [this one](https://www.youtube.com/watch?v=U_dfIqmqSTw), where a man pours beer, rubs the glass, and suddenly **Sweet Child O’ Mine** starts playing. I still remember how I panicked in excitement, trying to find the original song after hearing that iconic guitar riff.
 
 At the time, I didn’t immediately dive into the rest of their music, but once I got deeper into listening to music seriously, I remembered that “commercial” and went back to find the song again. Since I was expanding into rock music around then, this track ended up having a big influence on my listening history.
 

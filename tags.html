@@ -9,6 +9,18 @@ weight: 5
 {% assign tags = site.tags | sort %}
 
 {%- if tags.size > 0 -%}
+<div class="tag-cloud">
+  {% for tag in tags %}
+    {% assign tag_name = tag[0] %}
+    {% assign post_count = tag[1].size %}
+    {% assign font_size = post_count | times: 0.15 | plus: 0.85 %}
+    <a href="#{{ tag_name | slugify }}"
+       style="font-size: {{ font_size }}rem;"
+       class="tag-cloud-item">
+       {{ tag_name }}
+    </a>
+  {% endfor %}
+</div>
   {% for tag in tags %}
     <h2 id="{{ tag[0] | slugify }}">{{ tag[0] }}</h2>
     <ul>

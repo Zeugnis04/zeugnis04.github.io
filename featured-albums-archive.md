@@ -23,3 +23,6 @@ nav_exclude: true
   {% endfor %}
 
 </div>
+<p class="backarrow" style="text-align: right;">
+    <a href="/">← Back to home</a>
+  </p>

@@ -37,7 +37,7 @@ weight: 1
 </div>
 
 ---
-<div class="index-title"><span class="ornament">1</span> Featured Albums</div>
+<div class="index-title"><span class="ornament">a</span> Featured Albums</div>
 <div class="album-flex inside-text-width">
   <div class="album">
   <a href="blog/album-review/luminescent-creatures">
@@ -62,7 +62,7 @@ weight: 1
 </section>
 
 ---
-<div class="index-title"><span class="ornament">1</span> Currently Reading Books</div>
+<div class="index-title"><span class="ornament">b</span> Currently Reading Books</div>
 <div class="currently-reading">
   <div class="book-cover">
     <img src="assets/img/currently-reading-books/sansirou.jpg" alt="Book Cover">
@@ -77,5 +77,8 @@ weight: 1
     </blockquote>
   </div>
 </div>
-
+<section>
+  <div style="clear: both"></div>
+  <p class="backarrow" style="text-align: right;"><a href="books-archive">→ Books archive</a></p>
+</section>
 ---
