@@ -44,6 +44,9 @@ span[lang="ja"] ruby rt {
     font-family: linotype-devanagari, serif;
     font-size:95%;
 }
+:lang(my) {
+    font-family: 'Noto Serif Myanmar', sans-serif;
+  }
 
 h1 {
     font-weight: 400;

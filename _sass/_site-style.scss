@@ -234,6 +234,20 @@
   font-family: 'POJGaramond', serif;
 }
 
+@font-face {
+  font-family: 'Noto Serif Myanmar';
+  src: url('../fonts/Burmese/NotoSerifMyanmar-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Noto Serif Myanmar';
+  src: url('../fonts/Burmese/NotoSerifMyanmar-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 .korean-font-post {
   font-size: 90% !important;
   font-family: adobe-caslon-pro, et-book, sandoll-myeongjoneo1,"source-han-serif-sc", adobe-tamil, linotype-devanagari, "Times New Roman", serif !important;
