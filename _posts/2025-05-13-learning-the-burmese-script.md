@@ -36,7 +36,7 @@ Letters in grey indicate that they have limited usage in modern Burmese.
 
 ### Consonant stacking
 
-In Burmese, certain consonant pairs can be written in stacked form. In these cases, the first consonant is written normally, while the second is stacked below. This stacking implies an unwritten virama (<span lang="my">်</span>), which suppresses the inherent vowel of the first letter. For example, <span lang="my">ကမ္ဘာ</span> ("world") is pronounced as <span lang="my">ကမ်ဘာ</span> (kam bha), not <span lang="my">ကမဘာ</span> (ka ma. bha).
+In Burmese, certain consonant pairs can be written in stacked form. In these cases, the first consonant is written normally, while the second is stacked below. This stacking implies an unwritten virama (<span lang="my">်</span>), which suppresses the inherent vowel of the first letter. For example, <span lang="my">ကမ္ဘာ</span> ("world") is pronounced as <span lang="my">ကမ်ဘာ</span> (kam bha), not <span lang="my">ကမဘာ</span> (ka. ma. bha).
 
 Stacked consonants mostly occur in loanwords from Pali or Sanskrit, such as <span lang="my">အတ္တ</span> ("self"), but may also appear in informal abbreviations—for instance, <span lang="my">လက္ဖက်</span> ("tea") shortened to <span lang="my">လ္ဘက်</span>. Stacking generally involves homorganic consonants from the same consonant group (<span lang="my">ဝဂ်</span>), and non-grouped consonants can only be stacked with themselves.
 
