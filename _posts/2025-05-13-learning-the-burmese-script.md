@@ -3,6 +3,7 @@ layout: post
 title:  "Learning the Burmese script"
 date:   2025-05-13
 tags: [burmese, script, brahmic, linguistics]
+toc: true
 ---
 <!-- <style>
 .diacritic {
@@ -11,6 +12,8 @@ tags: [burmese, script, brahmic, linguistics]
   font-size: 1.00rem;
 }
 </style> -->
+
+{% newthought 'I have suddenly come up with the idea'%} to study some Brahmic script, and started with the Burmese script. The Burmese script is, in some way peculiar --- starting from its shapes to their deep depth of orthography. That is why I first chose to study the Burmese script (all of a sudden). Those who has no experience with other abugidas or any other Brahmic script might have a hard time grasping the aspects of this script, but I tried to organize them in a manner I studied them recently. Please enjoy my first article on languages and scripts!
 
 <h2>Consonants</h2>
 
@@ -122,5 +125,8 @@ All possible combinations of Burmese medial diacritics are shown below using the
 | <span lang="my">မွ</span><br>mw<br>/mw/        | –                                     | –                                      | <span lang="my">မွှ</span><br>hmw<br>/m̥w/       |
 | <span lang="my">မှ</span><br>hm<br>/m̥/        | –                                     | –                                      | –                                       |
 
+## Practice
+
+Practice will be focused on being able to read words. (TBD)
 
 

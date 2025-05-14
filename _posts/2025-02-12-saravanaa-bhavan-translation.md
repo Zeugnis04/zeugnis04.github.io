@@ -29,7 +29,7 @@ Ah, the dosa. I went for the *Paneer Butter Cheese Masala Dosa*{% marginfigure '
 
 ## <span lang="ta">ரவா கேசரி</span> *rāva kēsari* (Rava Kesari)
 
-Dessert time! This is a semolina-based sweet dish also known across India by names like *suji ka halwa* (Hindi), *mohan bhog* (Bengali), or *kesari bath* (Kannada){% marginfigure 'ravakesari' 'assets/img/ravakesari.jpg' 'Rava Kesari'%}. It's a mix of semolina, ghee, and sugar — warm, rich, and comforting. I’ve had something similar before at Burmese restaurants in both the U.S. and Korea, called *Shwe Kyi* (ရွှေချီ), and this brought back similar vibes.
+Dessert time! This is a semolina-based sweet dish also known across India by names like *suji ka halwa* (Hindi), *mohan bhog* (Bengali), or *kesari bath* (Kannada){% marginfigure 'ravakesari' 'assets/img/ravakesari.jpg' 'Rava Kesari'%}. It's a mix of semolina, ghee, and sugar — warm, rich, and comforting. I’ve had something similar before at Burmese restaurants in both the U.S. and Korea, called *Shwe Kyi* (<span lang="my">ရွှေချီ</span>), and this brought back similar vibes.
 
 ---
 
