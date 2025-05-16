@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Guns n’ Roses in Incheon - World Tour: 2025 Summer (Korean and English)"
+title: "Guns n’ Roses in Incheon — World Tour: 2025 Summer (Korean and English)"
 date: 2025-05-03
 tags: [guns-n-roses, concert, music]
 korean: false
