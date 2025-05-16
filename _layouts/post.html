@@ -9,6 +9,38 @@ layout: default
 {% if site.show_author %}{{ page.author | default: site.author }} — {% endif %}
 {{ page.date | date: "%B %-d, %Y" }}
 
+{% if page.toc %}
+<nav class="table-of-contents">
+  <h2>Table of Contents</h2>
+  <ul class="toc-list">
+    {% assign content_lines = content | split: '<h' %}
+    {% assign section = 0 %}
+    {% assign subsection = 0 %}
+    {% for block in content_lines %}
+      {% assign tag = block | slice: 0, 1 %}
+      {% assign heading_html = block | split: '>' %}
+      {% assign heading_text = heading_html[1] | split: '</h' | first | strip %}
+      {% assign id = heading_text | slugify %}
+
+      {% if tag == '2' %}
+        {% assign section = section | plus: 1 %}
+        {% assign subsection = 0 %}
+        <li>
+          <span class="toc-num">{{ section }}</span>
+          <span class="toc-text"><a href="#{{ id }}">{{ heading_text }}</a></span>
+        </li>
+      {% elsif tag == '3' %}
+        {% assign subsection = subsection | plus: 1 %}
+        <li class="toc-sub">
+          <span class="toc-num">{{ section }}.{{ subsection }}</span>
+          <span class="toc-text"><a href="#{{ id }}">{{ heading_text }}</a></span>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</nav>
+{% endif %}
+
 {{ content }}
 
 {%- if page.tags -%}

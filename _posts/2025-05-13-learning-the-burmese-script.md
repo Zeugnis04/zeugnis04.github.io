@@ -3,6 +3,7 @@ layout: post
 title:  "Learning the Burmese script"
 date:   2025-05-13
 tags: [burmese, script, brahmic, linguistics]
+toc: true
 ---
 <!-- <style>
 .diacritic {
@@ -11,6 +12,8 @@ tags: [burmese, script, brahmic, linguistics]
   font-size: 1.00rem;
 }
 </style> -->
+
+{% newthought 'I have suddenly come up with the idea'%} to study some Brahmic script, and started with the Burmese script. The Burmese script is, in some way peculiar --- starting from its shapes to their deep depth of orthography. That is why I first chose to study the Burmese script (all of a sudden). Those who has no experience with other abugidas or any other Brahmic script might have a hard time grasping the aspects of this script, but I tried to organize them in a manner I studied them recently. Please enjoy my first article on languages and scripts!
 
 <h2>Consonants</h2>
 
@@ -122,5 +125,111 @@ All possible combinations of Burmese medial diacritics are shown below using the
 | <span lang="my">မွ</span><br>mw<br>/mw/        | –                                     | –                                      | <span lang="my">မွှ</span><br>hmw<br>/m̥w/       |
 | <span lang="my">မှ</span><br>hm<br>/m̥/        | –                                     | –                                      | –                                       |
 
+## Practice
 
+Practice reading those words below --- you can always toggle the button to hide or view the answer.
+
+Practice examples are (apparently) Burmese words --- taken from the book [Reading & Writing Burmese: A Workbook for Self-Study](https://www.amazon.com/Reading-Writing-Burmese-Self-Study-Pronounce/dp/0804852626). IPA transcriptions are from [Wiktionary (English)](https://en.wiktionary.org/wiki/Wiktionary:Main_Page). There are more phenomena regarding voicing or weakening of certain vowels that we have not gone through this article, but most entries in Wiktionary reflect such phenomena, so keep in mind. 
+
+### Vowels -a, -a:, -a.
+
+Refer to the [Vowels](#vowels) section, if you do not remember any of the diacritics here.
+
+Please note that diacritic <span lang="my">ါ</span> is used instead of <span lang="my">ာ</span> when combined with the consonants <span lang="my">ခ ဂ င ဒ ပ ဝ</span>, to disambiguate letters that look similar to already-existing letters. 
+
+<details class="practice">
+  <summary><span lang="my">အရသာ</span><span class="show-button">show</span> </summary>
+  <p>MLCTS: a. ra. sa</p>
+  <p>IPA: /ʔəja̰ðà/</p>
+  <p>Meaning: taste; flavor</p>
+</details>
+<details class="practice">
+  <summary>
+    <span lang="my">အစားအစာ</span>
+    <span class="show-button">show</span>
+  </summary>
+  <p>MLCTS: a. ca: a. ca</p>
+  <p>IPA: /ʔəsáʔəsà/</p>
+  <p>Meaning: food</p>
+</details>
+
+<details class="practice">
+  <summary>
+    <span lang="my">ဆရာမ</span>
+    <span class="show-button">show</span>
+  </summary>
+  <p>MLCTS: hca. ra ma.</p>
+  <p>IPA: /sʰəjàma̰/</p>
+  <p>Meaning: female teacher</p>
+</details>
+
+<details class="practice">
+  <summary>
+    <span lang="my">ငါး</span>
+    <span class="show-button">show</span>
+  </summary>
+  <p>MLCTS: nga:</p>
+  <p>IPA: /ŋá/</p>
+  <p>Meaning: fish; five</p>
+</details>
+
+<details class="practice">
+  <summary>
+    <span lang="my">ရထား</span>
+    <span class="show-button">show</span>
+  </summary>
+  <p>MLCTS: ra. hta:</p>
+  <p>IPA: /jətʰá/</p>
+  <p>Meaning: train</p>
+</details>
+
+### Vowels -i, -i:, -i.
+
+<details class="practice">
+  <summary>
+    <span class="burmese" lang="my">ထီး</span>
+    <span class="show-button">show</span>
+  </summary>
+  <p>MLCTS: hti:</p>
+  <p>IPA: /tʰí/</p>
+  <p>Meaning: umbrella</p>
+</details>
+<details class="practice">
+  <summary>
+    <span class="burmese" lang="my">အသီး</span>
+    <span class="show-button">show</span>
+  </summary>
+  <p>MLCTS: a. si:</p>
+  <p>IPA: /ʔəθí/</p>
+  <p>Meaning: fruit</p>
+</details>
+<details class="practice">
+  <summary>
+    <span class="burmese" lang="my">မိဘ</span>
+    <span class="show-button">show</span>
+  </summary>
+  <p>MLCTS: mi. bha.</p>
+  <p>IPA: /mḭba̰/</p>
+  <p>Meaning: parent</p>
+</details>
+<details class="practice">
+  <summary>
+    <span class="burmese" lang="my">ခရီး</span>
+    <span class="show-button">show</span>
+  </summary>
+  <p>MLCTS: hka. ri:</p>
+  <p>IPA: /kʰəjí/</p>
+  <p>Meaning: trip</p>
+</details>
+<details class="practice">
+  <summary>
+    <span class="burmese" lang="my">နာရီ</span>
+    <span class="show-button">show</span>
+  </summary>
+  <p>MLCTS: na ri</p>
+  <p>IPA: /nàjì/</p>
+  <p>Meaning: clock; watch</p>
+</details>
+
+(WIP)
 

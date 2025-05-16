@@ -212,78 +212,70 @@ figure.fullwidth figcaption {
 }
 
 /* Links: replicate underline that clears descenders */
-a:link,
-a:visited {
-    color: inherit;
+// a:link,
+// a:visited {
+//     color: inherit;
+// }
+
+// .no-tufte-underline:link {
+//     background: unset;
+//     text-shadow: unset;
+// }
+
+// a:link, .tufte-underline, .hover-tufte-underline:hover {
+//     // text-decoration: underline;
+//     // text-decoration-skip-ink: all;
+//     background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(currentColor, currentColor);
+//     background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(currentColor, currentColor);
+//     -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+//     -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+//     background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
+//     background-repeat: no-repeat, no-repeat, repeat-x;
+//     text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
+//     background-position: 0% 93%, 100% 93%, 0% 93%;
+// }
+
+ header nav a {
+  color: #111;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.3s ease;
 }
 
-.no-tufte-underline:link {
-    background: unset;
-    text-shadow: unset;
+nav.group a.active {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
 
-a:link, .tufte-underline, .hover-tufte-underline:hover {
-    // text-decoration: underline;
-    // text-decoration-skip-ink: all;
-    background: -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(#fffff8, #fffff8), -webkit-linear-gradient(currentColor, currentColor);
-    background: linear-gradient(#fffff8, #fffff8), linear-gradient(#fffff8, #fffff8), linear-gradient(currentColor, currentColor);
-    -webkit-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-    -moz-background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-    background-size: 0.05em 1px, 0.05em 1px, 1px 1px;
-    background-repeat: no-repeat, no-repeat, repeat-x;
-    text-shadow: 0.03em 0 #fffff8, -0.03em 0 #fffff8, 0 0.03em #fffff8, 0 -0.03em #fffff8, 0.06em 0 #fffff8, -0.06em 0 #fffff8, 0.09em 0 #fffff8, -0.09em 0 #fffff8, 0.12em 0 #fffff8, -0.12em 0 #fffff8, 0.15em 0 #fffff8, -0.15em 0 #fffff8;
-    background-position: 0% 93%, 100% 93%, 0% 93%;
+/* Hover color */
+header nav a:hover {
+  color: #006666;
 }
 
-  header nav a {
-    color: #111;
-    text-decoration: none;
-    position: relative;
-  }
-  nav.group a.active {
-    white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-  }
-
-  /* Hover color change */
-  header nav a:hover {
-    color: #006666;
-  }
-  nav.group a.active {
-    white-space: nowrap;
-  }
-  /* Optional: animated underline (Tufte-style) */
-  header nav a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 100%;
-    height: 1px;
-    background-color: currentColor;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-  }
-  header nav a:hover::after {
-    transform: scaleX(1);
-  }
-
-  a {
-    color: #111; // or your base text color
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  
-  a:hover {
-    color: #006666; // or any hover color you want
-  }
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-    a:link, .tufte-underline, .hover-tufte-underline:hover {
-        background-position-y: 87%, 87%, 87%;
-    }
+/* Animated underline on hover */
+header nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
 }
+
+header nav a:hover::after {
+  transform: scaleX(1);
+}
+
+// @media screen and (-webkit-min-device-pixel-ratio: 0) {
+//     a:link, .tufte-underline, .hover-tufte-underline:hover {
+//         background-position-y: 87%, 87%, 87%;
+//     }
+// }
 
 /* Sidenotes, margin notes, figures, captions */
 img {
@@ -472,11 +464,11 @@ label.margin-toggle:not(.sidenote-number) {
       color: #ccc;
     }
   
-    a:link,
-    .tufte-underline,
-    .hover-tufte-underline:hover {
-      text-shadow: 0.03em 0 #151515, -0.03em 0 #151515, 0 0.03em #151515, 0 -0.03em #151515, 0.06em 0 #151515, -0.06em 0 #151515, 0.09em 0 #151515, -0.09em 0 #151515, 0.12em 0 #151515, -0.12em 0 #151515, 0.15em 0 #151515, -0.15em 0 #151515;
-    }
+    // a:link,
+    // .tufte-underline,
+    // .hover-tufte-underline:hover {
+    //   text-shadow: 0.03em 0 #151515, -0.03em 0 #151515, 0 0.03em #151515, 0 -0.03em #151515, 0.06em 0 #151515, -0.06em 0 #151515, 0.09em 0 #151515, -0.09em 0 #151515, 0.12em 0 #151515, -0.12em 0 #151515, 0.15em 0 #151515, -0.15em 0 #151515;
+    // }
   }
   
 
