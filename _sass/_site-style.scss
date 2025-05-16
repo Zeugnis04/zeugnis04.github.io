@@ -546,3 +546,35 @@ header nav a:hover::after {
     color: #64ffda;
   }
 }
+
+/* toggling */
+details.practice {
+  margin: 1.0em 0 0em 1.5em;
+}
+
+details.practice summary {
+  display: flex; /* Required for flex behavior */
+  justify-content: space-between; /* Aligns Burmese and "show" */
+  align-items: baseline; /* Keeps vertical alignment tidy */
+  cursor: pointer;
+  font-weight: normal;
+  font-size: 1.4em;
+  list-style: none;
+  padding-right: 1em; /* Ensures room on the right for "show" */
+  width: 55%;
+}
+
+details.practice p {
+  margin: 0.5em 0 0.5em 1.5em;
+  font-size: 1.2em;
+  line-height: 1.2rem;
+}
+
+.show-button {
+  font-variant: small-caps;
+  font-size: 1em;
+  text-decoration: underline;
+  margin-left: 0.5em;
+  color: inherit;
+  white-space: nowrap;
+}
