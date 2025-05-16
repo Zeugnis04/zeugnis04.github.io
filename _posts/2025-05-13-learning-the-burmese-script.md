@@ -18,7 +18,7 @@ tags: [burmese, script, brahmic, linguistics]
 
 The Burmese script consists of 33 primary letters that represent the initial consonants of syllables, along with four additional diacritics used to modify the onset by indicating medial consonants. As an abugida, like other scripts in the Brahmic family, each consonant inherently carries the vowel a. /a̰/ (which may be realized as a reduced /ə/ in some contexts). Other vowel sounds are expressed through diacritic marks, which may appear above, below, before, or after the base consonant character.
 
-The table that follows lists each of these consonant letters in the traditional ordering, along with their syllable onset values in both IPA and MLC transcription, as well as their names in Burmese, which either refer to their phonetic value or describe their shape.
+The table that follows lists each of these consonant letters in the traditional ordering, along with their syllable onset values in both IPA and MLC transcription.
 
 Letters in grey indicate that they have limited usage in modern Burmese.
 
