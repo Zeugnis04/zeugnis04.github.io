@@ -131,7 +131,7 @@ Practice reading those words below --- you can always toggle the button to hide 
 
 Practice examples are (apparently) Burmese words --- taken from the book [Reading & Writing Burmese: A Workbook for Self-Study](https://www.amazon.com/Reading-Writing-Burmese-Self-Study-Pronounce/dp/0804852626). IPA transcriptions are from [Wiktionary (English)](https://en.wiktionary.org/wiki/Wiktionary:Main_Page). There are more phenomena regarding voicing or weakening of certain vowels that we have not gone through this article, but most entries in Wiktionary reflect such phenomena, so keep in mind. 
 
-### Vowels -a, -a:, -a.
+### Vowels a
 
 Refer to the [Vowels](#vowels) section, if you do not remember any of the diacritics here.
 
@@ -183,7 +183,7 @@ Please note that diacritic <span lang="my">ါ</span> is used instead of <span l
   <p>Meaning: train</p>
 </details>
 
-### Vowels -i, -i:, -i.
+### Vowels i
 
 <details class="practice">
   <summary>

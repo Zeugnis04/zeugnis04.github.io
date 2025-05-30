@@ -361,7 +361,6 @@
   width: 90%;
   margin-top: 2rem;
   margin-bottom: 2rem;
-  font-size: 0.8rem;
   color: inherit;
   box-sizing: border-box;
   padding: 1rem 0;
@@ -374,8 +373,10 @@
 
 .toc-list {
   list-style: none;
+  font-size: 1.2rem;
   padding: 0;
   margin: 0;
+  font-variant: small-caps;
 }
 
 .toc-list li {
@@ -383,7 +384,7 @@
   align-items: baseline;
   margin: 0.5rem 0;
   gap: 0.6rem;
-  line-height: 1.2;
+  line-height: 1.0;
   flex-wrap: wrap;
 }
 
@@ -577,4 +578,10 @@ details.practice p {
   margin-left: 0.5em;
   color: inherit;
   white-space: nowrap;
+}
+
+@media screen and (max-width: 760px) {
+  details.practice summary {
+    width: 100%;
+  }
 }
