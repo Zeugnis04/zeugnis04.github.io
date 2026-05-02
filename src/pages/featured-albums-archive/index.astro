@@ -1,0 +1,28 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPosts } from "@/lib/posts";
+
+const albums = getPosts().filter((post) => post.tags.includes("album-review"));
+---
+<BaseLayout title="Featured Albums Archive">
+  <h1>Featured Albums Archive</h1>
+  <p class="subtitle"> from featured albums till now</p>
+
+  <div class="album-flex inside-text-width">
+    {albums.map((post) => (
+      <div class="album">
+        <a href={post.url} class="album-link">
+          {post.cover && <img src={post.cover} alt={`${post.title} cover`} />}
+        </a>
+        <div class="album-info">
+          <h4>{post.title}</h4>
+          {post.excerpt && <p><em>{post.excerpt}</em></p>}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <p class="backarrow" style="text-align: right;">
+    <a href="/">← Back to home</a>
+  </p>
+</BaseLayout>

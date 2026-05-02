@@ -6,6 +6,7 @@ type Props = {
   description?: string;
   subtitle?: string;
   headTitle?: string;
+  hero?: boolean;
   fullWidth?: boolean;
   korean?: boolean;
 };
@@ -15,6 +16,7 @@ const {
   description = "Blogspace for anything",
   subtitle,
   headTitle,
+  hero = false,
   fullWidth = false,
   korean = false,
 } = Astro.props;
@@ -22,6 +24,8 @@ const {
 const pageTitle = headTitle ?? (title === "Random Access Memories"
   ? title
   : `${title} | Random Access Memories`);
+const currentPath = Astro.url.pathname;
+const activeSection = currentPath.startsWith("/blog/") ? "blog" : currentPath.startsWith("/tags/") ? "tags" : "home";
 ---
 <!doctype html>
 <html lang="en">
@@ -70,16 +74,16 @@ const pageTitle = headTitle ?? (title === "Random Access Memories"
     <header>
       <nav class="group" aria-label="Primary">
         <ul>
-          <li><a class="active" href="/">Home</a></li>
-          <li><a href="/blog/blog-list/">Blog</a></li>
-          <li><a href="/tags/">Tags</a></li>
+          <li><a class:list={[activeSection === "home" && "active"]} href="/">Home</a></li>
+          <li><a class:list={[activeSection === "blog" && "active"]} href="/blog/blog-list/">Blog</a></li>
+          <li><a class:list={[activeSection === "tags" && "active"]} href="/tags/">Tags</a></li>
         </ul>
       </nav>
     </header>
     <article class="group">
-      {title && <h1 class="header-title">{title}</h1>}
-      {subtitle && <h2 class="header-subtitle">{subtitle}</h2>}
-      {subtitle && <p class="margin-maker"></p>}
+      {hero && title && <h1 class="header-title">{title}</h1>}
+      {hero && subtitle && <h2 class="header-subtitle">{subtitle}</h2>}
+      {hero && subtitle && <p class="margin-maker"></p>}
       <slot />
     </article>
   </body>

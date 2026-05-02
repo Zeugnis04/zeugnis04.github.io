@@ -308,6 +308,14 @@ img {
     
 }
 
+.marginnote > img.fullwidth {
+    display: block;
+    width: auto;
+    max-width: 80%;
+    height: auto;
+    margin-bottom: 0.35rem;
+}
+
 .sidenote-number {
     counter-increment: sidenote-counter;
 }
@@ -568,6 +576,10 @@ label.margin-toggle:not(.sidenote-number) {
         margin: 1rem 2.5%;
         vertical-align: baseline;
         position: relative;
+    }
+
+    .marginnote > img.fullwidth {
+        max-width: 100%;
     }
 
     label {

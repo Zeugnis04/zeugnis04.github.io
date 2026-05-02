@@ -1,0 +1,53 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPosts, slugify } from "@/lib/posts";
+
+const posts = getPosts().filter((post) => !post.hidden);
+const tagMap = new Map<string, typeof posts>();
+
+for (const post of posts) {
+  for (const tag of post.tags) {
+    tagMap.set(tag, [...(tagMap.get(tag) ?? []), post]);
+  }
+}
+
+const tags = [...tagMap.entries()].sort(([a], [b]) => a.localeCompare(b));
+---
+<BaseLayout title="Tags">
+  <h1>Tags</h1>
+  <p class="subtitle">from writings by Zeugnis</p>
+
+  {tags.length > 0 ? (
+    <>
+      <div class="tag-cloud">
+        {tags.map(([tag, taggedPosts]) => (
+          <a
+            href={`#${slugify(tag)}`}
+            style={`font-size: ${0.85 + taggedPosts.length * 0.15}rem;`}
+            class="tag-cloud-item no-break"
+          >
+            {tag}
+          </a>
+        ))}
+      </div>
+
+      {tags.map(([tag, taggedPosts]) => (
+        <>
+          <h2 id={slugify(tag)}>{tag}</h2>
+          <ul>
+            {taggedPosts.map((post) => (
+              <li>
+                <p>
+                  <a href={post.url}>{post.title}</a> —{" "}
+                  <span style="font-style: italic">{post.dateLabel}</span>
+                </p>
+              </li>
+            ))}
+          </ul>
+        </>
+      ))}
+    </>
+  ) : (
+    <p>No tags found.</p>
+  )}
+</BaseLayout>

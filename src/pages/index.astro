@@ -1,55 +1,20 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getPosts, slugify } from "@/lib/posts";
 
-const recentPosts = [
-  {
-    title: "이것저것",
-    url: "/blog/spring/",
-    date: "2026-04-13",
-    tags: ["casual"],
-    excerpt: "간만에 한국어로 글을 적는다. 본의 아니게 블로그에 길이가 있고 진지한 글만 쓰게 되는 것 같아 오늘은 의식적으로 짧게 이것저것 적어보려고 한다.",
-  },
-  {
-    title: "Using the Interlinear Gloss Tag",
-    url: "/blog/interlinear-gloss-tag/",
-    date: "2026-04-12",
-    tags: ["linguistics", "meta"],
-    excerpt: "This site has a custom Liquid tag for writing interlinear glosses following the Leipzig Glossing Rules. This post documents how to use it.",
-  },
-  {
-    title: "おめでとうの唄 Lyrics and Translation",
-    url: "/blog/omedetou-no-uta/",
-    date: "2026-02-02",
-    tags: ["aoba-ichiko", "japanese", "lyrics", "music"],
-    excerpt: "From 青葉市子, マホロボシヤ (2016). Happy birthday to our dearest ones.",
-  },
-  {
-    title: "Trip to Hawaiʻi and Food",
-    url: "/blog/trip-to-hawaii-polynesian-food/",
-    date: "2026-01-23",
-    tags: ["culture", "photo", "hawai'i", "travel", "food-culture"],
-    excerpt: "From a trip to Hawaiʻi in January 2026, with notes on Hawaiian, Micronesian, and Samoan food.",
-  },
-  {
-    title: "Beginning coffee",
-    url: "/blog/beginning-coffee/",
-    date: "2025-12-29",
-    tags: ["coffee", "food-culture"],
-    excerpt: "I wanted to try brewing my own coffee for a long time, and finally here they are.",
-  },
-];
+const recentPosts = getPosts().filter((post) => !post.hidden).slice(0, 5);
 
 const featuredAlbums = [
   {
     title: "Magic, Alive! - McKinley Dixon",
-    url: "/blog/album-review/magic-alive/",
+    url: "/blog/magic-alive/",
     photo: "/assets/img/featured_albums/magic-alive.webp",
     alt: "Magic, Alive!",
     review: "how much more alive can music be",
   },
   {
     title: "The Cure - Songs of a Lost World",
-    url: "/blog/album-review/songs-of-a-lost-world/",
+    url: "/blog/songs-of-a-lost-world/",
     photo: "/assets/img/featured_albums/songs-of-a-lost-world.webp",
     alt: "Songs of a Lost World",
     review: "emotional and powerful yet unique",
@@ -73,6 +38,7 @@ const mediaItems = [
   title="Random Access Memories"
   headTitle="Welcome to RAM"
   subtitle="Archiving and revisiting thoughts"
+  hero
 >
   <div class="index-title"><span class="ornament">1</span> Recent Posts</div>
   <div class="recent-posts">
@@ -82,13 +48,13 @@ const mediaItems = [
           <a href={post.url}>{post.title}</a>
         </h4>
         <div class="post-meta">
-          {post.date}
+          {post.dateLabel}
           {" "}
           <strong><span class="tag-ornament">j</span>Tags</strong>:
           {" "}
           {post.tags.map((tag, index) => (
             <>
-              <a href={`/tags/#${tag}`} class="tag">{tag}</a>{index < post.tags.length - 1 ? ", " : ""}
+              <a href={`/tags/#${slugify(tag)}`} class="tag">{tag}</a>{index < post.tags.length - 1 ? ", " : ""}
             </>
           ))}
         </div>
