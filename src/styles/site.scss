@@ -1,6 +1,6 @@
-@import "fonts";
-@import "settings";
-@import "tufte";
-@import "extras";
-@import "syntax-highlighting";
-@import "site-style";
+@use "fonts";
+@use "settings" as *;
+@use "tufte";
+@use "extras";
+@use "syntax-highlighting";
+@use "site-style";

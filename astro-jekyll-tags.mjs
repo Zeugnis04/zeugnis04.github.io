@@ -1,3 +1,30 @@
+import { liteAdaptor } from "mathjax-full/js/adaptors/liteAdaptor.js";
+import { RegisterHTMLHandler } from "mathjax-full/js/handlers/html.js";
+import { AllPackages } from "mathjax-full/js/input/tex/AllPackages.js";
+import { TeX } from "mathjax-full/js/input/tex.js";
+import { SVG } from "mathjax-full/js/output/svg.js";
+import { mathjax } from "mathjax-full/js/mathjax.js";
+
+let _mjxAdapter;
+let _mjxDoc;
+
+function getMjx() {
+  if (!_mjxDoc) {
+    _mjxAdapter = liteAdaptor();
+    RegisterHTMLHandler(_mjxAdapter);
+    _mjxDoc = mathjax.document("", {
+      InputJax: new TeX({ packages: AllPackages }),
+      OutputJax: new SVG({ fontCache: "none" }),
+    });
+  }
+  return { adapter: _mjxAdapter, doc: _mjxDoc };
+}
+
+function renderMathInline(latex) {
+  const { adapter, doc } = getMjx();
+  return adapter.outerHTML(doc.convert(latex, { display: false }));
+}
+
 export function remarkJekyllTags() {
   return (tree) => {
     transformRootBlocks(tree);
@@ -220,7 +247,7 @@ function transformFullBlock(text) {
 
   match = text.match(/^\{%\s*math\s*%\}([\s\S]*?)\{%\s*endmath\s*%\}$/);
   if (match) {
-    return `<div class="mathblock"><script type="math/tex; mode=display">${match[1].trim()}</script></div>`;
+    return `<div class="mathblock">\\[${escapeHtml(match[1].trim())}\\]</div>`;
   }
 
   match = text.match(/^\{%\s*gloss\b([^%]*)%\}([\s\S]*?)\{%\s*endgloss\s*%\}$/);
@@ -356,6 +383,7 @@ function serializeInlineNode(node) {
   if (!node) return "";
   if (node.type === "text") return escapeHtml(node.value ?? "");
   if (node.type === "html") return node.value ?? "";
+  if (node.type === "inlineMath") return renderMathInline(node.value ?? "");
   if (node.type === "inlineCode") return `<code>${escapeHtml(node.value ?? "")}</code>`;
   if (node.type === "break") return "<br>";
   if (node.type === "emphasis") return `<em>${serializeInlineChildren(node)}</em>`;
@@ -420,10 +448,10 @@ function renderInlineTag(name, argsText) {
 }
 
 function renderMathTag(name) {
-  if (name === "m") return '<span>&#8203;<script type="math/tex">';
-  if (name === "em") return "</script></span>";
-  if (name === "math") return '<div class="mathblock"><script type="math/tex; mode=display">';
-  if (name === "endmath") return "</script></div>";
+  if (name === "m") return '<span class="math-inline">\\(';
+  if (name === "em") return "\\)</span>";
+  if (name === "math") return '<div class="mathblock">\\[';
+  if (name === "endmath") return "\\]</div>";
   return "";
 }
 
