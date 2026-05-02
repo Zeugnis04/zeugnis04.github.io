@@ -59,15 +59,97 @@ function migratePost(source, context) {
 
   const frontmatter = migrateFrontmatter(match[1], context);
   const body = source.slice(match[0].length);
-  const migratedBody = normalizeMarkdown(rewriteAssetReferences(body, context));
+  const migratedBody = normalizePostMarkdown(rewriteAssetReferences(body, context));
 
   return `---\n${frontmatter}\n---\n\n${migratedBody.trim()}\n`;
 }
 
 function normalizeMarkdown(input) {
-  return input
+  return normalizeKramdownTables(input)
     .replace(/^<h2>(.*?)<\/h2>$/gm, "## $1")
     .replace(/^<h3>(.*?)<\/h3>$/gm, "### $1");
+}
+
+function normalizePostMarkdown(input) {
+  return normalizeMarkdown(input);
+}
+
+function normalizeKramdownTables(input) {
+  const lines = input.split("\n");
+  const output = [];
+  let index = 0;
+  let inFence = false;
+
+  while (index < lines.length) {
+    const line = lines[index];
+    if (/^\s*(```|~~~)/.test(line)) {
+      inFence = !inFence;
+      output.push(line);
+      index += 1;
+      continue;
+    }
+
+    if (!inFence && isTableRow(line)) {
+      const block = [];
+      while (index < lines.length && isTableRow(lines[index])) {
+        block.push(lines[index]);
+        index += 1;
+      }
+      output.push(...normalizeTableBlock(block));
+      continue;
+    }
+
+    output.push(line);
+    index += 1;
+  }
+
+  return output.join("\n");
+}
+
+function normalizeTableBlock(block) {
+  if (block.length < 2) return block;
+
+  if (isAlignmentRow(block[0])) {
+    return [emptyTableHeader(block[0]), normalizedAlignmentRow(block[0]), ...block.slice(1)];
+  }
+
+  if (!isAlignmentRow(block[1])) {
+    return [block[0], defaultAlignmentRow(block[0]), ...block.slice(1)];
+  }
+
+  return block;
+}
+
+function isTableRow(line) {
+  return /^\s*\|.*\|\s*$/.test(line);
+}
+
+function isAlignmentRow(line) {
+  return splitTableCells(line).every((cell) => /^:?-+:?$/.test(cell.trim()));
+}
+
+function emptyTableHeader(line) {
+  const cellCount = splitTableCells(line).length;
+  return `|${Array.from({ length: cellCount }, () => " ").join("|")}|`;
+}
+
+function defaultAlignmentRow(line) {
+  const cellCount = splitTableCells(line).length;
+  return `|${Array.from({ length: cellCount }, () => "---").join("|")}|`;
+}
+
+function normalizedAlignmentRow(line) {
+  const cells = splitTableCells(line).map((cell) => {
+    const trimmed = cell.trim();
+    const left = trimmed.startsWith(":") ? ":" : "";
+    const right = trimmed.endsWith(":") ? ":" : "";
+    return `${left}---${right}`;
+  });
+  return `|${cells.join("|")}|`;
+}
+
+function splitTableCells(line) {
+  return line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|");
 }
 
 function migrateFrontmatter(frontmatter, context) {

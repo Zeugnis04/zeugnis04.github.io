@@ -26,7 +26,8 @@ The table that follows lists each of these consonant letters in the traditional 
 
 Letters in grey indicate that they have limited usage in modern Burmese.
 
-|:-:|:-:|:-:|:-:|:-:|
+| | | | | |
+|:---:|:---:|:---:|:---:|:---:|
 | <span lang="my">က</span><br>k (/k/) &nbsp;&nbsp;&nbsp; | <span lang="my">ခ</span><br>hk (/kʰ/) | <span lang="my">ဂ</span><br>g (/g/) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | <span lang="my" style="color:gray">ဃ</span><br>gh (/g/) | <span lang="my">င</span><br>ng (/ŋ/) &nbsp;&nbsp;&nbsp; |
 | <span lang="my">စ</span><br>c (/s/) | <span lang="my">ဆ</span><br>hc (/sʰ/*) | <span lang="my">ဇ</span><br>j (/z/) | <span lang="my" style="color:gray">ဈ</span><br>jh (/z/) | <span lang="my">ည</span><br>ny (/ɲ/) |
 | <span lang="my" style="color:gray">ဋ</span><br>t (/t/) | <span lang="my" style="color:gray">ဌ</span><br>ht (/tʰ/) | <span lang="my" style="color:gray">ဍ</span><br>d (/d/) | <span lang="my" style="color:gray">ဎ</span><br>dh (/d/) | <span lang="my" style="color:gray">ဏ</span><br>n (/n/) |
@@ -51,6 +52,7 @@ Stacked consonants mostly occur in loanwords from Pali or Sanskrit, such as <spa
 Burmese has seven letters to indicate independent vowels --- primarily used when spelling words of Pali or Sanskrit etymology. 
 
 | Letter     | <span lang="my">ဣ</span><br>i.<br>/ʔḭ/ | <span lang="my">ဤ</span><br>i<br>/ʔì/ | <span lang="my">ဥ</span><br>u.<br>/ʔṵ/ | <span lang="my">ဦ</span><br>u<br>/ʔù/ | <span lang="my">ဧ</span><br>e<br>/ʔè/ | <span lang="my">ဩ</span><br>au:<br>/ʔɔ́/ | <span lang="my">ဪ</span><br>au<br>/ʔɔ̀/ |
+|---|---|---|---|---|---|---|---|
 | Equivalent | <span lang="my">အိ</span>              | <span lang="my">အီ</span>             | <span lang="my">အု</span>              | <span lang="my">အူ</span>             | <span lang="my">အေ</span>            | <span lang="my">အော</span>             | <span lang="my">အော်</span>           |
 
 ### Vowel diacritics
@@ -86,7 +88,8 @@ In Burmese orthography, tone is indicated using diacritic tone marks that intera
 
 Burmese spelling retains the consonantal finals that have since merged to the glottal stop in spoken Burmese.
 
-|:--------|:-------------------------------------------|:----------------------------------------|:----------------------------------------------------------|:-----------------------------------------|:-----------------------------------------------|:----------------------------------------------|
+| | | | | | | |
+|:---|:---|:---|:---|:---|:---|:---|
 | k &nbsp; &nbsp; &nbsp;       | <span lang="my">-က်</span><br>-ak<br> /eʔ/   &nbsp; &nbsp; |                                         | <span lang="my">ွက်</span><br>-wak<br>/weʔ/                |                                           | <span lang="my">ိုက်</span><br>-uik<br>/aiʔ/     | <span lang="my">ောက်</span><br>-auk<br>/auʔ/    |
 | c &nbsp; &nbsp; &nbsp;       | <span lang="my">-စ်</span><br>-ac<br>/iʔ/    |                                         |                                                          |                                           |                                                |                                                 |
 | t &nbsp; &nbsp; &nbsp;       | <span lang="my">-တ်</span><br>-at<br>/aʔ/    | <span lang="my">ုတ်</span><br>-ut<br>/ouʔ/ | <span lang="my">ွတ်</span><br>-wat<br>/waʔ/ or /uʔ/         | <span lang="my">ိတ်</span><br>-it<br>/eiʔ/ |                                                |                                                 |
@@ -96,7 +99,8 @@ Burmese spelling retains the consonantal finals that have since merged to the gl
 
 In Burmese, certain nasal finals exhibit behaviors similar to checked syllables ending in a glottal stop, but with important distinctions. One such feature is the use of the anusvara (<span lang="my">◌ံ</span>), which functions as a homorganic nasal marker in multisyllabic words. It may represent a final -m that modifies the vowel quality and typically implies a low tone. The anusvara is phonologically active and may appear in combination with tone markers to express high or creaky tones as well. This diacritic frequently co-occurs with vowel markers such as <span lang="my">◌ု</span>, <span lang="my">◌ွ</span>, or <span lang="my">◌ိ</span>, producing nasalized rhymes. Possible rhymes are listed in the table below.
 
-|:------|:----------------------------------------------|:----------------------------------------------|:------------------------------------------------|:-----------------------------------------------|:-----------------------------------------------|:-----------------------------------------------|
+| | | | | | | |
+|:---|:---|:---|:---|:---|:---|:---|
 | ng &nbsp; &nbsp; | <span lang="my">-င်</span><br>-ang<br>/iɰ̃/     |                                               | <span lang="my">ွင်</span><br>-wang<br>/wiɰ̃/     |                                                 | <span lang="my">ိုင်</span><br>-uing<br>/aiɰ̃/   | <span lang="my">ောင်</span><br>-aung<br>/auɰ̃/   |
 | ny    | <span lang="my">-ည်</span><br>-any<br>/e/ or /ei/ |                                               |                                                  | <span lang="my">ဉ်</span><br>-any<br>/iɰ̃/        |                                                 |                                                 |
 | n     | <span lang="my">-န်</span><br>-an<br>/aɰ̃/       | <span lang="my">ုန်</span><br>-un<br>/ouɰ̃/     | <span lang="my">ွန်</span><br>-wan<br>/waɰ̃/ or /uɰ̃/ | <span lang="my">ိန်</span><br>-in<br>/eiɰ̃/       |                                                 |                                                 |

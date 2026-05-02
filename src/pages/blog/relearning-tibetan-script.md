@@ -26,7 +26,8 @@ While some modern Tibetan dialects are tonal, the language was not tonal when th
 Below is a table of the consonant letters of Tibetan, including Wylie transcription next to it. Keep in mind that the transcription does not necessarily represent modern Tibetan pronunciation.
 
 
-|-------------------------------|-----------------|-------------------------------|-----------------|-------------------------------|-----------------|-------------------------------|-----------------|
+| | | | | | | | |
+|---|---|---|---|---|---|---|---|
 | <span lang="bo">ཀ</span>      | *ka*            | <span lang="bo">ཁ</span>      | *kha*           | <span lang="bo">ག</span>      | *ga*            | <span lang="bo">ང</span>      | *nga*           |
 | <span lang="bo">ཅ</span>      | *ca*            | <span lang="bo">ཆ</span>      | *cha*           | <span lang="bo">ཇ</span>      | *ja*            | <span lang="bo">ཉ</span>      | *nya*           |
 | <span lang="bo">ཏ</span>      | *ta*            | <span lang="bo">ཐ</span>      | *tha*           | <span lang="bo">ད</span>      | *da*            | <span lang="bo">ན</span>      | *na*            |
@@ -40,7 +41,8 @@ Below is a table of the consonant letters of Tibetan, including Wylie transcript
 
 Tibetan vowels are not written as independent letters (except for <span lang="bo">ཨ</span> a). Instead, they are indicated by diacritic marks attached to a base consonant.The table below lists vowels marked on <span lang="bo">ཨ</span>. 
 
-|:-----------------------------|:------------------------------|:------------------------------|:------------------------------|:------------------------------|
+| | | | | |
+|:---|:---|:---|:---|:---|
 | <span lang="bo">ཨ</span> *a* | <span lang="bo">ཨི</span> *i* | <span lang="bo">ཨུ</span> *u* | <span lang="bo">ཨེ</span> *e* | <span lang="bo">ཨོ</span> *o* |
 
 The markers have names *i* = <span lang="bo">གི་གུ་</span> *gi gu*, *u* = <span lang="bo">ཞབས་ཀྱུ་</span> *zhabs kyu*, *e* = <span lang="bo">འགེ་ང་བུ</span> *’greng bu*, *o* = <span lang="bo">ན་རོ་</span> *na ro*.

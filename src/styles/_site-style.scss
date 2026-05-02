@@ -9,6 +9,31 @@
     unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F, U+A960-A97F, U+D7B0-D7FF;
 }
 
+@font-face {
+    font-family: "local-serif-ja-b";
+    src: url("/fonts/typeface-7b9f2a4d.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+3005-3006, U+303B, U+3040-309F, U+30A0-30FF, U+31F0-31FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF66-FF9F;
+}
+
+strong,
+b,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: adobe-caslon-pro, adobe-aldine, et-book, "OnulSamhwa", "local-serif-ja-b", fot-tsukuaoldmin-pr6n, "source-han-serif-sc", "Times New Roman", serif;
+}
+
+strong,
+b {
+    font-weight: 700;
+}
+
 /* Recent posts */
 .recent-posts {
     display: flex;
@@ -129,10 +154,41 @@
   }
 
   /* Suppress ornament when needed */
-  article p.no-ornament::before,
-  article p.margin-maker::before {
-    content: none;
+article p.no-ornament::before,
+article p.margin-maker::before {
+  content: none;
+}
+
+article p.marginfigure-block {
+  width: 55%;
+}
+
+article p.marginfigure-block .marginnote {
+  float: right;
+  clear: right;
+  margin-right: -60%;
+  width: 50%;
+}
+
+@media (max-width: 760px) {
+  article p.marginfigure-block {
+    width: 100%;
   }
+
+  article p.marginfigure-block .marginnote {
+    display: none;
+  }
+
+  article p.marginfigure-block .margin-toggle:checked + .marginnote {
+    display: block;
+    float: left;
+    left: 1rem;
+    clear: both;
+    width: 95%;
+    margin: 1rem 2.5%;
+    position: relative;
+  }
+}
 
 .small-caps{
   font-variant: small-caps
@@ -141,6 +197,7 @@
 .old-numerals{
   font-variant-numeric: oldstyle-nums;
 }
+
 /*Album lists*/
 
 .inside-text-width {
@@ -173,8 +230,14 @@
   .album-info h4 {
     margin: 0.4em 0 0.1em;
     font-size: 1rem;
+    text-align: center;
   }
   
+  .album-info {
+    width: 100%;
+    text-align: center;
+  }
+
   .album-info p,
   .album-info body {
     width: auto;
@@ -182,6 +245,7 @@
     color: #555;
     margin: 0;
     padding: 0;
+    text-align: center;
   }
 
   .album-link {

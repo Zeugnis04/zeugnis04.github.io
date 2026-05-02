@@ -25,7 +25,13 @@ const pageTitle = headTitle ?? (title === "Random Access Memories"
   ? title
   : `${title} | Random Access Memories`);
 const currentPath = Astro.url.pathname;
-const activeSection = currentPath.startsWith("/blog/") ? "blog" : currentPath.startsWith("/tags/") ? "tags" : "home";
+const activeSection = currentPath.startsWith("/blog/")
+  ? "blog"
+  : currentPath.startsWith("/tags/")
+    ? "tags"
+    : currentPath.startsWith("/zeugnis/")
+      ? "zeugnis"
+      : "home";
 ---
 <!doctype html>
 <html lang="en">
@@ -77,6 +83,7 @@ const activeSection = currentPath.startsWith("/blog/") ? "blog" : currentPath.st
           <li><a class:list={[activeSection === "home" && "active"]} href="/">Home</a></li>
           <li><a class:list={[activeSection === "blog" && "active"]} href="/blog/blog-list/">Blog</a></li>
           <li><a class:list={[activeSection === "tags" && "active"]} href="/tags/">Tags</a></li>
+          <li><a class:list={[activeSection === "zeugnis" && "active"]} href="/zeugnis/">Zeugnis</a></li>
         </ul>
       </nav>
     </header>

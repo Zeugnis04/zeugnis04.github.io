@@ -36,4 +36,6 @@ Here are photos from a Samoan restaurant{% sidenote '' "Tia's Taste of Samoa. 20
 - *sapa sui*: As expected, sapa sui comes from Chinese chop suey. Not very exotic, it's what you would expect from vermicelli noodle-dominated chop suey (like the Korean japchae). 
 
 Last --- not really traditional but one of my favorites from this trip. Smoked meat from Guava Smoked{% sidenote '' '567 Kapahulu Ave, Honolulu, HI 96815, United States'%}.
-{% maincolumn "/assets/img/trip-to-hawaii-polynesian-food/guavasmokedmerged.webp" 'Guava Smoked' %} Pork, beef stew, and butterfish.
+{% maincolumn "/assets/img/trip-to-hawaii-polynesian-food/guavasmokedmerged.webp" 'Guava Smoked' %}
+
+Pork, beef stew, and butterfish.

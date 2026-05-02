@@ -6,7 +6,7 @@ tags: [typography, curated-font, adobe-originals]
 ---
 
 {% maincolumn '/assets/img/adobe-caslon/AdobeCaslonPro1.webp' ''%}
-{% newthought "This is the first article"%} in the curated font series. Throughout this series, I'll showcase typefaces worth exploring, including some personal favorites. We begin with [Adobe Caslon](https://fonts.adobe.com/fonts/adobe-caslon), which also serves as the main body font for this blog (as of October 2025).
+<p><span class="newthought">This is the first article</span> in the curated font series. Throughout this series, I'll showcase typefaces worth exploring, including some personal favorites. We begin with <a href="https://fonts.adobe.com/fonts/adobe-caslon">Adobe Caslon</a>, which also serves as the main body font for this blog (as of October 2025).</p>
 
 ## A Brief Thank You to Adobe
 

@@ -5,6 +5,82 @@ export function remarkJekyllTags() {
   };
 }
 
+export function rehypeWrapLoosePhrasing() {
+  return (tree) => {
+    wrapLoosePhrasingChildren(tree);
+  };
+}
+
+function wrapLoosePhrasingChildren(parent) {
+  if (!parent || typeof parent !== "object" || !Array.isArray(parent.children)) {
+    return;
+  }
+
+  const nextChildren = [];
+  let pending = [];
+
+  const flush = () => {
+    const meaningful = pending.some((node) => node.type !== "text" || /\S/.test(node.value ?? ""));
+    if (meaningful) {
+      nextChildren.push({ type: "element", tagName: "p", properties: {}, children: pending });
+    } else {
+      nextChildren.push(...pending);
+    }
+    pending = [];
+  };
+
+  for (const child of parent.children) {
+    if (isEmptyParagraph(child)) {
+      continue;
+    }
+
+    if (isLoosePhrasing(child)) {
+      pending.push(child);
+      continue;
+    }
+
+    flush();
+    nextChildren.push(child);
+  }
+
+  flush();
+  parent.children = nextChildren;
+}
+
+function isEmptyParagraph(node) {
+  return (
+    node?.type === "element" &&
+    node.tagName === "p" &&
+    (!Array.isArray(node.children) || node.children.every((child) => child.type === "text" && !/\S/.test(child.value ?? "")))
+  );
+}
+
+function isLoosePhrasing(node) {
+  if (node?.type === "text") return /\S/.test(node.value ?? "");
+  if (node?.type !== "element") return false;
+  return new Set([
+    "a",
+    "abbr",
+    "b",
+    "br",
+    "cite",
+    "code",
+    "del",
+    "em",
+    "i",
+    "img",
+    "input",
+    "label",
+    "ruby",
+    "script",
+    "small",
+    "span",
+    "strong",
+    "sub",
+    "sup",
+  ]).has(node.tagName);
+}
+
 export function transformJekyllTagSource(source) {
   const rawBlocks = [];
   let code = source.replace(/\{%\s*raw\s*%\}([\s\S]*?)\{%\s*endraw\s*%\}/g, (_match, raw) => {
@@ -104,9 +180,16 @@ function transformRootBlocks(tree) {
     const serializedText = Array.isArray(node.children)
       ? node.children.map(serializeInlineNode).join("").trim()
       : fullText;
-    const fullReplacement = transformFullBlock(fullText) ?? transformFullBlock(serializedText);
+    const fullReplacement = transformFullBlock(serializedText) ?? transformFullBlock(fullText);
     if (fullReplacement) {
       nextChildren.push({ type: "html", value: fullReplacement });
+      continue;
+    }
+
+    const blockWithTrailingText =
+      transformFullBlockWithTrailingText(serializedText) ?? transformFullBlockWithTrailingText(fullText);
+    if (blockWithTrailingText) {
+      nextChildren.push({ type: "html", value: blockWithTrailingText });
       continue;
     }
 
@@ -132,7 +215,7 @@ function transformFullBlock(text) {
   match = text.match(/^\{%\s*marginfigure\s+([^%]+?)\s*%\}$/);
   if (match) {
     const [id = "", src = "", caption = ""] = parseArgs(match[1]);
-    return renderMarginFigure(id, src, caption);
+    return `<p class="marginfigure-block">${renderMarginFigure(id, src, caption)}</p>`;
   }
 
   match = text.match(/^\{%\s*math\s*%\}([\s\S]*?)\{%\s*endmath\s*%\}$/);
@@ -148,6 +231,24 @@ function transformFullBlock(text) {
   return null;
 }
 
+function transformFullBlockWithTrailingText(text) {
+  const match = text.match(/^([\s\S]*?)(\{%\s*(?:maincolumn|fullwidth|marginfigure)\b[^%]*?%\})([\s\S]*)$/);
+  if (!match) return null;
+
+  const beforeText = match[1].trim();
+  const block = transformFullBlock(match[2]);
+  const trailingText = match[3].trim();
+  if (!block || (!beforeText && !trailingText)) return null;
+
+  return [
+    beforeText ? `<p>${transformInlineHtml(beforeText)}</p>` : "",
+    block,
+    trailingText ? `<p>${transformInlineHtml(trailingText)}</p>` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
 function transformInlineNodes(node) {
   if (!node || typeof node !== "object") {
     return;
@@ -157,18 +258,37 @@ function transformInlineNodes(node) {
     return;
   }
 
-  if (Array.isArray(node.children)) {
-    const needsWholeNodeTransform =
-      isInlineContainer(node) &&
-      node.children.some((child) => child.type === "text" && containsRenderableInlineTag(child.value)) &&
-      node.children.some((child) => child.type !== "text");
-
-    if (needsWholeNodeTransform) {
-      const serialized = node.children.map(serializeInlineNode).join("");
-      node.children = [{ type: "html", value: transformInlineHtml(serialized) }];
+  if (node.type === "paragraph") {
+    const fullText = nodeText(node).trim();
+    const serializedText = Array.isArray(node.children)
+      ? node.children.map(serializeInlineNode).join("").trim()
+      : fullText;
+    const fullReplacement = transformFullBlock(serializedText) ?? transformFullBlock(fullText);
+    if (fullReplacement) {
+      node.type = "html";
+      node.value = fullReplacement;
+      delete node.children;
       return;
     }
 
+    const blockWithTrailingText =
+      transformFullBlockWithTrailingText(serializedText) ?? transformFullBlockWithTrailingText(fullText);
+    if (blockWithTrailingText) {
+      node.type = "html";
+      node.value = blockWithTrailingText;
+      delete node.children;
+      return;
+    }
+
+    if (hasRenderableInlineTagSplitByMarkdown(node)) {
+      node.type = "html";
+      node.value = `<p>${transformInlineHtml(serializedText)}</p>`;
+      delete node.children;
+      return;
+    }
+  }
+
+  if (Array.isArray(node.children)) {
     const nextChildren = [];
     for (const child of node.children) {
       if (child.type === "text" && containsInlineTag(child.value)) {
@@ -188,6 +308,19 @@ function containsInlineTag(value) {
 
 function containsRenderableInlineTag(value) {
   return /\{%\s*(?:newthought|sidenote|marginnote|maincolumn|fullwidth|marginfigure|m|em|math|endmath)\b/.test(value);
+}
+
+function hasRenderableInlineTagSplitByMarkdown(node) {
+  if (!Array.isArray(node.children)) return false;
+  return node.children.some((child) => child.type === "text" && containsRenderableInlineTag(child.value ?? ""));
+}
+
+function transformInlineHtml(value) {
+  return transformInlineText(value)
+    .map((node) => {
+      return node.value ?? "";
+    })
+    .join("");
 }
 
 function transformInlineText(value) {
@@ -217,14 +350,6 @@ function transformInlineText(value) {
   }
 
   return nodes;
-}
-
-function transformInlineHtml(value) {
-  return transformInlineText(value).map((node) => node.value ?? "").join("");
-}
-
-function isInlineContainer(node) {
-  return node.type === "paragraph" || node.type === "listItem";
 }
 
 function serializeInlineNode(node) {
@@ -263,17 +388,19 @@ function renderInlineTag(name, argsText) {
   }
   if (name === "sidenote") {
     const [id = "", note = ""] = args;
+    const cleanId = normalizeTagId(id);
     return [
-      `<label for="${escapeAttr(id)}" class="margin-toggle sidenote-number"></label>`,
-      `<input type="checkbox" id="${escapeAttr(id)}" class="margin-toggle" checked />`,
+      `<label for="${escapeAttr(cleanId)}" class="margin-toggle sidenote-number"></label>`,
+      `<input type="checkbox"${cleanId ? ` id="${escapeAttr(cleanId)}"` : ""} class="margin-toggle" checked />`,
       `<span class="sidenote">${note}</span>`,
     ].join("");
   }
   if (name === "marginnote") {
     const [id = "", note = ""] = args;
+    const cleanId = normalizeTagId(id);
     return [
-      `<label for="${escapeAttr(id)}" class="margin-toggle"> &#8853;</label>`,
-      `<input type="checkbox" id="${escapeAttr(id)}" class="margin-toggle" checked />`,
+      `<label for="${escapeAttr(cleanId)}" class="margin-toggle"> &#8853;</label>`,
+      `<input type="checkbox"${cleanId ? ` id="${escapeAttr(cleanId)}"` : ""} class="margin-toggle" checked />`,
       `<span class="marginnote">${note}</span>`,
     ].join("");
   }
@@ -309,11 +436,17 @@ function renderFigure(src, caption, className = "") {
 
 function renderMarginFigure(id, src, caption) {
   const fullSrc = normalizeSrc(src);
+  const cleanId = normalizeTagId(id);
   return [
-    `<label for="${escapeAttr(id)}" class="margin-toggle">&#8853;</label>`,
-    `<input type="checkbox" id="${escapeAttr(id)}" class="margin-toggle" checked />`,
+    `<label for="${escapeAttr(cleanId)}" class="margin-toggle">&#8853;</label>`,
+    `<input type="checkbox"${cleanId ? ` id="${escapeAttr(cleanId)}"` : ""} class="margin-toggle" checked />`,
     `<span class="marginnote"><img class="fullwidth" src="${escapeAttr(fullSrc)}" alt="" /><br>${caption}</span>`,
   ].join("");
+}
+
+function normalizeTagId(id) {
+  const value = String(id ?? "").trim();
+  return /^[`"'“”‘’]*$/.test(value) ? "" : value;
 }
 
 function renderGloss(attrsText, body) {

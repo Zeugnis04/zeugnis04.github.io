@@ -6,7 +6,7 @@ const albums = getPosts().filter((post) => post.tags.includes("album-review"));
 ---
 <BaseLayout title="Featured Albums Archive">
   <h1>Featured Albums Archive</h1>
-  <p class="subtitle"> from featured albums till now</p>
+  <p class="subtitle">from featured albums till now</p>
 
   <div class="album-flex inside-text-width">
     {albums.map((post) => (
