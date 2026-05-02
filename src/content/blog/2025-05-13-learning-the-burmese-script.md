@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/PostLayout.astro
 title:  "Learning the Burmese script"
 date:   2025-05-13
 tags: [burmese, script, brahmic, linguistics]

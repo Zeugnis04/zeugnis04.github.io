@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/PostLayout.astro
 title: "Using the Interlinear Gloss Tag"
 date: 2026-04-12
 tags: [linguistics, meta]

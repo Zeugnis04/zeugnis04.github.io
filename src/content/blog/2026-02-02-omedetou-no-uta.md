@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/PostLayout.astro
 title:  "おめでとうの唄 Lyrics and Translation"
 date:   2026-02-02
 tags: [aoba-ichiko, japanese, lyrics, music]

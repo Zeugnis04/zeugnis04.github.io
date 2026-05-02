@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import PostLayout from '@/layouts/PostLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(entry => ({
+    params: { slug: entry.id.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+<PostLayout frontmatter={{ ...entry.data, date: entry.data.date ?? new Date('1970-01-01') }}>
+  <Content />
+</PostLayout>

@@ -2,7 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getPosts } from "@/lib/posts";
 
-const albums = getPosts().filter((post) => post.tags.includes("album-review"));
+const albums = (await getPosts()).filter((post) => post.tags.includes("album-review"));
 ---
 <BaseLayout title="Featured Albums Archive">
   <h1>Featured Albums Archive</h1>

@@ -2,7 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getPosts, slugify } from "@/lib/posts";
 
-const posts = getPosts().filter((post) => !post.hidden);
+const posts = (await getPosts()).filter((post) => !post.hidden);
 const tagMap = new Map<string, typeof posts>();
 
 for (const post of posts) {

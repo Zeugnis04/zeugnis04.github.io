@@ -1,8 +1,9 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import Notice from "@/components/Notice.astro";
 import { getPosts, slugify } from "@/lib/posts";
 
-const recentPosts = getPosts().filter((post) => !post.hidden).slice(0, 5);
+const recentPosts = (await getPosts()).filter((post) => !post.hidden).slice(0, 5);
 
 const featuredAlbums = [
   {
@@ -40,6 +41,10 @@ const mediaItems = [
   subtitle="Archiving and revisiting thoughts"
   hero
 >
+  <Notice title="Notice">
+    This blog is currently being migrated to a new system. Domain changes and occasional malfunctions may occur in the meantime.
+  </Notice>
+
   <div class="index-title"><span class="ornament">1</span> Recent Posts</div>
   <div class="recent-posts">
     {recentPosts.map((post) => (

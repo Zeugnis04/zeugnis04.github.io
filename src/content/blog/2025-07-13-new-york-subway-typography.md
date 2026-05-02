@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/PostLayout.astro
 title: "New York Subway Typography"
 date: 2025-07-13
 tags: [typography, new-york, travel]
@@ -41,4 +40,3 @@ Finally there are more historical signs including mosaics, monograms, or *serif*
 {% maincolumn '/assets/img/new-york-subway-typography/34st-penn-rr-mosaic.jpg' 'Mosaic sign pointing to Penn Station (featuring intersting choice of shortening *Pennsylvania Railroad Station*)'%}
 {% maincolumn '/assets/img/new-york-subway-typography/canal-st-chinatown.jpg' 'Canal St mosaic featuring Chinese characters 華埠'%}
 
-*(To be continued)*

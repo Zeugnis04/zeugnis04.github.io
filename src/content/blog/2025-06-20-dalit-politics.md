@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/PostLayout.astro
 title: "Mobilization of Religion and Caste in Indian Politics"
 subtitle: "Dalit Politics"
 date: 2025-06-20

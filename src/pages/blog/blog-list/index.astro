@@ -2,7 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getPosts } from "@/lib/posts";
 
-const posts = getPosts().filter((post) => !post.hidden);
+const posts = (await getPosts()).filter((post) => !post.hidden);
 const years = [...new Set(posts.map((post) => post.year))];
 ---
 <BaseLayout title="Blog" fullWidth>

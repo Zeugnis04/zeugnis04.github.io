@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/PostLayout.astro
 title: "Songs For a Lost World - The Cure Review"
 category: album-review
 date: 2025-09-13

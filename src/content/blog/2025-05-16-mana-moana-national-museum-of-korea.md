@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/PostLayout.astro
 title: "Mana Moana — Arts of the Great Ocean, Oceania"
 date: 2025-05-16
 tags: [museum, photo, culture, pacific]

@@ -1,5 +1,6 @@
 ---
 import "@/styles/site.scss";
+import { ViewTransitions } from "astro:transitions";
 
 type Props = {
   title?: string;
@@ -39,6 +40,7 @@ const activeSection = currentPath.startsWith("/blog/")
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
+    <ViewTransitions />
     <meta name="description" content={description} />
     <script is:inline>
       (function(d) {

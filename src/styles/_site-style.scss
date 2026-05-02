@@ -10,6 +10,24 @@
 }
 
 @font-face {
+    font-family: "OnulSamhwa";
+    src: url("/fonts/Kangsan/typeface-67512e15.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F, U+A960-A97F, U+D7B0-D7FF;
+}
+
+@font-face {
+    font-family: "OnulKangsan";
+    src: url("/fonts/Kangsan/typeface-67512e15.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+AC00-D7A3, U+1100-11FF, U+3130-318F, U+A960-A97F, U+D7B0-D7FF;
+}
+
+@font-face {
     font-family: "local-serif-ja-b";
     src: url("/fonts/typeface-7b9f2a4d.otf") format("opentype");
     font-weight: 700;
@@ -26,7 +44,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: adobe-caslon-pro, adobe-aldine, et-book, "OnulSamhwa", "local-serif-ja-b", fot-tsukuaoldmin-pr6n, "source-han-serif-sc", "Times New Roman", serif;
+    font-family: adobe-caslon-pro, adobe-aldine, et-book, "OnulKangsan", "OnulSamhwa", "local-serif-ja-b", fot-tsukuaoldmin-pr6n, "source-han-serif-sc", "Times New Roman", serif;
 }
 
 strong,
