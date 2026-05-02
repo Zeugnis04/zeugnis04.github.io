@@ -1,0 +1,86 @@
+---
+import "@/styles/site.scss";
+
+type Props = {
+  title?: string;
+  description?: string;
+  subtitle?: string;
+  headTitle?: string;
+  fullWidth?: boolean;
+  korean?: boolean;
+};
+
+const {
+  title = "Random Access Memories",
+  description = "Blogspace for anything",
+  subtitle,
+  headTitle,
+  fullWidth = false,
+  korean = false,
+} = Astro.props;
+
+const pageTitle = headTitle ?? (title === "Random Access Memories"
+  ? title
+  : `${title} | Random Access Memories`);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <script is:inline>
+      (function(d) {
+        var config = {
+          kitId: "baf3roc",
+          scriptTimeout: 3000,
+          async: true,
+        };
+        var h = d.documentElement;
+        var t = setTimeout(function() {
+          h.className = h.className.replace(/\bwf-loading\b/g, "") + " wf-inactive";
+        }, config.scriptTimeout);
+        var tk = d.createElement("script");
+        var f = false;
+        var s = d.getElementsByTagName("script")[0];
+        h.className += " wf-loading";
+        tk.src = "https://use.typekit.net/" + config.kitId + ".js";
+        tk.async = true;
+        tk.onload = tk.onreadystatechange = function() {
+          var a = this.readyState;
+          if (f || (a && a != "complete" && a != "loaded")) return;
+          f = true;
+          clearTimeout(t);
+          try {
+            Typekit.load(config);
+          } catch (e) {}
+        };
+        s.parentNode.insertBefore(tk, s);
+      })(document);
+    </script>
+    <link rel="icon" href="/favicons/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-icon-180x180.png" />
+    <link rel="manifest" href="/favicons/manifest.json" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body class:list={[fullWidth && "full-width", korean && "korean-font-post"]}>
+    <header>
+      <nav class="group" aria-label="Primary">
+        <ul>
+          <li><a class="active" href="/">Home</a></li>
+          <li><a href="/blog/blog-list/">Blog</a></li>
+          <li><a href="/tags/">Tags</a></li>
+        </ul>
+      </nav>
+    </header>
+    <article class="group">
+      {title && <h1 class="header-title">{title}</h1>}
+      {subtitle && <h2 class="header-subtitle">{subtitle}</h2>}
+      {subtitle && <p class="margin-maker"></p>}
+      <slot />
+    </article>
+  </body>
+</html>

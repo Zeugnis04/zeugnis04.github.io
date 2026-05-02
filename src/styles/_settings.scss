@@ -1,0 +1,52 @@
+/* This file contains all the constants for colors and font styles */
+
+$body-font: adobe-caslon-pro, et-book, "OnulSamhwa", "source-han-serif-sc", sandoll-myeongjoneo1, adobe-tamil, linotype-devanagari, "Times New Roman", POJGaramond, "Noto Serif Tibetan", "Noto Serif Myanmar", serif;
+/*
+ * The tufte-css preferred sans font is Gill Sans, but this is not freely available.
+ * We use Lato instead, which is royalty free.
+ */
+$sans-font:  Lato, LatoLatin, "Cabin", "Gill Sans", "Trebuchet MS", sans-serif;
+$code-font: "Fira Code", "SF Mono", Consolas, Courier, monospace;
+$text-color: #111;
+$bg-color: #fffff8;
+$contrast-color: #111;
+$border-color: #333333;
+$link-style: color; // choices are 'color' or 'underline'. Default is color using $contrast-color set above
+
+/* CSS Variables for theme support */
+:root {
+  --bg-color: #fffff8;
+  --text-color: #111;
+  --contrast-color: #111;
+  --border-color: #333333;
+  --link-color: #111;
+  --link-hover-color: #006666;
+  --card-bg: #fff;
+  --card-border: #e6e6e6;
+  --button-bg: #fffff8;
+  --button-border: #e9ecef;
+  --button-hover-bg: #e9ecef;
+  --meta-color: #666;
+  --sidebar-bg: #f2f2f2;
+  --sidebar-border: #e6e6e6;
+  --code-bg: #f5f5f5;
+}
+
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-color: #e0e0e0;
+  --contrast-color: #e0e0e0;
+  --border-color: #444;
+  --link-color: #64ffda;
+  --link-hover-color: #64ffda;
+  --card-bg: #252525;
+  --card-border: #333;
+  --button-bg: #1a1a1a;
+  --button-border: #444;
+  --button-hover-bg: #333;
+  --meta-color: #aaa;
+  --sidebar-bg: #252525;
+  --sidebar-border: #333;
+  --code-bg: #2a2a2a;
+}
+
