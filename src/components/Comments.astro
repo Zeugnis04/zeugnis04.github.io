@@ -1,0 +1,61 @@
+---
+const serverURL = import.meta.env.PUBLIC_WALINE_SERVER_URL;
+const enabled = Boolean(serverURL);
+---
+
+<section class="comments-section" aria-labelledby="comments-heading">
+  <h2 id="comments-heading" class="comments-heading">Comments</h2>
+  {
+    enabled ? (
+      <div id="waline" class="waline tufte-comments" data-server-url={serverURL}></div>
+    ) : (
+      <p class="comments-unavailable">
+        Comments are not configured. Set <code>PUBLIC_WALINE_SERVER_URL</code> to enable them.
+      </p>
+    )
+  }
+</section>
+
+{
+  enabled && (
+    <script is:inline>
+      let walineInstance;
+
+      const loadWalineStyles = () => {
+        if (document.querySelector('link[data-waline-style="true"]')) return;
+
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "https://unpkg.com/@waline/client@v3/dist/waline.css";
+        link.dataset.walineStyle = "true";
+        document.head.appendChild(link);
+      };
+
+      const mountWaline = async () => {
+        const el = document.querySelector("#waline");
+        if (!el) return;
+
+        walineInstance?.destroy();
+        loadWalineStyles();
+
+        const { init } = await import("https://unpkg.com/@waline/client@v3/dist/waline.js");
+
+        walineInstance = init({
+          el,
+          serverURL: el.dataset.serverUrl,
+          path: window.location.pathname.replace(/\/$/, ""),
+          meta: ["nick", "mail", "link"],
+          requiredMeta: ["nick", "mail"],
+          login: "disable",
+          dark: "auto",
+          imageUploader: false,
+          search: false,
+        });
+      };
+
+      document.addEventListener("astro:before-swap", () => walineInstance?.destroy());
+      document.addEventListener("astro:page-load", mountWaline);
+      mountWaline();
+    </script>
+  )
+}

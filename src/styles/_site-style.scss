@@ -969,6 +969,7 @@ details.practice p {
 
 /* Comments */
 
+/*
 .comments-section {
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -983,18 +984,91 @@ details.practice p {
   line-height: 1;
 }
 
-/* Strip giscus wrapper of any chrome and constrain to text column */
-.giscus {
-  max-width: 55%;
-  margin: 0;
-  padding: 0;
+.tufte-comments,
+.comments-unavailable {
+  width: 55%;
+}
+
+.comments-unavailable {
+  color: var(--meta-color);
+}
+
+.tufte-comments {
+  --waline-font-size: 1.15rem;
+  --waline-border: 1px solid var(--border-color);
+  --waline-border-color: var(--border-color);
+  --waline-theme-color: var(--text-color);
+  --waline-active-color: var(--link-hover-color);
+  --waline-color: var(--text-color);
+  --waline-bgcolor: var(--bg-color);
+  --waline-bgcolor-light: var(--bg-color);
+  --waline-bgcolor-hover: var(--button-hover-bg);
+  --waline-disable-bgcolor: var(--button-bg);
+  --waline-disable-color: var(--meta-color);
+  --waline-info-bgcolor: var(--bg-color);
+  --waline-info-color: var(--meta-color);
+  --waline-code-bgcolor: var(--code-bg);
+  --waline-bq-color: var(--border-color);
+  --waline-border-radius: 0;
+  --waline-box-shadow: none;
+  font-family: inherit;
+}
+
+.tufte-comments .wl-panel {
+  border: 1px solid var(--border-color);
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.tufte-comments .wl-header {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tufte-comments .wl-header-item {
+  min-width: 0;
+}
+
+.tufte-comments .wl-header label {
+  color: var(--meta-color);
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.tufte-comments .wl-input,
+.tufte-comments .wl-editor {
+  font-family: inherit;
+  color: var(--text-color);
+  background: transparent;
+}
+
+.tufte-comments .wl-editor {
+  min-height: 10rem;
+  line-height: 1.6;
+}
+
+.tufte-comments .wl-btn {
+  border-radius: 0;
+  font-family: inherit;
+}
+
+.tufte-comments .wl-btn.primary {
+  background: var(--text-color);
+  border-color: var(--text-color);
+  color: var(--bg-color);
+}
+
+.tufte-comments .wl-card {
+  border-bottom: 1px solid var(--border-color);
 }
 
 @media (max-width: 760px) {
-  .giscus {
-    max-width: 100%;
+  .tufte-comments,
+  .comments-unavailable {
+    width: 100%;
   }
 }
+*/
 
 /* Subscribe links */
 .subscribe {

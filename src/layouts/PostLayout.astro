@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+// import Comments from "@/components/Comments.astro";
 
 type Props = {
   frontmatter: {
@@ -22,6 +23,7 @@ const formattedDate = date.toLocaleDateString("en-US", {
   day: "numeric",
 });
 const tags = frontmatter.tags ?? [];
+// const showComments = frontmatter.comments !== false;
 ---
 <BaseLayout
   title={frontmatter.title}
@@ -52,4 +54,6 @@ const tags = frontmatter.tags ?? [];
     <div style="clear: both"></div>
     <p class="backarrow"><a href="/blog/blog-list/">← Back to all posts</a></p>
   </section>
+
+  <!-- {showComments && <Comments />} -->
 </BaseLayout>
