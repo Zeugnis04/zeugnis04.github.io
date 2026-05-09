@@ -16,7 +16,7 @@ export type BlogPost = {
 };
 
 export async function getPosts(): Promise<BlogPost[]> {
-  const entries = await getCollection('blog');
+  const entries = await getCollection('blog', ({ data }) => !data.draft);
   return entries
     .map(entry => {
       const date = entry.data.date ?? new Date('1970-01-01');
@@ -63,7 +63,8 @@ function formatMonthDay(date: Date) {
   });
 }
 
-function buildExcerpt(raw: string) {
+function buildExcerpt(raw: string | undefined) {
+  if (!raw) return '';
   const body = raw.replace(/^---\n[\s\S]*?\n---\n?/, '');
   const paragraph =
     body

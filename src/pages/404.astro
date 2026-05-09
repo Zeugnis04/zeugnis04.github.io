@@ -2,6 +2,48 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 <BaseLayout title="404" headTitle="404 — Not Found">
-  <h1 style="font-size: 12rem; line-height: 1; font-weight:700">404</h1>
+  <div class="not-found-lockup">
+    <img src="/favicons/zeugnis.png" alt="" aria-hidden="true" />
+    <h1>404</h1>
+  </div>
   <em><h1 style="font-weight: 700">Whatever you're looking for — it's not here</h1></em>
 </BaseLayout>
+
+<style>
+  .not-found-lockup {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+  }
+
+  .not-found-lockup img {
+    width: 8.5rem;
+    height: 8.5rem;
+    object-fit: contain;
+    flex: 0 0 auto;
+  }
+
+  .not-found-lockup h1 {
+    font-size: 12rem;
+    line-height: 1;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 500px) {
+    .not-found-lockup {
+      gap: 1rem;
+    }
+
+    .not-found-lockup img {
+      width: 5rem;
+      height: 5rem;
+    }
+
+    .not-found-lockup h1 {
+      font-size: 7rem;
+    }
+  }
+</style>
