@@ -19,4 +19,21 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+const media = defineCollection({
+  type: 'data',
+  schema: z.object({
+    items: z.array(z.object({
+      title: z.string(),
+      creator: z.string(),
+      photo: z.string(),
+      date: z.string().regex(/^\d{4}-\d{2}(?:-\d{2})?$/),
+      kind: z.enum(['album', 'book', 'event', 'movie', 'show']).default('album'),
+      year: z.number().int().optional(),
+      featured: z.boolean().default(false),
+      url: z.string().optional(),
+      review: z.string().optional(),
+    })),
+  }),
+});
+
+export const collections = { blog, media };

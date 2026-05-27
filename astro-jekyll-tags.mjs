@@ -474,18 +474,19 @@ function renderMarginFigure(id, src, caption) {
 
 function normalizeTagId(id) {
   const value = String(id ?? "").trim();
-  return /^[`"'“”‘’]*$/.test(value) ? "" : value;
+  return /^[`"'""'']*$/.test(value) ? "" : value;
 }
 
 function renderGloss(attrsText, body) {
   const attrs = attrsText.trim();
   const num = attrs.match(/^\d+/)?.[0] ?? "";
   const rest = attrs.replace(/^\d+\s*/, "").trim();
-  const title = rest.match(/^["'“‘]([^"'”’]*)["'”’]$/)?.[1] ?? "";
+  const title = rest.match(/^["'"']([^"'"']*)["'"']$/)?.[1] ?? "";
   const lines = body.split("\n").map((line) => line.trim()).filter(Boolean);
 
   let sourceLine = "";
   const romanTiers = [];
+  const pronTiers = [];
   const glossTiers = [];
   let transLine = "";
   let romanDone = false;
@@ -493,6 +494,8 @@ function renderGloss(attrsText, body) {
   for (const line of lines) {
     if (/^source:\s*/.test(line)) {
       sourceLine = line.replace(/^source:\s*/, "").trim();
+    } else if (/^pron:\s*/.test(line)) {
+      pronTiers.push(splitTier(line.replace(/^pron:\s*/, "")));
     } else if (/^gloss:\s*/.test(line)) {
       glossTiers.push(splitTier(line.replace(/^gloss:\s*/, "")));
     } else if (isQuoted(line)) {
@@ -505,8 +508,9 @@ function renderGloss(attrsText, body) {
     }
   }
 
-  const allTiers = [...romanTiers, ...glossTiers];
+  const allTiers = [...romanTiers, ...pronTiers, ...glossTiers];
   const romanCount = romanTiers.length;
+  const pronCount = pronTiers.length;
   const wordCount = Math.max(0, ...allTiers.map((tier) => tier.length));
 
   const parts = ['<div class="gloss">'];
@@ -522,6 +526,8 @@ function renderGloss(attrsText, body) {
         const word = tier[i] ?? "";
         if (tierIndex < romanCount) {
           parts.push(`<span class="gloss-tier roman"><i>${escapeHtml(word)}</i></span>`);
+        } else if (tierIndex < romanCount + pronCount) {
+          parts.push(`<span class="gloss-tier pron">${escapeHtml(word)}</span>`);
         } else {
           parts.push(`<span class="gloss-tier">${applyGlossSmallCaps(escapeHtml(word))}</span>`);
         }
@@ -548,7 +554,7 @@ function splitTier(line) {
 
 function typographicTranslation(line) {
   const inner = escapeHtml(line.slice(1, -1));
-  return line.startsWith('"') || line.startsWith("“") ? `“${inner}”` : `‘${inner}’`;
+  return line.startsWith('"') || line.startsWith("“") ? `"${inner}"` : `'${inner}'`;
 }
 
 function applyGlossSmallCaps(text) {

@@ -1,9 +1,11 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Notice from "@/components/Notice.astro";
+import { formatMediaTitle, getMediaItems } from "@/lib/media";
 import { getPosts, slugify } from "@/lib/posts";
 
 const recentPosts = (await getPosts()).filter((post) => !post.hidden).slice(0, 5);
+const mediaItems = (await getMediaItems()).slice(0, 2);
 
 const featuredAlbums = [
   {
@@ -22,18 +24,6 @@ const featuredAlbums = [
   },
 ];
 
-const mediaItems = [
-  {
-    title: "데이미언 허스트 展",
-    creator: "국립현대미술관 MMCA",
-    photo: "/assets/img/media-archive/damien-hurst.png",
-  },
-  {
-    title: "Wisdom Through Music",
-    creator: "Pharoah Sanders",
-    photo: "https://i.scdn.co/image/ab67616d000082c1d24eb39e1db31157ac27236b",
-  },
-];
 ---
 <BaseLayout
   title="Random Access Memories"
@@ -100,9 +90,9 @@ const mediaItems = [
   <div class="album-flex inside-text-width">
     {mediaItems.map((item) => (
       <div class="album">
-        <img src={item.photo} alt={item.title} />
+        <img src={item.photo} alt={formatMediaTitle(item)} />
         <div class="album-info">
-          <h4>{item.title} – {item.creator}</h4>
+          <h4>{formatMediaTitle(item)} – {item.creator}</h4>
         </div>
       </div>
     ))}
