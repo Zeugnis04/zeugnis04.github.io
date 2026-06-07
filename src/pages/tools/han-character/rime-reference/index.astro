@@ -1,0 +1,185 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const bsRows = [
+  ["攝", "1等", "2等", "3等", "4等", "轉"],
+  ["通", "東 uwng", "", "東 juwng", "", "1開"],
+  ["", "冬 owng", "", "鍾 jowng", "", "2開合"],
+  ["江", "", "江 aewng", "", "", "3開合"],
+  ["止", "", "", "支 je", "支 jie", "4開合"],
+  ["", "", "", "支 jwe", "支 jwie", "5合"],
+  ["", "", "", "脂 ij", "脂 jij", "6開"],
+  ["", "", "", "脂 wij", "脂 jwij", "7合"],
+  ["", "", "", "之 i", "", "8開"],
+  ["", "", "", "微 j+j", "", "9開"],
+  ["", "", "", "微 jw+j", "", "10合"],
+  ["遇", "", "", "魚 jo", "", "11開"],
+  ["", "模 u", "", "虞 ju", "", "12開合"],
+  ["蟹", "咍 oj", "皆 eaj", "祭 jej", "齊 ej", "13開"],
+  ["", "", "夬 aej", "", "", ""],
+  ["", "灰 woj", "皆 weaj", "祭 jwej", "齊 wej", "14合"],
+  ["", "", "夬 waej", "", "", ""],
+  ["", "泰 aj", "佳 ea", "", "祭 jiej", "15開"],
+  ["", "泰 waj", "佳 wea", "", "祭 jwej", "16合"],
+  ["", "", "", "廢 joj", "", "9開"],
+  ["", "", "", "廢 jwoj", "", "10合"],
+  ["臻", "痕 on", "", "臻 in", "眞 jin", "17開"],
+  ["", "魂 won", "", "眞 win", "諄 jwin", "18合"],
+  ["", "", "", "欣 j+n", "", "19開"],
+  ["", "", "", "文 jun", "", "20合"],
+  ["山", "", "山 ean", "元 jon", "仙 jien", "21開"],
+  ["", "", "山 wean", "元 jwon", "仙 jwien", "22合"],
+  ["", "寒 an", "刪 aen", "仙 jen", "先 en", "23開"],
+  ["", "桓 wan", "刪 waen", "仙 jwen", "先 wen", "24合"],
+  ["效", "豪 aw", "肴 aew", "宵 jew", "蕭 ew", "25開"],
+  ["", "", "", "", "宵 jiew", "26合"],
+  ["果", "歌 a", "", "", "", "27合"],
+  ["", "戈 wa", "", "戈 jwa", "戈開三 ja", "28合"],
+  ["假", "", "麻 ae", "麻 jae", "", "29開"],
+  ["", "", "麻 wae", "", "", "30合"],
+  ["宕", "唐 ang", "", "陽 jang", "", "31開"],
+  ["", "唐 wang", "", "陽 jwang", "", "32合"],
+  ["梗", "", "庚 aeng", "庚 jaeng", "淸 jeng", "33開"],
+  ["", "", "庚 waeng", "庚 jwaeng", "淸 jweng", "34合"],
+  ["", "", "耕 eang", "", "靑 eng", "35開"],
+  ["", "", "耕 weang", "", "靑 weng", "36合"],
+  ["流", "侯 uw", "", "尤 juw", "幽 jiw", "37開"],
+  ["深", "", "", "侵 im", "侵 jim", "38合"],
+  ["咸", "覃 om", "咸 eam", "鹽 jem", "添 em", "39合"],
+  ["", "談 am", "銜 aem", "嚴 jaem", "鹽 jiem", "40開"],
+  ["", "", "", "凡 jom", "", "41合"],
+  ["曾", "登 ong", "", "蒸 ing", "", "42開"],
+  ["", "登 wong", "", "(職) wik", "", "43合"],
+];
+---
+
+<BaseLayout
+  title="攝 and Rime Reference"
+  description="Private reference tables for Middle Chinese rime classes."
+  fullWidth
+  noindex
+>
+  <p><a href="/tools/han-character/">Back to Han character lookup</a></p>
+  <h1>攝 and Rime Reference</h1>
+  <p class="subtitle">Middle Chinese rime classes in Baxter-Sagart notation</p>
+  <div class="description">
+    <p>
+      <span lang="ko">섭</span> <span lang="zh">攝</span> is a broad rime group. A single
+      <span lang="zh">攝</span> contains several related rimes, usually connected by a similar
+      main vowel and ending. For example, <span lang="zh">山攝</span> gathers rimes such as
+      <span lang="zh">山</span>, <span lang="zh">元</span>, <span lang="zh">仙</span>, and
+      <span lang="zh">先</span>; <span lang="zh">梗攝</span> gathers rimes such as
+      <span lang="zh">庚</span>, <span lang="zh">耕</span>, <span lang="zh">淸</span>, and
+      <span lang="zh">靑</span>.
+    </p>
+    <p>
+      <span lang="zh">轉</span> is the row class used here to place those rimes into a more specific
+      rime-table position. It tracks the row’s openness or closedness together with the table
+      position: for instance, the <span lang="zh">宕攝</span> rows distinguish
+      <span lang="zh">31開</span> from <span lang="zh">32合</span>, while
+      <span lang="zh">梗攝</span> distinguishes <span lang="zh">33開</span>,
+      <span lang="zh">34合</span>, <span lang="zh">35開</span>, and
+      <span lang="zh">36合</span>. The lookup page then combines rime, division, and closed-mouth
+      status into compact labels.
+    </p>
+  </div>
+
+  <section class="sheet">
+    <h2 lang="ko">BS</h2>
+    <div class="rime-table-wrapper">
+      <table class="rime-table">
+        <thead>
+          <tr>
+            {bsRows[0].map((cell) => (
+              <th scope="col">{cell}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {bsRows.slice(1).map((row) => (
+            <tr>
+              {row.map((cell, cellIndex) => (
+                cellIndex === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">
+      In the <span lang="zh">臻</span> and <span lang="zh">眞</span> rimes,
+      <span lang="zh">臻</span> combines with <span lang="zh">莊二組</span>, while
+      <span lang="zh">眞</span> combines with the remaining initials.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  p,
+  .table-note,
+  .rime-table {
+    font-size: 1.4rem;
+  }
+
+  .description {
+    width: 55%;
+  }
+
+  .sheet {
+    width: 55%;
+    margin: 2rem 0 3rem;
+  }
+
+  .table-note {
+    margin-top: 0.8rem;
+    color: var(--meta-color);
+  }
+
+  .rime-table-wrapper {
+    width: 100%;
+    overflow: auto;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+  }
+
+  .rime-table {
+    width: max-content;
+    min-width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .rime-table th,
+  .rime-table td {
+    min-width: 5rem;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid color-mix(in srgb, var(--border-color) 62%, transparent);
+    font-size: inherit;
+    line-height: 1.45;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .rime-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: var(--bg-color);
+  }
+
+  .rime-table tbody th {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--bg-color);
+    font-weight: 700;
+  }
+
+  @media (max-width: 760px) {
+    .description,
+    .sheet {
+      max-width: 100%;
+      width: 100%;
+    }
+  }
+</style>

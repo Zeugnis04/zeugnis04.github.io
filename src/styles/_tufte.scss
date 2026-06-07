@@ -40,6 +40,11 @@ body {
     font-size:100%;
     font-style: normal;
 }
+:lang(zh)   {
+    font-family: fot-tsukuaoldmin-pr6n, serif;
+    font-size:100%;
+    font-style: normal;
+}
 span[lang="ja"] ruby rt {
     font-size: 0.55em;
     font-weight: normal;
@@ -355,7 +360,6 @@ table.fullwidth {
 
 div.table-wrapper {
     overflow-x: auto;
-    font-family: "Trebuchet MS", "Gill Sans", "Gill Sans MT", sans-serif;
 }
 
 .sans {

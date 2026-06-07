@@ -10,6 +10,7 @@ type Props = {
   hero?: boolean;
   fullWidth?: boolean;
   korean?: boolean;
+  noindex?: boolean;
 };
 
 const {
@@ -20,6 +21,7 @@ const {
   hero = false,
   fullWidth = false,
   korean = false,
+  noindex = false,
 } = Astro.props;
 
 const pageTitle = headTitle ?? (title === "Random Access Memories"
@@ -42,6 +44,7 @@ const activeSection = currentPath.startsWith("/blog/")
     <title>{pageTitle}</title>
     <ViewTransitions />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,nofollow" />}
     <script is:inline>
       (function(d) {
         var config = {

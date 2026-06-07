@@ -1,0 +1,917 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Han Character Readings"
+  description="A private working page for comparing Sino-Xenic and Middle Chinese readings."
+  noindex
+>
+  <h1>Han Character Readings</h1>
+  <p class="subtitle">Sinological reading lookup</p>
+  <p>
+    Look up modern Mandarin, Japanese, Korean, and Middle Chinese readings from
+    <a href="https://en.wiktionary.org/" rel="noreferrer">English Wiktionary</a>.
+  </p>
+
+  <form class="lookup-form" id="lookup-form">
+    <label for="character-input">Chinese character</label>
+    <div class="input-row">
+      <input
+        id="character-input"
+        name="character"
+        type="text"
+        inputmode="text"
+        maxlength="2"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        placeholder="東"
+        aria-describedby="input-help"
+        required
+      />
+      <button type="submit">Look up</button>
+    </div>
+    <p id="input-help" class="input-help no-ornament">Enter one Han character, traditional or simplified.</p>
+  </form>
+
+  <p class="status no-ornament" id="status" role="status" aria-live="polite"></p>
+
+  <section class="results" id="results" hidden>
+    <div class="character-heading">
+      <h2 id="result-character" lang="zh"></h2>
+      <a id="wiktionary-link" href="https://en.wiktionary.org/" target="_blank" rel="noreferrer">
+        Open Wiktionary
+      </a>
+    </div>
+
+    <h2>Modern readings</h2>
+    <div class="result-table">
+      <table class="fullwidth readings-table">
+        <thead>
+          <tr>
+            <th scope="col">Language</th>
+            <th scope="col">System</th>
+            <th scope="col">Reading</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" rowspan="2" lang="zh">現代漢語<small lang="en">Mandarin</small></th>
+            <td>Pinyin</td>
+            <td id="mandarin-pinyin"></td>
+          </tr>
+          <tr>
+            <td>Zhuyin</td>
+            <td id="mandarin-zhuyin" lang="zh-Bopo"></td>
+          </tr>
+          <tr>
+            <th scope="row" lang="zh">粵語<small lang="en">Cantonese</small></th>
+            <td>Jyutping</td>
+            <td id="cantonese-jyutping"></td>
+          </tr>
+          <tr>
+            <th scope="row" lang="zh">閩南語<small lang="en">Southern Min</small></th>
+            <td>POJ</td>
+            <td id="min-poj"></td>
+          </tr>
+          <tr>
+            <th scope="row" rowspan="2" lang="ja">日本語<small lang="en">Japanese</small></th>
+            <td>On</td>
+            <td id="japanese-on" lang="ja"></td>
+          </tr>
+          <tr>
+            <td>Kun</td>
+            <td id="japanese-kun" lang="ja"></td>
+          </tr>
+          <tr>
+            <th scope="row" rowspan="2" lang="ko">한국 한자음<small lang="en">Korean</small></th>
+            <td lang="ko">음</td>
+            <td id="korean-reading" lang="ko"></td>
+          </tr>
+          <tr>
+            <td lang="ko">훈</td>
+            <td id="korean-eumhun" lang="ko"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Middle Chinese <i lang="zh">中古漢語</i></h2>
+    <p>
+      Baxter transcription with fanqie and traditional rime-table categories.
+      The 攝 and 轉 are inferred from Wiktionary’s listed final.
+      <a href="/tools/han-character/rime-reference/">Read the 攝 and rime reference</a>.
+    </p>
+    <div class="result-table">
+      <table class="fullwidth readings-table middle-chinese-table">
+        <colgroup>
+          <col class="mc-label-column" />
+          <col class="mc-value-column" />
+        </colgroup>
+        <tbody id="middle-chinese-readings"></tbody>
+      </table>
+    </div>
+
+    <p class="source-note no-ornament">
+      Data is parsed live from Wiktionary and may be incomplete when an entry uses an unusual template.
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  type ReadingMap = Record<string, string>;
+
+  type MiddleChineseReading = {
+    baxter: string;
+    fanqie: string;
+    initial: string;
+    final: string;
+    tone: string;
+    openness: string;
+    division: string;
+    she: string;
+    finalClass: string;
+    zhuan: string;
+  };
+
+  type CharacterData = {
+    character: string;
+    sourceCharacter: string;
+    pinyin: string;
+    zhuyin: string;
+    cantoneseJyutping: string;
+    minPoj: string;
+    japaneseOn: string;
+    japaneseKun: string;
+    koreanReading: string;
+    koreanEumhun: string;
+    middleChinese: MiddleChineseReading[];
+  };
+
+  const API_URL = "https://en.wiktionary.org/w/api.php";
+  const EMPTY_VALUE = "Not listed";
+
+  const SHE_GROUPS: Record<string, string> = {
+    通: "東冬鍾鐘",
+    江: "江",
+    止: "支脂之微",
+    遇: "魚虞模",
+    蟹: "齊佳皆灰咍祭泰夬廢",
+    臻: "眞真諄臻文欣魂痕",
+    山: "元寒桓刪山先仙",
+    效: "蕭宵肴豪",
+    果: "歌戈",
+    假: "麻",
+    宕: "陽唐",
+    梗: "庚耕淸清靑青",
+    曾: "蒸登",
+    流: "尤侯幽",
+    深: "侵",
+    咸: "覃談鹽添咸銜嚴凡",
+  };
+
+  const FINAL_VARIANTS: Record<string, string> = {
+    鍾: "鐘",
+    真: "眞",
+    清: "淸",
+    青: "靑",
+  };
+
+  const DIVISION_LABELS: Record<string, string> = {
+    I: "一",
+    II: "二",
+    III: "三",
+    IV: "四",
+  };
+
+  const RIME_TURN_ROWS = [
+    { turn: "1開", I: ["東"], II: [], III: ["東"], IV: [] },
+    { turn: "2開合", I: ["冬"], II: [], III: ["鍾", "鐘"], IV: [] },
+    { turn: "3開合", I: [], II: ["江"], III: [], IV: [] },
+    { turn: "4開合", I: [], II: [], III: ["支"], IV: ["支"] },
+    { turn: "5合", I: [], II: [], III: ["支"], IV: ["支"] },
+    { turn: "6開", I: [], II: [], III: ["脂"], IV: ["脂"] },
+    { turn: "7合", I: [], II: [], III: ["脂"], IV: ["脂"] },
+    { turn: "8開", I: [], II: [], III: ["之"], IV: [] },
+    { turn: "9開", I: [], II: [], III: ["微", "廢"], IV: [] },
+    { turn: "10合", I: [], II: [], III: ["微", "廢"], IV: [] },
+    { turn: "11開", I: [], II: [], III: ["魚"], IV: [] },
+    { turn: "12開合", I: ["模"], II: [], III: ["虞"], IV: [] },
+    { turn: "13開", I: ["咍"], II: ["皆", "夬"], III: ["祭"], IV: ["齊"] },
+    { turn: "14合", I: ["灰"], II: ["皆", "夬"], III: ["祭"], IV: ["齊"] },
+    { turn: "15開", I: ["泰"], II: ["佳"], III: [], IV: ["祭"] },
+    { turn: "16合", I: ["泰"], II: ["佳"], III: [], IV: ["祭"] },
+    { turn: "17開", I: ["痕"], II: [], III: ["臻"], IV: ["眞", "真"] },
+    { turn: "18合", I: ["魂"], II: [], III: ["眞", "真"], IV: ["諄"] },
+    { turn: "19開", I: [], II: [], III: ["欣"], IV: [] },
+    { turn: "20合", I: [], II: [], III: ["文"], IV: [] },
+    { turn: "21開", I: [], II: ["山"], III: ["元"], IV: ["仙"] },
+    { turn: "22合", I: [], II: ["山"], III: ["元"], IV: ["仙"] },
+    { turn: "23開", I: ["寒"], II: ["刪"], III: ["仙"], IV: ["先"] },
+    { turn: "24合", I: ["桓"], II: ["刪"], III: ["仙"], IV: ["先"] },
+    { turn: "25開", I: ["豪"], II: ["肴"], III: ["宵"], IV: ["蕭"] },
+    { turn: "26合", I: [], II: [], III: [], IV: ["宵"] },
+    { turn: "27合", I: ["歌"], II: [], III: [], IV: [] },
+    { turn: "28合", I: ["戈"], II: [], III: ["戈"], IV: ["戈"] },
+    { turn: "29開", I: [], II: ["麻"], III: ["麻"], IV: [] },
+    { turn: "30合", I: [], II: ["麻"], III: [], IV: [] },
+    { turn: "31開", I: ["唐"], II: [], III: ["陽"], IV: [] },
+    { turn: "32合", I: ["唐"], II: [], III: ["陽"], IV: [] },
+    { turn: "33開", I: [], II: ["庚"], III: ["庚"], IV: ["淸", "清"] },
+    { turn: "34合", I: [], II: ["庚"], III: ["庚"], IV: ["淸", "清"] },
+    { turn: "35開", I: [], II: ["耕"], III: [], IV: ["靑", "青"] },
+    { turn: "36合", I: [], II: ["耕"], III: [], IV: ["靑", "青"] },
+    { turn: "37開", I: ["侯"], II: [], III: ["尤"], IV: ["幽"] },
+    { turn: "38合", I: [], II: [], III: ["侵"], IV: ["侵"] },
+    { turn: "39合", I: ["覃"], II: ["咸"], III: ["鹽"], IV: ["添"] },
+    { turn: "40開", I: ["談"], II: ["銜"], III: ["嚴"], IV: ["鹽"] },
+    { turn: "41合", I: [], II: [], III: ["凡"], IV: [] },
+    { turn: "42開", I: ["登"], II: [], III: ["蒸"], IV: [] },
+    { turn: "43合", I: ["登"], II: [], III: ["職"], IV: [] },
+  ] as const;
+
+  const form = document.querySelector<HTMLFormElement>("#lookup-form");
+  const input = document.querySelector<HTMLInputElement>("#character-input");
+  const status = document.querySelector<HTMLElement>("#status");
+  const results = document.querySelector<HTMLElement>("#results");
+  const middleChineseContainer = document.querySelector<HTMLElement>("#middle-chinese-readings");
+
+  function text(selector: string): HTMLElement {
+    const element = document.querySelector<HTMLElement>(selector);
+    if (!element) throw new Error(`Missing page element: ${selector}`);
+    return element;
+  }
+
+  function normalize(value: string | null | undefined): string {
+    return value?.replace(/\s+/g, " ").trim() ?? "";
+  }
+
+  function singleHanCharacter(value: string): string | null {
+    const characters = Array.from(value.trim()).filter((character) => !/[\uFE00-\uFE0F\u{E0100}-\u{E01EF}]/u.test(character));
+    if (characters.length !== 1 || !/\p{Script=Han}/u.test(characters[0])) return null;
+    return characters[0];
+  }
+
+  function extractTemplate(wikitext: string, templateName: string): string[] {
+    const templates: string[] = [];
+    const needle = `{{${templateName}`;
+    let searchFrom = 0;
+
+    while (searchFrom < wikitext.length) {
+      const start = wikitext.indexOf(needle, searchFrom);
+      if (start === -1) break;
+      const boundary = wikitext[start + needle.length];
+      if (boundary && boundary !== "|" && boundary !== "}" && !/\s/.test(boundary)) {
+        searchFrom = start + needle.length;
+        continue;
+      }
+
+      let depth = 0;
+      let end = start;
+      for (let index = start; index < wikitext.length - 1; index += 1) {
+        const pair = wikitext.slice(index, index + 2);
+        if (pair === "{{") {
+          depth += 1;
+          index += 1;
+        } else if (pair === "}}") {
+          depth -= 1;
+          index += 1;
+          if (depth === 0) {
+            end = index + 1;
+            break;
+          }
+        }
+      }
+
+      if (end > start) templates.push(wikitext.slice(start + 2, end - 2));
+      searchFrom = Math.max(end, start + needle.length);
+    }
+
+    return templates;
+  }
+
+  function splitTemplate(template: string): string[] {
+    const parts: string[] = [];
+    let current = "";
+    let curlyDepth = 0;
+    let squareDepth = 0;
+
+    for (let index = 0; index < template.length; index += 1) {
+      const pair = template.slice(index, index + 2);
+      if (pair === "{{") {
+        curlyDepth += 1;
+        current += pair;
+        index += 1;
+      } else if (pair === "}}" && curlyDepth > 0) {
+        curlyDepth -= 1;
+        current += pair;
+        index += 1;
+      } else if (pair === "[[") {
+        squareDepth += 1;
+        current += pair;
+        index += 1;
+      } else if (pair === "]]" && squareDepth > 0) {
+        squareDepth -= 1;
+        current += pair;
+        index += 1;
+      } else if (template[index] === "|" && curlyDepth === 0 && squareDepth === 0) {
+        parts.push(current.trim());
+        current = "";
+      } else {
+        current += template[index];
+      }
+    }
+
+    parts.push(current.trim());
+    return parts;
+  }
+
+  function templateArguments(template: string): { named: ReadingMap; positional: string[] } {
+    const parts = splitTemplate(template);
+    const named: ReadingMap = {};
+    const positional: string[] = [];
+
+    for (const part of parts.slice(1)) {
+      const equalsAt = part.indexOf("=");
+      if (equalsAt > 0) {
+        named[part.slice(0, equalsAt).trim()] = part.slice(equalsAt + 1).trim();
+      } else {
+        positional.push(part.trim());
+      }
+    }
+
+    return { named, positional };
+  }
+
+  function cleanWikiValue(value: string): string {
+    return normalize(
+      value
+        .replace(/<!--[\s\S]*?-->/g, "")
+        .replace(/<[^>]+>/g, "")
+        .replace(/\{\{[^{}]*\}\}/g, "")
+        .replace(/\[\[(?:[^\]|]*\|)?([^\]]+)\]\]/g, "$1")
+        .replace(/<[^>]+/g, "")
+        .replace(/-</g, "")
+        .replace(/;/g, ", "),
+    );
+  }
+
+  function unique(values: string[]): string {
+    return [...new Set(values.map(cleanWikiValue).filter(Boolean))].join(", ");
+  }
+
+  function parseWikitext(wikitext: string) {
+    const zhPron = extractTemplate(wikitext, "zh-pron")[0];
+    const mandarin = zhPron ? templateArguments(zhPron).named.m ?? "" : "";
+
+    const japaneseTemplates = extractTemplate(wikitext, "ja-readings");
+    const onKeys = ["goon", "kanon", "toon", "soon", "kanyoon", "on"];
+    const japaneseOn: string[] = [];
+    const japaneseKun: string[] = [];
+
+    for (const template of japaneseTemplates) {
+      const { named } = templateArguments(template);
+      for (const key of onKeys) {
+        if (named[key]) japaneseOn.push(...named[key].split(","));
+      }
+      if (named.kun) japaneseKun.push(...named.kun.split(","));
+    }
+
+    const koHanja = extractTemplate(wikitext, "ko-hanja")[0];
+    const koPron = extractTemplate(wikitext, "ko-hanja-pron")[0];
+    let koreanReading = "";
+    let koreanEumhun = "";
+
+    if (koHanja) {
+      const { positional } = templateArguments(koHanja);
+      koreanEumhun = unique(positional.slice(0, 2));
+      koreanReading = cleanWikiValue(positional[1] || positional[0] || "");
+    }
+    if (!koreanReading && koPron) {
+      koreanReading = cleanWikiValue(templateArguments(koPron).positional[0] || "");
+    }
+
+    const seeTemplate = extractTemplate(wikitext, "zh-see")[0];
+    const relatedCharacter = seeTemplate
+      ? cleanWikiValue(templateArguments(seeTemplate).positional[0]?.split("|")[0] || "")
+      : "";
+
+    return {
+      pinyin: cleanWikiValue(mandarin),
+      japaneseOn: unique(japaneseOn),
+      japaneseKun: unique(japaneseKun),
+      koreanReading,
+      koreanEumhun,
+      relatedCharacter: singleHanCharacter(relatedCharacter),
+    };
+  }
+
+  function sectionContainer(documentNode: Document, headingId: string): HTMLElement | null {
+    const heading = documentNode.getElementById(headingId);
+    const wrapper = heading?.closest(".mw-heading");
+    if (!heading || !wrapper) return null;
+
+    const level = Number(heading.tagName.slice(1));
+    const container = document.createElement("div");
+    let sibling = wrapper.nextElementSibling;
+
+    while (sibling) {
+      const nextHeading = sibling.matches(".mw-heading")
+        ? sibling.querySelector<HTMLElement>("h2, h3, h4, h5, h6")
+        : null;
+      if (nextHeading && Number(nextHeading.tagName.slice(1)) <= level) break;
+      container.append(sibling.cloneNode(true));
+      sibling = sibling.nextElementSibling;
+    }
+
+    return container;
+  }
+
+  function rowValue(table: HTMLTableElement, label: string): string {
+    for (const row of table.rows) {
+      const heading = normalize(row.querySelector("th")?.textContent).replace(/\s+/g, " ");
+      if (heading.toLowerCase().startsWith(label.toLowerCase())) {
+        return normalize(row.querySelector("td")?.textContent);
+      }
+    }
+    return "";
+  }
+
+  function sheForFinal(finalName: string): string {
+    const normalizedFinal = cleanFinalName(finalName);
+    const match = Object.entries(SHE_GROUPS).find(([, finals]) => finals.includes(normalizedFinal));
+    return match ? `${match[0]}攝` : "";
+  }
+
+  function cleanFinalName(finalName: string): string {
+    const normalized = finalName.replace(/\s*\(\d+\)\s*$/, "").trim();
+    return FINAL_VARIANTS[normalized] ?? normalized;
+  }
+
+  function divisionClass(value: string): string {
+    const normalized = value.toUpperCase().replace(/[^IV]/g, "");
+    return DIVISION_LABELS[normalized] ?? "";
+  }
+
+  function divisionKey(value: string): "I" | "II" | "III" | "IV" | "" {
+    const normalized = value.toUpperCase().replace(/[^IV]/g, "");
+    if (normalized === "I" || normalized === "II" || normalized === "III" || normalized === "IV") return normalized;
+    return "";
+  }
+
+  function opennessClass(value: string): string {
+    const normalized = value.toLowerCase();
+    if (normalized.startsWith("closed") || normalized.includes("合")) return "合";
+    return "";
+  }
+
+  function finalClass(finalName: string, division: string, openness: string): string {
+    const final = cleanFinalName(finalName);
+    if (!final) return "";
+    const divisionLabel = divisionClass(division);
+    const opennessLabel = opennessClass(openness);
+    return `${final}${divisionLabel}${opennessLabel}`;
+  }
+
+  function zhuanForReading(finalName: string, division: string, openness: string): string {
+    const final = cleanFinalName(finalName);
+    const key = divisionKey(division);
+    const closed = opennessClass(openness) === "合";
+    if (!final || !key) return "";
+
+    const candidates = RIME_TURN_ROWS.filter((row) => (row[key] as readonly string[]).includes(final));
+    const exact = candidates.find((row) => closed ? row.turn.includes("合") : row.turn.includes("開"));
+    return exact?.turn || candidates[0]?.turn || "";
+  }
+
+  function localizedOpenness(value: string): string {
+    const normalized = value.toLowerCase();
+    if (normalized === "open") return "개 開";
+    if (normalized === "closed") return "합 合";
+    return value;
+  }
+
+  function localizedTone(value: string): string {
+    const normalized = value.toLowerCase();
+    if (normalized.startsWith("level")) return "평 平";
+    if (normalized.startsWith("rising")) return "상 上";
+    if (normalized.startsWith("departing")) return "거 去";
+    if (normalized.startsWith("checked")) return "입 入";
+    return value;
+  }
+
+  function parseRenderedHtml(html: string) {
+    const parsed = new DOMParser().parseFromString(html, "text/html");
+    const chinese = sectionContainer(parsed, "Chinese");
+    const pronunciation = chinese?.querySelector(".zhpron");
+
+    const pinyin = normalize(
+      pronunciation?.querySelector<HTMLElement>('a[title="w:Pinyin"]')
+        ?.closest("dd")
+        ?.querySelector<HTMLElement>('.Latn[lang="cmn"]')
+        ?.textContent,
+    );
+    const zhuyin = normalize(pronunciation?.querySelector<HTMLElement>(".Bopo")?.textContent);
+    const readingForSystem = (title: string) => {
+      const system = pronunciation?.querySelector<HTMLElement>(`a[title="${title}"]`);
+      const entry = system?.closest("dd, li");
+      return normalize(entry?.querySelector<HTMLElement>(".zhpron-monospace")?.textContent);
+    };
+    const cantoneseJyutping = readingForSystem("w:Jyutping");
+    const minPoj = readingForSystem("w:Pe̍h-ōe-jī");
+
+    const middleChinese: MiddleChineseReading[] = [];
+    for (const table of pronunciation?.querySelectorAll<HTMLTableElement>("table") ?? []) {
+      const baxter = rowValue(table, "Baxter");
+      if (!baxter) continue;
+
+      const final = rowValue(table, "Final");
+      middleChinese.push({
+        baxter,
+        fanqie: rowValue(table, "Fanqie"),
+        initial: rowValue(table, "Initial"),
+        final,
+        tone: localizedTone(rowValue(table, "Tone")),
+        openness: localizedOpenness(rowValue(table, "Openness")),
+        division: rowValue(table, "Division"),
+        she: sheForFinal(final),
+        finalClass: finalClass(final, rowValue(table, "Division"), rowValue(table, "Openness")),
+        zhuan: zhuanForReading(final, rowValue(table, "Division"), rowValue(table, "Openness")),
+      });
+    }
+
+    return { pinyin, zhuyin, cantoneseJyutping, minPoj, middleChinese };
+  }
+
+  async function fetchWiktionary(character: string) {
+    const params = new URLSearchParams({
+      action: "parse",
+      page: character,
+      prop: "wikitext|text",
+      redirects: "1",
+      format: "json",
+      formatversion: "2",
+      origin: "*",
+    });
+    const response = await fetch(`${API_URL}?${params}`);
+    if (!response.ok) throw new Error(`Wiktionary returned HTTP ${response.status}.`);
+
+    const payload = await response.json();
+    if (payload.error) throw new Error(payload.error.info || "Wiktionary has no entry for this character.");
+    return {
+      title: payload.parse.title as string,
+      wikitext: payload.parse.wikitext as string,
+      html: payload.parse.text as string,
+    };
+  }
+
+  async function getCharacterData(character: string): Promise<CharacterData> {
+    const primary = await fetchWiktionary(character);
+    const primaryWiki = parseWikitext(primary.wikitext);
+    const primaryHtml = parseRenderedHtml(primary.html);
+    let fallbackWiki: ReturnType<typeof parseWikitext> | null = null;
+    let fallbackHtml: ReturnType<typeof parseRenderedHtml> | null = null;
+    let sourceCharacter = primary.title;
+
+    if (
+      primaryWiki.relatedCharacter &&
+      primaryWiki.relatedCharacter !== character &&
+      (!primaryWiki.pinyin || primaryHtml.middleChinese.length === 0)
+    ) {
+      const fallback = await fetchWiktionary(primaryWiki.relatedCharacter);
+      fallbackWiki = parseWikitext(fallback.wikitext);
+      fallbackHtml = parseRenderedHtml(fallback.html);
+      sourceCharacter = fallback.title;
+    }
+
+    return {
+      character,
+      sourceCharacter,
+      pinyin: primaryHtml.pinyin || primaryWiki.pinyin || fallbackHtml?.pinyin || fallbackWiki?.pinyin || "",
+      zhuyin: primaryHtml.zhuyin || fallbackHtml?.zhuyin || "",
+      cantoneseJyutping: primaryHtml.cantoneseJyutping || fallbackHtml?.cantoneseJyutping || "",
+      minPoj: primaryHtml.minPoj || fallbackHtml?.minPoj || "",
+      japaneseOn: primaryWiki.japaneseOn || fallbackWiki?.japaneseOn || "",
+      japaneseKun: primaryWiki.japaneseKun || fallbackWiki?.japaneseKun || "",
+      koreanReading: primaryWiki.koreanReading || fallbackWiki?.koreanReading || "",
+      koreanEumhun: primaryWiki.koreanEumhun || fallbackWiki?.koreanEumhun || "",
+      middleChinese: primaryHtml.middleChinese.length
+        ? primaryHtml.middleChinese
+        : fallbackHtml?.middleChinese ?? [],
+    };
+  }
+
+  function setValue(selector: string, value: string) {
+    text(selector).textContent = value || EMPTY_VALUE;
+    text(selector).classList.toggle("empty-value", !value);
+  }
+
+  function renderMiddleChinese(readings: MiddleChineseReading[]) {
+    if (!middleChineseContainer) return;
+    middleChineseContainer.replaceChildren();
+
+    if (!readings.length) {
+      const row = document.createElement("tr");
+      const cell = document.createElement("td");
+      cell.colSpan = 2;
+      cell.className = "empty-value";
+      cell.textContent = "No Middle Chinese reading is listed.";
+      row.append(cell);
+      middleChineseContainer.append(row);
+      return;
+    }
+
+    readings.forEach((reading, index) => {
+      if (readings.length > 1) {
+        const headingRow = document.createElement("tr");
+        headingRow.className = "mc-reading-heading";
+        const heading = document.createElement("th");
+        heading.colSpan = 2;
+        heading.scope = "colgroup";
+        heading.textContent = `Reading ${index + 1}`;
+        headingRow.append(heading);
+        middleChineseContainer.append(headingRow);
+      }
+
+      const fields: Array<[string, string, string?]> = [
+        ["Baxter", reading.baxter, "baxter-reading"],
+        ["Fanqie 反切", reading.fanqie, "zh"],
+        ["攝", reading.she, "zh"],
+        ["轉", reading.zhuan, "zh"],
+        ["韻類", reading.finalClass, "zh"],
+        ["Initial 聲", reading.initial, "zh"],
+        ["Final 韻", reading.final, "zh"],
+        ["Tone 調", reading.tone],
+        ["Openness 呼", reading.openness],
+        ["Division 等", reading.division],
+      ];
+
+      for (const [label, value, marker] of fields) {
+        const row = document.createElement("tr");
+        const heading = document.createElement("th");
+        const cell = document.createElement("td");
+        heading.scope = "row";
+        heading.textContent = label;
+        cell.textContent = value || "Not listed";
+        if (!value) cell.classList.add("empty-value");
+        if (marker === "zh") cell.lang = "zh";
+        if (marker === "baxter-reading") cell.classList.add("baxter-reading");
+        row.append(heading, cell);
+        middleChineseContainer.append(row);
+      }
+    });
+  }
+
+  function render(data: CharacterData) {
+    setValue("#result-character", data.character);
+    setValue("#mandarin-pinyin", data.pinyin);
+    setValue("#mandarin-zhuyin", data.zhuyin);
+    setValue("#cantonese-jyutping", data.cantoneseJyutping);
+    setValue("#min-poj", data.minPoj);
+    setValue("#japanese-on", data.japaneseOn);
+    setValue("#japanese-kun", data.japaneseKun);
+    setValue("#korean-reading", data.koreanReading);
+    setValue("#korean-eumhun", data.koreanEumhun);
+    renderMiddleChinese(data.middleChinese);
+
+    const link = document.querySelector<HTMLAnchorElement>("#wiktionary-link");
+    if (link) link.href = `https://en.wiktionary.org/wiki/${encodeURIComponent(data.sourceCharacter)}`;
+    if (results) results.hidden = false;
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const character = singleHanCharacter(input?.value ?? "");
+
+    if (!character) {
+      if (status) status.textContent = "Please enter exactly one Han character.";
+      if (results) results.hidden = true;
+      input?.focus();
+      return;
+    }
+
+    if (status) status.textContent = `Fetching ${character} from Wiktionary…`;
+    if (results) results.hidden = true;
+    form?.classList.add("is-loading");
+
+    try {
+      const data = await getCharacterData(character);
+      render(data);
+      if (status) status.textContent = data.sourceCharacter !== character
+        ? `Showing ${character}; missing historical data was supplemented from ${data.sourceCharacter}.`
+        : `Readings for ${character}.`;
+      const url = new URL(window.location.href);
+      url.searchParams.set("q", character);
+      history.replaceState(null, "", url);
+    } catch (error) {
+      if (status) status.textContent = error instanceof Error
+        ? error.message
+        : "The Wiktionary lookup failed.";
+    } finally {
+      form?.classList.remove("is-loading");
+    }
+  });
+
+  const initialCharacter = singleHanCharacter(new URLSearchParams(window.location.search).get("q") ?? "");
+  if (initialCharacter && input && form) {
+    input.value = initialCharacter;
+    form.requestSubmit();
+  }
+</script>
+
+<style>
+  .lookup-form {
+    width: 55%;
+    margin: 2rem 0 0;
+    font-size: 1.4rem;
+  }
+
+  .lookup-form label {
+    display: block;
+    margin-bottom: 0.55rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .input-row {
+    display: grid;
+    grid-template-columns: minmax(8rem, 1fr) auto;
+    gap: 0.65rem;
+  }
+
+  .input-row input {
+    min-width: 0;
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-color);
+    font: inherit;
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .input-row button {
+    padding: 0.65rem 1.15rem;
+    border: 1px solid #111;
+    background: #111;
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .input-row button:hover {
+    border-color: var(--link-hover-color);
+    background: var(--link-hover-color);
+  }
+
+  .lookup-form.is-loading button {
+    cursor: wait;
+    opacity: 0.55;
+  }
+
+  .input-help,
+  .status,
+  .source-note {
+    color: var(--meta-color);
+  }
+
+  .input-help {
+    margin: 0.55rem 0 0;
+    font-size: 1.4rem;
+  }
+
+  .status {
+    min-height: 1.3rem;
+    margin: 0.6rem 0 1rem;
+    font-size: 1.4rem;
+  }
+
+  .results[hidden] {
+    display: none;
+  }
+
+  .character-heading {
+    width: 55%;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .character-heading h2 {
+    margin: 0;
+    font-size: clamp(5rem, 12vw, 8rem);
+    font-weight: 400;
+    line-height: 0.9;
+  }
+
+  .character-heading > a {
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+  }
+
+  .empty-value {
+    color: var(--meta-color);
+    font-style: italic;
+  }
+
+  .result-table {
+    width: 55%;
+    margin: 1rem 0 2rem;
+  }
+
+  .readings-table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 1.4rem;
+    text-align: left;
+  }
+
+  .readings-table th,
+  .readings-table td {
+    box-sizing: border-box;
+    padding: 0.8rem 0.75rem 0.8rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--border-color) 42%, transparent);
+    font-size: 1.4rem;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .readings-table thead th {
+    border-bottom-color: var(--border-color);
+    white-space: nowrap;
+  }
+
+  .readings-table tbody th small {
+    display: block;
+    color: var(--meta-color);
+    font-size: inherit;
+    line-height: inherit;
+    font-weight: 400;
+  }
+
+  .readings-table tbody th[scope="row"][rowspan] {
+    color: var(--text-color);
+    font-weight: 700;
+  }
+
+  .middle-chinese-table tbody th {
+    color: var(--meta-color);
+    font-weight: 400;
+  }
+
+  .middle-chinese-table .mc-label-column {
+    width: var(--mc-label-width, 38%);
+  }
+
+  .middle-chinese-table .mc-value-column {
+    width: calc(100% - var(--mc-label-width, 38%));
+  }
+
+  .middle-chinese-table .baxter-reading {
+    font-family: "Fira Code", "SF Mono", Consolas, monospace;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .middle-chinese-table .mc-reading-heading th {
+    width: auto;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--border-color);
+    border-bottom-color: var(--border-color);
+    color: var(--text-color);
+    font-weight: 700;
+  }
+
+  .source-note {
+    font-size: 1.4rem;
+  }
+
+  @media (max-width: 760px) {
+    .lookup-form,
+    .character-heading,
+    .result-table {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .input-row {
+      grid-template-columns: 1fr;
+    }
+
+    .input-row button {
+      min-height: 2.8rem;
+    }
+
+    .character-heading {
+      align-items: start;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+</style>
