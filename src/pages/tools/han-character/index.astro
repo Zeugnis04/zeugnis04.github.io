@@ -10,7 +10,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   <h1>Han Character Readings</h1>
   <p class="subtitle">Sinological reading lookup</p>
   <p>
-    Look up modern Mandarin, Japanese, Korean, and Middle Chinese readings from
+    Look up modern Chinese dialect, Japanese, Korean, Middle Chinese, and Old Chinese readings from
     <a href="https://en.wiktionary.org/" rel="noreferrer">English Wiktionary</a>.
   </p>
 
@@ -38,6 +38,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   <p class="status no-ornament" id="status" role="status" aria-live="polite"></p>
 
   <section class="results" id="results" hidden>
+    <div class="results-main">
     <div class="character-heading">
       <h2 id="result-character" lang="zh"></h2>
       <a id="wiktionary-link" href="https://en.wiktionary.org/" target="_blank" rel="noreferrer">
@@ -45,82 +46,88 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       </a>
     </div>
 
-    <h2>Modern readings</h2>
-    <div class="result-table">
-      <table class="fullwidth readings-table">
-        <thead>
-          <tr>
-            <th scope="col">Language</th>
-            <th scope="col">System</th>
-            <th scope="col">Reading</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row" rowspan="2" lang="zh">現代漢語<small lang="en">Mandarin</small></th>
-            <td>Pinyin</td>
-            <td id="mandarin-pinyin"></td>
-          </tr>
-          <tr>
-            <td>Zhuyin</td>
-            <td id="mandarin-zhuyin" lang="zh-Bopo"></td>
-          </tr>
-          <tr>
-            <th scope="row" lang="zh">粵語<small lang="en">Cantonese</small></th>
-            <td>Jyutping</td>
-            <td id="cantonese-jyutping"></td>
-          </tr>
-          <tr>
-            <th scope="row" lang="zh">閩南語<small lang="en">Southern Min</small></th>
-            <td>POJ</td>
-            <td id="min-poj"></td>
-          </tr>
-          <tr>
-            <th scope="row" rowspan="2" lang="ja">日本語<small lang="en">Japanese</small></th>
-            <td>On</td>
-            <td id="japanese-on" lang="ja"></td>
-          </tr>
-          <tr>
-            <td>Kun</td>
-            <td id="japanese-kun" lang="ja"></td>
-          </tr>
-          <tr>
-            <th scope="row" rowspan="2" lang="ko">한국 한자음<small lang="en">Korean</small></th>
-            <td lang="ko">음</td>
-            <td id="korean-reading" lang="ko"></td>
-          </tr>
-          <tr>
-            <td lang="ko">훈</td>
-            <td id="korean-eumhun" lang="ko"></td>
-          </tr>
-        </tbody>
-      </table>
+    <div data-section-body="modern">
+      <h2>Modern readings</h2>
+      <div class="result-table">
+        <table class="fullwidth readings-table modern-table">
+          <colgroup>
+            <col class="modern-language-column" />
+            <col class="modern-system-column" />
+            <col />
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope="col">Language</th>
+              <th scope="col">System</th>
+              <th scope="col">Reading</th>
+            </tr>
+          </thead>
+          <tbody id="modern-readings"></tbody>
+        </table>
+      </div>
     </div>
 
-    <h2>Middle Chinese <i lang="zh">中古漢語</i></h2>
-    <p>
-      Baxter transcription with fanqie and traditional rime-table categories.
-      The 攝 and 轉 are inferred from Wiktionary’s listed final.
-      <a href="/tools/han-character/rime-reference/">Read the 攝 and rime reference</a>.
-    </p>
-    <div class="result-table">
-      <table class="fullwidth readings-table middle-chinese-table">
-        <colgroup>
-          <col class="mc-label-column" />
-          <col class="mc-value-column" />
-        </colgroup>
-        <tbody id="middle-chinese-readings"></tbody>
-      </table>
+    <div data-section-body="middle-chinese">
+      <h2>Middle Chinese <i lang="zh">中古漢語</i></h2>
+      <p>
+        Baxter transcription with fanqie and traditional rime-table categories.
+        The 攝 is read from Wiktionary’s final number (e.g. 欣 (57)); the 轉 is inferred from the listed final.
+        <a href="/tools/han-character/rime-reference/">Read the 攝 and rime reference</a>.
+      </p>
+      <div class="result-table">
+        <table class="fullwidth readings-table middle-chinese-table">
+          <colgroup>
+            <col class="mc-label-column" />
+            <col class="mc-value-column" />
+          </colgroup>
+          <tbody id="middle-chinese-readings"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div data-section-body="old-chinese">
+      <h2>Old Chinese <i lang="zh">上古漢語</i></h2>
+      <p>Reconstructions read from Wiktionary’s Zhengzhang (2003) and Baxter–Sagart (2014) tables.</p>
+      <div class="result-table">
+        <table class="fullwidth readings-table middle-chinese-table">
+          <colgroup>
+            <col class="mc-label-column" />
+            <col class="mc-value-column" />
+          </colgroup>
+          <tbody id="old-chinese-readings"></tbody>
+        </table>
+      </div>
     </div>
 
     <p class="source-note no-ornament">
       Data is parsed live from Wiktionary and may be incomplete when an entry uses an unusual template.
+      Display choices are saved in this browser.
     </p>
+    </div>
+
+    <aside class="display-panel" aria-label="Display options">
+      <div class="display-panel-inner">
+        <h2>Display</h2>
+        <div id="display-controls"></div>
+      </div>
+    </aside>
   </section>
 </BaseLayout>
 
 <script>
   type ReadingMap = Record<string, string>;
+
+  type ModernRow = {
+    system: string;
+    systemLang?: string;
+    value: string;
+    lang?: string;
+  };
+
+  type ModernGroup = {
+    key: string;
+    rows: ModernRow[];
+  };
 
   type MiddleChineseReading = {
     baxter: string;
@@ -135,22 +142,71 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     zhuan: string;
   };
 
+  type OldChinese = {
+    zhengzhang: string;
+    baxterSagart: string;
+  };
+
   type CharacterData = {
     character: string;
     sourceCharacter: string;
-    pinyin: string;
-    zhuyin: string;
-    cantoneseJyutping: string;
-    minPoj: string;
-    japaneseOn: string;
-    japaneseKun: string;
-    koreanReading: string;
-    koreanEumhun: string;
+    modern: ModernGroup[];
     middleChinese: MiddleChineseReading[];
+    oldChinese: OldChinese;
+  };
+
+  type DisplayPrefs = {
+    hiddenSections: string[];
+    hiddenEntries: string[];
+    shownEntries: string[];
+    groupOrder: string[];
+    mcFieldOrder: string[];
   };
 
   const API_URL = "https://en.wiktionary.org/w/api.php";
   const EMPTY_VALUE = "Not listed";
+  const PREFS_KEY = "han-character-display";
+
+  const SECTIONS: Array<[string, string]> = [
+    ["modern", "Modern readings"],
+    ["middle-chinese", "Middle Chinese"],
+    ["old-chinese", "Old Chinese"],
+  ];
+
+  const MC_FIELD_LABELS = [
+    "Baxter",
+    "Fanqie 反切",
+    "攝",
+    "轉",
+    "韻類",
+    "Initial 聲",
+    "Final 韻",
+    "Tone 調",
+    "Openness 呼",
+    "Division 等",
+  ];
+
+  const OC_SYSTEMS: Array<["zhengzhang" | "baxterSagart", string]> = [
+    ["zhengzhang", "Zhengzhang"],
+    ["baxterSagart", "Baxter–Sagart"],
+  ];
+
+  const GROUP_LABELS: Record<string, { native: string; lang: string }> = {
+    Mandarin: { native: "官話", lang: "zh" },
+    Cantonese: { native: "粵語", lang: "zh" },
+    Gan: { native: "贛語", lang: "zh" },
+    Hakka: { native: "客家話", lang: "zh" },
+    Jin: { native: "晉語", lang: "zh" },
+    "Northern Min": { native: "閩北語", lang: "zh" },
+    "Eastern Min": { native: "閩東語", lang: "zh" },
+    "Southern Min": { native: "閩南語", lang: "zh" },
+    "Puxian Min": { native: "莆仙語", lang: "zh" },
+    Wu: { native: "吳語", lang: "zh" },
+    Xiang: { native: "湘語", lang: "zh" },
+    "Southern Pinghua": { native: "南部平話", lang: "zh" },
+    Japanese: { native: "日本語", lang: "ja" },
+    Korean: { native: "한국 한자음", lang: "ko" },
+  };
 
   const SHE_GROUPS: Record<string, string> = {
     通: "東冬鍾鐘",
@@ -171,11 +227,32 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     咸: "覃談鹽添咸銜嚴凡",
   };
 
+  // Wiktionary numbers its Middle Chinese finals 1–160 (e.g. 欣 (57));
+  // each range of numbers belongs to one 攝.
+  const SHE_BY_FINAL_NUMBER: Array<{ she: string; from: number; to: number }> = [
+    { she: "通", from: 1, to: 8 },
+    { she: "江", from: 9, to: 10 },
+    { she: "止", from: 11, to: 21 },
+    { she: "遇", from: 22, to: 24 },
+    { she: "蟹", from: 25, to: 42 },
+    { she: "臻", from: 43, to: 60 },
+    { she: "山", from: 61, to: 88 },
+    { she: "效", from: 89, to: 93 },
+    { she: "果", from: 94, to: 97 },
+    { she: "假", from: 98, to: 100 },
+    { she: "宕", from: 101, to: 108 },
+    { she: "梗", from: 109, to: 132 },
+    { she: "曾", from: 133, to: 135 },
+    { she: "流", from: 136, to: 138 },
+    { she: "深", from: 139, to: 142 },
+    { she: "咸", from: 143, to: 160 },
+  ];
+
   const FINAL_VARIANTS: Record<string, string> = {
     鍾: "鐘",
-    真: "眞",
-    清: "淸",
-    青: "靑",
+    眞: "真",
+    淸: "清",
+    靑: "青",
   };
 
   const DIVISION_LABELS: Record<string, string> = {
@@ -235,7 +312,93 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   const input = document.querySelector<HTMLInputElement>("#character-input");
   const status = document.querySelector<HTMLElement>("#status");
   const results = document.querySelector<HTMLElement>("#results");
+  const modernContainer = document.querySelector<HTMLElement>("#modern-readings");
   const middleChineseContainer = document.querySelector<HTMLElement>("#middle-chinese-readings");
+  const oldChineseContainer = document.querySelector<HTMLElement>("#old-chinese-readings");
+  const panelContainer = document.querySelector<HTMLElement>("#display-controls");
+
+  let lastData: CharacterData | null = null;
+  const openPanelGroups = new Set<string>();
+
+  function loadPrefs(): DisplayPrefs {
+    const fallback: DisplayPrefs = { hiddenSections: [], hiddenEntries: [], shownEntries: [], groupOrder: [], mcFieldOrder: [] };
+    try {
+      const raw = localStorage.getItem(PREFS_KEY);
+      if (!raw) return fallback;
+      const parsed = JSON.parse(raw) as Partial<DisplayPrefs>;
+      return {
+        hiddenSections: Array.isArray(parsed.hiddenSections) ? parsed.hiddenSections : [],
+        hiddenEntries: Array.isArray(parsed.hiddenEntries) ? parsed.hiddenEntries : [],
+        shownEntries: Array.isArray(parsed.shownEntries) ? parsed.shownEntries : [],
+        groupOrder: Array.isArray(parsed.groupOrder) ? parsed.groupOrder : [],
+        mcFieldOrder: Array.isArray(parsed.mcFieldOrder) ? parsed.mcFieldOrder : [],
+      };
+    } catch {
+      return fallback;
+    }
+  }
+
+  const prefs = loadPrefs();
+
+  function savePrefs() {
+    try {
+      localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+    } catch {
+      // Private browsing or full storage: preferences simply do not persist.
+    }
+  }
+
+  // Languages shown by default; other dialect groups start toggled off, but
+  // their main system is still pre-selected so enabling the group shows the
+  // standard reading right away.
+  const DEFAULT_GROUPS = new Set(["Mandarin", "Cantonese", "Southern Min", "Japanese", "Korean"]);
+
+  // Entries the user has not touched fall back to a per-entry default:
+  // for dialect rows only the group's first (main) system is on by default.
+  function entryVisible(key: string, defaultVisible: boolean): boolean {
+    if (prefs.shownEntries.includes(key)) return true;
+    if (prefs.hiddenEntries.includes(key)) return false;
+    return defaultVisible;
+  }
+
+  function defaultRowVisible(group: ModernGroup, system: string): boolean {
+    if (group.key === "Japanese" || group.key === "Korean") return true;
+    return group.rows[0]?.system === system;
+  }
+
+  function setEntryVisible(key: string, visible: boolean) {
+    prefs.shownEntries = prefs.shownEntries.filter((entry) => entry !== key);
+    prefs.hiddenEntries = prefs.hiddenEntries.filter((entry) => entry !== key);
+    (visible ? prefs.shownEntries : prefs.hiddenEntries).push(key);
+    savePrefs();
+    rerender();
+  }
+
+  function orderKeys(natural: string[], saved: string[]): string[] {
+    const rank = (key: string) => {
+      const at = saved.indexOf(key);
+      return at === -1 ? saved.length + natural.indexOf(key) : at;
+    };
+    return [...natural].sort((a, b) => rank(a) - rank(b));
+  }
+
+  function applySectionVisibility() {
+    for (const body of document.querySelectorAll<HTMLElement>("[data-section-body]")) {
+      body.hidden = prefs.hiddenSections.includes(body.dataset.sectionBody ?? "");
+    }
+  }
+
+  applySectionVisibility();
+
+  function rerender() {
+    if (!lastData) return;
+    const active = document.activeElement as HTMLElement | null;
+    const focusId = active?.dataset?.controlId;
+    render(lastData);
+    if (focusId) {
+      document.querySelector<HTMLElement>(`[data-control-id="${CSS.escape(focusId)}"]`)?.focus();
+    }
+  }
 
   function text(selector: string): HTMLElement {
     const element = document.querySelector<HTMLElement>(selector);
@@ -245,6 +408,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
   function normalize(value: string | null | undefined): string {
     return value?.replace(/\s+/g, " ").trim() ?? "";
+  }
+
+  // Table row labels may contain <br> (e.g. "Old<br>Chinese"), which leaves no
+  // whitespace in textContent, so labels are compared with spacing removed.
+  function compactLabel(value: string): string {
+    return normalize(value).replace(/\s+/g, "").toLowerCase();
   }
 
   function singleHanCharacter(value: string): string | null {
@@ -362,9 +531,6 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   }
 
   function parseWikitext(wikitext: string) {
-    const zhPron = extractTemplate(wikitext, "zh-pron")[0];
-    const mandarin = zhPron ? templateArguments(zhPron).named.m ?? "" : "";
-
     const japaneseTemplates = extractTemplate(wikitext, "ja-readings");
     const onKeys = ["goon", "kanon", "toon", "soon", "kanyoon", "on"];
     const japaneseOn: string[] = [];
@@ -398,7 +564,6 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       : "";
 
     return {
-      pinyin: cleanWikiValue(mandarin),
       japaneseOn: unique(japaneseOn),
       japaneseKun: unique(japaneseKun),
       koreanReading,
@@ -428,17 +593,32 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     return container;
   }
 
-  function rowValue(table: HTMLTableElement, label: string): string {
+  function rowValues(table: HTMLTableElement, label: string): string[] {
+    const wanted = compactLabel(label);
     for (const row of table.rows) {
-      const heading = normalize(row.querySelector("th")?.textContent).replace(/\s+/g, " ");
-      if (heading.toLowerCase().startsWith(label.toLowerCase())) {
-        return normalize(row.querySelector("td")?.textContent);
-      }
+      const cells = Array.from(row.cells);
+      if (!cells.length) continue;
+      const headCell = row.querySelector("th") ?? cells[0];
+      if (!compactLabel(headCell.textContent ?? "").startsWith(wanted)) continue;
+      return cells
+        .filter((cell) => cell !== headCell && cell.tagName === "TD")
+        .map((cell) => normalize(cell.textContent));
     }
-    return "";
+    return [];
+  }
+
+  function rowValue(table: HTMLTableElement, label: string): string {
+    return rowValues(table, label)[0] ?? "";
   }
 
   function sheForFinal(finalName: string): string {
+    const numberMatch = finalName.match(/\((\d+)\)/);
+    if (numberMatch) {
+      const finalNumber = Number(numberMatch[1]);
+      const range = SHE_BY_FINAL_NUMBER.find((entry) => finalNumber >= entry.from && finalNumber <= entry.to);
+      if (range) return `${range.she}攝`;
+    }
+
     const normalizedFinal = cleanFinalName(finalName);
     const match = Object.entries(SHE_GROUPS).find(([, finals]) => finals.includes(normalizedFinal));
     return match ? `${match[0]}攝` : "";
@@ -501,47 +681,143 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     return value;
   }
 
+  function ownLabel(item: Element): string {
+    let label = "";
+    for (const child of item.childNodes) {
+      if (child instanceof Element && /^(UL|OL|DL|TABLE)$/.test(child.tagName)) break;
+      label += child.textContent ?? "";
+    }
+    return normalize(label)
+      .replace(/\s*\(key\)$/i, "")
+      .replace(/[:：+]+\s*$/, "")
+      .trim();
+  }
+
+  const SKIPPED_ENTRY = /^\(?\s*(audio|homophones?|notes?|middle chinese|old chinese)\b/i;
+
+  // The pronunciation box renders both a one-line summary per dialect and a
+  // full expanded list (inside .vsHide). Readings are taken from the expanded
+  // list when one exists, otherwise from the summary lines.
+  function parseModernReadings(pronunciation: Element): ModernGroup[] {
+    const groups: ModernGroup[] = [];
+    const groupFor = (key: string): ModernGroup => {
+      let group = groups.find((entry) => entry.key === key);
+      if (!group) {
+        group = { key, rows: [] };
+        groups.push(group);
+      }
+      return group;
+    };
+
+    const leaves = [...pronunciation.querySelectorAll("li, dd")].filter(
+      (item) => !item.querySelector("ul, ol, dl, table") && !item.closest("table"),
+    );
+    const hasExpanded = leaves.some((item) => item.closest(".vsHide"));
+
+    for (const item of leaves) {
+      if (hasExpanded && !item.closest(".vsHide")) continue;
+
+      const content = normalize(item.textContent);
+      const colonAt = content.indexOf(":");
+      if (colonAt <= 0) continue;
+
+      const rawSystem = normalize(content.slice(0, colonAt)).replace(/\s*\(key\)$/i, "");
+      const value = normalize(content.slice(colonAt + 1));
+      if (!rawSystem || !value) continue;
+      if (SKIPPED_ENTRY.test(rawSystem)) continue;
+
+      const chain: string[] = [];
+      let node: Element | null = item.parentElement;
+      while (node && node !== pronunciation) {
+        if (node.tagName === "LI" || node.tagName === "DD") {
+          const label = ownLabel(node);
+          if (label) chain.unshift(label);
+        }
+        node = node.parentElement;
+      }
+
+      let groupKey = chain[0] ?? "";
+      let system = normalize([...chain.slice(1), rawSystem].join(" "));
+      if (!groupKey) {
+        const grouped = rawSystem.match(/^([^(]+?)\s*\((.+)\)$/);
+        if (grouped) {
+          groupKey = grouped[1].trim();
+          system = grouped[2].trim();
+        } else {
+          groupKey = rawSystem;
+          system = "Reading";
+        }
+      }
+      if (SKIPPED_ENTRY.test(groupKey)) continue;
+      groupKey = groupKey.replace(/^\((.+)\)$/, "$1");
+
+      groupFor(groupKey).rows.push({
+        system,
+        value,
+        lang: /zhuyin|bopomofo/i.test(system) ? "zh-Bopo" : undefined,
+      });
+    }
+
+    return groups;
+  }
+
   function parseRenderedHtml(html: string) {
     const parsed = new DOMParser().parseFromString(html, "text/html");
     const chinese = sectionContainer(parsed, "Chinese");
     const pronunciation = chinese?.querySelector(".zhpron");
 
-    const pinyin = normalize(
-      pronunciation?.querySelector<HTMLElement>('a[title="w:Pinyin"]')
-        ?.closest("dd")
-        ?.querySelector<HTMLElement>('.Latn[lang="cmn"]')
-        ?.textContent,
-    );
-    const zhuyin = normalize(pronunciation?.querySelector<HTMLElement>(".Bopo")?.textContent);
-    const readingForSystem = (title: string) => {
-      const system = pronunciation?.querySelector<HTMLElement>(`a[title="${title}"]`);
-      const entry = system?.closest("dd, li");
-      return normalize(entry?.querySelector<HTMLElement>(".zhpron-monospace")?.textContent);
-    };
-    const cantoneseJyutping = readingForSystem("w:Jyutping");
-    const minPoj = readingForSystem("w:Pe̍h-ōe-jī");
+    const modern = pronunciation ? parseModernReadings(pronunciation) : [];
 
     const middleChinese: MiddleChineseReading[] = [];
-    for (const table of pronunciation?.querySelectorAll<HTMLTableElement>("table") ?? []) {
-      const baxter = rowValue(table, "Baxter");
-      if (!baxter) continue;
+    const zhengzhang: string[] = [];
+    const baxterSagart: string[] = [];
 
-      const final = rowValue(table, "Final");
-      middleChinese.push({
-        baxter,
-        fanqie: rowValue(table, "Fanqie"),
-        initial: rowValue(table, "Initial"),
-        final,
-        tone: localizedTone(rowValue(table, "Tone")),
-        openness: localizedOpenness(rowValue(table, "Openness")),
-        division: rowValue(table, "Division"),
-        she: sheForFinal(final),
-        finalClass: finalClass(final, rowValue(table, "Division"), rowValue(table, "Openness")),
-        zhuan: zhuanForReading(final, rowValue(table, "Division"), rowValue(table, "Openness")),
+    for (const table of pronunciation?.querySelectorAll<HTMLTableElement>("table") ?? []) {
+      const oldChineseValues = rowValues(table, "Old Chinese").filter(Boolean);
+      if (oldChineseValues.length) {
+        if (rowValue(table, "Rime group")) zhengzhang.push(...oldChineseValues);
+        else if (rowValues(table, "Middle Chinese").length) baxterSagart.push(...oldChineseValues);
+        continue;
+      }
+
+      const baxters = rowValues(table, "Baxter").filter(Boolean);
+      if (!baxters.length) continue;
+
+      const finals = rowValues(table, "Final");
+      const fanqies = rowValues(table, "Fanqie");
+      const initials = rowValues(table, "Initial");
+      const tones = rowValues(table, "Tone");
+      const opennesses = rowValues(table, "Openness");
+      const divisions = rowValues(table, "Division");
+      const pick = (values: string[], index: number) => values[index] ?? values[0] ?? "";
+
+      baxters.forEach((baxter, index) => {
+        const final = pick(finals, index);
+        const openness = pick(opennesses, index);
+        const division = pick(divisions, index);
+        middleChinese.push({
+          baxter,
+          fanqie: pick(fanqies, index),
+          initial: pick(initials, index),
+          final,
+          tone: localizedTone(pick(tones, index)),
+          openness: localizedOpenness(openness),
+          division,
+          she: sheForFinal(final),
+          finalClass: finalClass(final, division, openness),
+          zhuan: zhuanForReading(final, division, openness),
+        });
       });
     }
 
-    return { pinyin, zhuyin, cantoneseJyutping, minPoj, middleChinese };
+    return {
+      modern,
+      middleChinese,
+      oldChinese: {
+        zhengzhang: [...new Set(zhengzhang)].join(", "),
+        baxterSagart: [...new Set(baxterSagart)].join(", "),
+      },
+    };
   }
 
   async function fetchWiktionary(character: string) {
@@ -577,7 +853,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     if (
       primaryWiki.relatedCharacter &&
       primaryWiki.relatedCharacter !== character &&
-      (!primaryWiki.pinyin || primaryHtml.middleChinese.length === 0)
+      (primaryHtml.modern.length === 0 || primaryHtml.middleChinese.length === 0)
     ) {
       const fallback = await fetchWiktionary(primaryWiki.relatedCharacter);
       fallbackWiki = parseWikitext(fallback.wikitext);
@@ -585,20 +861,37 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
       sourceCharacter = fallback.title;
     }
 
+    const chineseGroups = primaryHtml.modern.length ? primaryHtml.modern : fallbackHtml?.modern ?? [];
+
+    const modern: ModernGroup[] = [
+      ...chineseGroups,
+      {
+        key: "Japanese",
+        rows: [
+          { system: "On", value: primaryWiki.japaneseOn || fallbackWiki?.japaneseOn || "", lang: "ja" },
+          { system: "Kun", value: primaryWiki.japaneseKun || fallbackWiki?.japaneseKun || "", lang: "ja" },
+        ],
+      },
+      {
+        key: "Korean",
+        rows: [
+          { system: "음", systemLang: "ko", value: primaryWiki.koreanReading || fallbackWiki?.koreanReading || "", lang: "ko" },
+          { system: "훈", systemLang: "ko", value: primaryWiki.koreanEumhun || fallbackWiki?.koreanEumhun || "", lang: "ko" },
+        ],
+      },
+    ];
+
     return {
       character,
       sourceCharacter,
-      pinyin: primaryHtml.pinyin || primaryWiki.pinyin || fallbackHtml?.pinyin || fallbackWiki?.pinyin || "",
-      zhuyin: primaryHtml.zhuyin || fallbackHtml?.zhuyin || "",
-      cantoneseJyutping: primaryHtml.cantoneseJyutping || fallbackHtml?.cantoneseJyutping || "",
-      minPoj: primaryHtml.minPoj || fallbackHtml?.minPoj || "",
-      japaneseOn: primaryWiki.japaneseOn || fallbackWiki?.japaneseOn || "",
-      japaneseKun: primaryWiki.japaneseKun || fallbackWiki?.japaneseKun || "",
-      koreanReading: primaryWiki.koreanReading || fallbackWiki?.koreanReading || "",
-      koreanEumhun: primaryWiki.koreanEumhun || fallbackWiki?.koreanEumhun || "",
+      modern,
       middleChinese: primaryHtml.middleChinese.length
         ? primaryHtml.middleChinese
         : fallbackHtml?.middleChinese ?? [],
+      oldChinese: {
+        zhengzhang: primaryHtml.oldChinese.zhengzhang || fallbackHtml?.oldChinese.zhengzhang || "",
+        baxterSagart: primaryHtml.oldChinese.baxterSagart || fallbackHtml?.oldChinese.baxterSagart || "",
+      },
     };
   }
 
@@ -607,18 +900,110 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     text(selector).classList.toggle("empty-value", !value);
   }
 
+  function emptyRow(message: string, span: number): HTMLTableRowElement {
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.colSpan = span;
+    cell.className = "empty-value";
+    cell.textContent = message;
+    row.append(cell);
+    return row;
+  }
+
+  function groupHeadingCell(group: ModernGroup, rowCount: number): HTMLTableCellElement {
+    const heading = document.createElement("th");
+    heading.scope = "row";
+    heading.rowSpan = rowCount;
+
+    const label = GROUP_LABELS[group.key];
+    if (label) {
+      heading.lang = label.lang;
+      heading.append(label.native);
+      const small = document.createElement("small");
+      small.lang = "en";
+      small.textContent = group.key;
+      heading.append(small);
+    } else {
+      heading.textContent = group.key;
+    }
+    return heading;
+  }
+
+  function renderModern(groups: ModernGroup[]) {
+    if (!modernContainer) return;
+    modernContainer.replaceChildren();
+
+    if (!groups.length) {
+      modernContainer.append(emptyRow("No modern readings are listed.", 3));
+      return;
+    }
+
+    const orderedKeys = orderKeys(groups.map((group) => group.key), prefs.groupOrder);
+    let renderedAny = false;
+
+    for (const key of orderedKeys) {
+      const group = groups.find((entry) => entry.key === key);
+      if (!group || !entryVisible(`group:${group.key}`, DEFAULT_GROUPS.has(group.key))) continue;
+
+      const visibleRows = group.rows.filter(
+        (entry) => entryVisible(`row:${group.key}:${entry.system}`, defaultRowVisible(group, entry.system)),
+      );
+      if (!visibleRows.length) continue;
+      renderedAny = true;
+
+      visibleRows.forEach((entry, index) => {
+        const row = document.createElement("tr");
+        if (index === 0) row.append(groupHeadingCell(group, visibleRows.length));
+
+        const systemCell = document.createElement("td");
+        systemCell.textContent = entry.system;
+        if (entry.systemLang) systemCell.lang = entry.systemLang;
+
+        const valueCell = document.createElement("td");
+        valueCell.textContent = entry.value || EMPTY_VALUE;
+        if (!entry.value) valueCell.classList.add("empty-value");
+        else if (entry.lang) valueCell.lang = entry.lang;
+        if (entry.value && /\bIPA\b/i.test(entry.system)) valueCell.classList.add("ipa-value");
+
+        row.append(systemCell, valueCell);
+        modernContainer.append(row);
+      });
+    }
+
+    if (!renderedAny) {
+      modernContainer.append(emptyRow("All modern readings are hidden — re-enable them in the Display panel.", 3));
+    }
+  }
+
+  function middleChineseFields(reading: MiddleChineseReading): Array<[string, string, string?]> {
+    return [
+      ["Baxter", reading.baxter, "baxter-reading"],
+      ["Fanqie 反切", reading.fanqie, "zh"],
+      ["攝", reading.she, "zh"],
+      ["轉", reading.zhuan, "zh"],
+      ["韻類", reading.finalClass, "zh"],
+      ["Initial 聲", reading.initial, "zh"],
+      ["Final 韻", reading.final, "zh"],
+      ["Tone 調", reading.tone],
+      ["Openness 呼", reading.openness],
+      ["Division 等", reading.division],
+    ];
+  }
+
   function renderMiddleChinese(readings: MiddleChineseReading[]) {
     if (!middleChineseContainer) return;
     middleChineseContainer.replaceChildren();
 
     if (!readings.length) {
-      const row = document.createElement("tr");
-      const cell = document.createElement("td");
-      cell.colSpan = 2;
-      cell.className = "empty-value";
-      cell.textContent = "No Middle Chinese reading is listed.";
-      row.append(cell);
-      middleChineseContainer.append(row);
+      middleChineseContainer.append(emptyRow("No Middle Chinese reading is listed.", 2));
+      return;
+    }
+
+    const orderedLabels = orderKeys(MC_FIELD_LABELS, prefs.mcFieldOrder)
+      .filter((label) => entryVisible(`mc:${label}`, true));
+
+    if (!orderedLabels.length) {
+      middleChineseContainer.append(emptyRow("All Middle Chinese fields are hidden — re-enable them in the Display panel.", 2));
       return;
     }
 
@@ -634,26 +1019,18 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         middleChineseContainer.append(headingRow);
       }
 
-      const fields: Array<[string, string, string?]> = [
-        ["Baxter", reading.baxter, "baxter-reading"],
-        ["Fanqie 反切", reading.fanqie, "zh"],
-        ["攝", reading.she, "zh"],
-        ["轉", reading.zhuan, "zh"],
-        ["韻類", reading.finalClass, "zh"],
-        ["Initial 聲", reading.initial, "zh"],
-        ["Final 韻", reading.final, "zh"],
-        ["Tone 調", reading.tone],
-        ["Openness 呼", reading.openness],
-        ["Division 等", reading.division],
-      ];
+      const fields = middleChineseFields(reading);
+      for (const label of orderedLabels) {
+        const field = fields.find(([fieldLabel]) => fieldLabel === label);
+        if (!field) continue;
+        const [, value, marker] = field;
 
-      for (const [label, value, marker] of fields) {
         const row = document.createElement("tr");
         const heading = document.createElement("th");
-        const cell = document.createElement("td");
         heading.scope = "row";
         heading.textContent = label;
-        cell.textContent = value || "Not listed";
+        const cell = document.createElement("td");
+        cell.textContent = value || EMPTY_VALUE;
         if (!value) cell.classList.add("empty-value");
         if (marker === "zh") cell.lang = "zh";
         if (marker === "baxter-reading") cell.classList.add("baxter-reading");
@@ -663,17 +1040,219 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     });
   }
 
+  function renderOldChinese(oldChinese: OldChinese) {
+    if (!oldChineseContainer) return;
+    oldChineseContainer.replaceChildren();
+
+    let renderedAny = false;
+    for (const [field, label] of OC_SYSTEMS) {
+      if (!entryVisible(`oc:${field}`, true)) continue;
+      renderedAny = true;
+
+      const row = document.createElement("tr");
+      const heading = document.createElement("th");
+      heading.scope = "row";
+      heading.textContent = label;
+      const cell = document.createElement("td");
+      const value = oldChinese[field];
+      cell.textContent = value || EMPTY_VALUE;
+      if (!value) cell.classList.add("empty-value");
+      else cell.classList.add("baxter-reading");
+      row.append(heading, cell);
+      oldChineseContainer.append(row);
+    }
+
+    if (!renderedAny) {
+      oldChineseContainer.append(emptyRow("All Old Chinese systems are hidden — re-enable them in the Display panel.", 2));
+    }
+  }
+
+  function panelCheckbox(labelText: string, controlId: string, checked: boolean, onChange: (checked: boolean) => void): HTMLLabelElement {
+    const label = document.createElement("label");
+    label.className = "panel-toggle";
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.checked = checked;
+    box.dataset.controlId = controlId;
+    box.addEventListener("change", () => onChange(box.checked));
+    const caption = document.createElement("span");
+    caption.textContent = labelText;
+    label.append(box, caption);
+    return label;
+  }
+
+  function dragHandle(entry: HTMLElement, name: string): HTMLElement {
+    const handle = document.createElement("span");
+    handle.className = "drag-handle";
+    handle.textContent = "⠿";
+    handle.title = `Drag to reorder ${name}`;
+    handle.setAttribute("aria-hidden", "true");
+    handle.addEventListener("pointerdown", () => {
+      entry.draggable = true;
+    });
+    handle.addEventListener("pointerup", () => {
+      entry.draggable = false;
+    });
+    return handle;
+  }
+
+  function makeSortable(list: HTMLElement, save: (next: string[]) => void) {
+    let dragged: HTMLElement | null = null;
+
+    list.addEventListener("dragstart", (event) => {
+      const entry = (event.target as HTMLElement).closest<HTMLElement>("[data-drag-key]");
+      if (!entry || entry.parentElement !== list) return;
+      dragged = entry;
+      entry.classList.add("dragging");
+      event.dataTransfer?.setData("text/plain", entry.dataset.dragKey ?? "");
+      if (event.dataTransfer) event.dataTransfer.effectAllowed = "move";
+    });
+
+    list.addEventListener("dragover", (event) => {
+      if (!dragged) return;
+      event.preventDefault();
+      const over = (event.target as HTMLElement).closest<HTMLElement>("[data-drag-key]");
+      if (!over || over === dragged || over.parentElement !== list) return;
+      const rect = over.getBoundingClientRect();
+      const after = event.clientY > rect.top + rect.height / 2;
+      list.insertBefore(dragged, after ? over.nextSibling : over);
+    });
+
+    list.addEventListener("drop", (event) => {
+      if (dragged) event.preventDefault();
+    });
+
+    list.addEventListener("dragend", () => {
+      if (!dragged) return;
+      dragged.classList.remove("dragging");
+      dragged.draggable = false;
+      dragged = null;
+      const next = Array.from(list.children)
+        .map((child) => (child as HTMLElement).dataset.dragKey ?? "")
+        .filter(Boolean);
+      save(next);
+      savePrefs();
+      rerender();
+    });
+  }
+
+  function panelGroupTitle(title: string): HTMLElement {
+    const heading = document.createElement("h3");
+    heading.className = "panel-group-title";
+    heading.textContent = title;
+    return heading;
+  }
+
+  function renderPanel(data: CharacterData) {
+    if (!panelContainer) return;
+    panelContainer.replaceChildren();
+
+    panelContainer.append(panelGroupTitle("Sections"));
+    const sectionList = document.createElement("div");
+    sectionList.className = "panel-list";
+    for (const [id, label] of SECTIONS) {
+      sectionList.append(
+        panelCheckbox(label, `section:${id}`, !prefs.hiddenSections.includes(id), (checked) => {
+          prefs.hiddenSections = prefs.hiddenSections.filter((entry) => entry !== id);
+          if (!checked) prefs.hiddenSections.push(id);
+          savePrefs();
+          applySectionVisibility();
+        }),
+      );
+    }
+    panelContainer.append(sectionList);
+
+    panelContainer.append(panelGroupTitle("Languages"));
+    const groupList = document.createElement("div");
+    groupList.className = "panel-list";
+    const orderedKeys = orderKeys(data.modern.map((group) => group.key), prefs.groupOrder);
+
+    for (const key of orderedKeys) {
+      const group = data.modern.find((entry) => entry.key === key);
+      if (!group) continue;
+
+      const entry = document.createElement("div");
+      entry.className = "panel-entry";
+      entry.dataset.dragKey = key;
+
+      const head = document.createElement("div");
+      head.className = "panel-entry-head";
+      head.append(
+        panelCheckbox(key, `group:${key}`, entryVisible(`group:${key}`, DEFAULT_GROUPS.has(key)), (checked) => setEntryVisible(`group:${key}`, checked)),
+        dragHandle(entry, key),
+      );
+      entry.append(head);
+
+      const systems = [...new Set(group.rows.map((row) => row.system))];
+      if (systems.length > 1) {
+        const details = document.createElement("details");
+        details.className = "panel-systems";
+        details.open = openPanelGroups.has(key);
+        details.addEventListener("toggle", () => {
+          if (details.open) openPanelGroups.add(key);
+          else openPanelGroups.delete(key);
+        });
+        const summary = document.createElement("summary");
+        summary.textContent = `${systems.length} systems`;
+        details.append(summary);
+
+        const systemList = document.createElement("div");
+        systemList.className = "panel-list";
+        for (const system of systems) {
+          const rowKey = `row:${key}:${system}`;
+          systemList.append(
+            panelCheckbox(system, rowKey, entryVisible(rowKey, defaultRowVisible(group, system)), (checked) => setEntryVisible(rowKey, checked)),
+          );
+        }
+        details.append(systemList);
+        entry.append(details);
+      }
+
+      groupList.append(entry);
+    }
+    makeSortable(groupList, (next) => {
+      prefs.groupOrder = next;
+    });
+    panelContainer.append(groupList);
+
+    panelContainer.append(panelGroupTitle("Middle Chinese fields"));
+    const fieldList = document.createElement("div");
+    fieldList.className = "panel-list";
+    const orderedFields = orderKeys(MC_FIELD_LABELS, prefs.mcFieldOrder);
+    for (const label of orderedFields) {
+      const entry = document.createElement("div");
+      entry.className = "panel-entry-head";
+      entry.dataset.dragKey = label;
+      entry.append(
+        panelCheckbox(label, `mc:${label}`, entryVisible(`mc:${label}`, true), (checked) => setEntryVisible(`mc:${label}`, checked)),
+        dragHandle(entry, label),
+      );
+      fieldList.append(entry);
+    }
+    makeSortable(fieldList, (next) => {
+      prefs.mcFieldOrder = next;
+    });
+    panelContainer.append(fieldList);
+
+    panelContainer.append(panelGroupTitle("Old Chinese systems"));
+    const ocList = document.createElement("div");
+    ocList.className = "panel-list";
+    for (const [field, label] of OC_SYSTEMS) {
+      ocList.append(
+        panelCheckbox(label, `oc:${field}`, entryVisible(`oc:${field}`, true), (checked) => setEntryVisible(`oc:${field}`, checked)),
+      );
+    }
+    panelContainer.append(ocList);
+  }
+
   function render(data: CharacterData) {
+    lastData = data;
     setValue("#result-character", data.character);
-    setValue("#mandarin-pinyin", data.pinyin);
-    setValue("#mandarin-zhuyin", data.zhuyin);
-    setValue("#cantonese-jyutping", data.cantoneseJyutping);
-    setValue("#min-poj", data.minPoj);
-    setValue("#japanese-on", data.japaneseOn);
-    setValue("#japanese-kun", data.japaneseKun);
-    setValue("#korean-reading", data.koreanReading);
-    setValue("#korean-eumhun", data.koreanEumhun);
+    renderModern(data.modern);
     renderMiddleChinese(data.middleChinese);
+    renderOldChinese(data.oldChinese);
+    renderPanel(data);
+    applySectionVisibility();
 
     const link = document.querySelector<HTMLAnchorElement>("#wiktionary-link");
     if (link) link.href = `https://en.wiktionary.org/wiki/${encodeURIComponent(data.sourceCharacter)}`;
@@ -720,7 +1299,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   }
 </script>
 
-<style>
+<!-- Global (page-only) styles: most table/panel rows are created in the
+     script above, so Astro's scoped-style attributes would never match them. -->
+<style is:global>
   .lookup-form {
     width: 55%;
     margin: 2rem 0 0;
@@ -789,12 +1370,24 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     font-size: 1.4rem;
   }
 
+  .results {
+    display: flex;
+    align-items: flex-start;
+    gap: 3rem;
+  }
+
   .results[hidden] {
     display: none;
   }
 
-  .character-heading {
+  .results-main {
     width: 55%;
+    flex-shrink: 0;
+    min-width: 0;
+  }
+
+  .character-heading {
+    width: 100%;
     display: flex;
     align-items: end;
     justify-content: space-between;
@@ -820,7 +1413,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   }
 
   .result-table {
-    width: 55%;
+    width: 100%;
     margin: 1rem 0 2rem;
   }
 
@@ -859,6 +1452,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     font-weight: 700;
   }
 
+  .modern-language-column {
+    width: 26%;
+  }
+
+  .modern-system-column {
+    width: 32%;
+  }
+
   .middle-chinese-table tbody th {
     color: var(--meta-color);
     font-weight: 400;
@@ -873,9 +1474,8 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   }
 
   .middle-chinese-table .baxter-reading {
-    font-family: "Fira Code", "SF Mono", Consolas, monospace;
-    font-weight: 600;
-    letter-spacing: -0.03em;
+    font-family: minion-3, serif;
+    font-weight: 400;
   }
 
   .middle-chinese-table .mc-reading-heading th {
@@ -891,11 +1491,141 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     font-size: 1.4rem;
   }
 
+  /* Counter the global `article p { width: 55% }`: inside the 55% results
+     column paragraphs would otherwise shrink to 55% of 55%. */
+  .results-main p {
+    width: 100%;
+  }
+
+  .ipa-value {
+    font-family: minion-3, serif;
+  }
+
+  .display-panel {
+    position: sticky;
+    top: 1.5rem;
+    flex: 1;
+    min-width: 0;
+    max-width: 30%;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+    font-size: 1.15rem;
+    line-height: 1.5;
+  }
+
+  .display-panel-inner {
+    padding: 0.25rem 0.25rem 1.5rem 1.75rem;
+    border-left: 1px solid color-mix(in srgb, var(--border-color) 42%, transparent);
+  }
+
+  .display-panel h2 {
+    margin: 0 0 0.4rem;
+    font-size: 1.35rem;
+  }
+
+  .panel-group-title {
+    margin: 1.1rem 0 0.35rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+
+  .panel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .panel-entry-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .panel-entry-head .panel-toggle {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .drag-handle {
+    flex-shrink: 0;
+    margin-left: auto;
+    color: var(--meta-color);
+    font-size: 1.05rem;
+    line-height: 1;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+  }
+
+  .drag-handle:hover {
+    color: var(--text-color);
+  }
+
+  .panel-entry.dragging,
+  .panel-entry-head.dragging {
+    opacity: 0.45;
+  }
+
+  .panel-entry.dragging .drag-handle,
+  .panel-entry-head.dragging .drag-handle {
+    cursor: grabbing;
+  }
+
+  .panel-toggle {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    cursor: pointer;
+  }
+
+  .panel-toggle input {
+    margin: 0;
+    flex-shrink: 0;
+    accent-color: var(--link-hover-color);
+    cursor: pointer;
+  }
+
+  .panel-systems {
+    margin: 0.3rem 0 0.5rem 2.1rem;
+  }
+
+  .panel-systems summary {
+    color: var(--meta-color);
+    cursor: pointer;
+  }
+
+  .panel-systems .panel-list {
+    margin-top: 0.4rem;
+  }
+
   @media (max-width: 760px) {
-    .lookup-form,
-    .character-heading,
-    .result-table {
+    .lookup-form {
       width: 100%;
+    }
+
+    .results {
+      display: block;
+    }
+
+    .results[hidden] {
+      display: none;
+    }
+
+    .results-main {
+      width: 100%;
+    }
+
+    .display-panel {
+      position: static;
+      max-width: none;
+      max-height: none;
+      overflow-y: visible;
+      margin-top: 1.5rem;
+    }
+
+    .display-panel-inner {
+      padding: 0;
+      border-left: 0;
     }
   }
 
