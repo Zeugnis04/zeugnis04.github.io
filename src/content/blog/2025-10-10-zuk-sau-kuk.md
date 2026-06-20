@@ -1,4 +1,5 @@
 ---
+slug: zuk-sau-kuk
 title: "祝壽曲 Lyrics and Jyutping Transcription (YouTube video)"
 subtitle: "Is the traditional Cantonese birthday song really traditional?"
 date:   2025-10-10

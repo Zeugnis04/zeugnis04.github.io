@@ -1,4 +1,5 @@
 ---
+slug: trip-to-hawaii-polynesian-food
 title: "Trip to Hawaiʻi and Food"
 date: 2026-01-23
 tags: [culture, photo, hawai'i, travel, food-culture]

@@ -1,4 +1,5 @@
 ---
+slug: forever-howlong
 title: "Forever Howlong – Black Country, New Road Review"
 category: album-review
 date: 2025-05-08

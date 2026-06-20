@@ -296,6 +296,7 @@ header nav a:hover::after {
 /* Sidenotes, margin notes, figures, captions */
 img {
     max-width: 100%;
+    height: auto; /* keep aspect ratio when intrinsic width/height attrs are set */
 }
 
 .sidenote,

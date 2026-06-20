@@ -1,4 +1,5 @@
 ---
+slug: mong-gei-ta-english-translation-and-jyutping-transcription
 title:  "忘記他 English translation and Jyutping Transcription"
 date:   2025-02-24 21:02:26 +0900
 tags: [cantonese, lyrics, music, jyutping]

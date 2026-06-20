@@ -1,4 +1,5 @@
 ---
+slug: beginning-coffee
 title: "Beginning coffee"
 date: 2025-12-29
 tags: [coffee, food-culture]

@@ -1,4 +1,5 @@
 ---
+slug: magic-alive
 title: "Magic, Alive! - McKinley Dixon Review"
 category: album-review
 date: 2025-09-13

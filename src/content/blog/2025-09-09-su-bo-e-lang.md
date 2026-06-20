@@ -1,4 +1,5 @@
 ---
+slug: su-bo-e-lang
 title: "思慕的人 Lyrics and POJ Transcription (updated with video)"
 date:   2025-09-09
 category: lyric-video

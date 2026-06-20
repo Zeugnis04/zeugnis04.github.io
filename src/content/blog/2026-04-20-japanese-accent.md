@@ -1,4 +1,5 @@
 ---
+slug: japanese-accent
 title: "(Draft) Japanese Pitch Accent"
 date: 2026-04-20
 tags: [japanese, phonology, linguistics]

@@ -1,4 +1,5 @@
 ---
+slug: new-york-subway-typography
 title: "New York Subway Typography"
 date: 2025-07-13
 tags: [typography, new-york, travel]

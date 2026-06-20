@@ -1,4 +1,5 @@
 ---
+slug: mana-moana-national-museum-of-korea
 title: "Mana Moana — Arts of the Great Ocean, Oceania"
 date: 2025-05-16
 tags: [museum, photo, culture, pacific]

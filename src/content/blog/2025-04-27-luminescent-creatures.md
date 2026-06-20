@@ -1,4 +1,5 @@
 ---
+slug: luminescent-creatures
 title: "Luminescent Creatures – 青葉市子 Review"
 category: album-review
 date: 2025-04-27

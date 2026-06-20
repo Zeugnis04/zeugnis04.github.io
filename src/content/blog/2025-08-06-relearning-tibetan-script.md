@@ -1,4 +1,5 @@
 ---
+slug: relearning-tibetan-script
 title:  "Re-learning the Tibetan Script and Reading Lhasa Tibetan"
 date:   2025-08-06
 tags: [tibetan, script, brahmic, linguistics]

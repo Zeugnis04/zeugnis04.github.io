@@ -1,4 +1,5 @@
 ---
+slug: learning-the-burmese-script
 title:  "Learning the Burmese script"
 date:   2025-05-13
 tags: [burmese, script, brahmic, linguistics]

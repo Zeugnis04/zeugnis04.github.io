@@ -1,4 +1,5 @@
 ---
+slug: personal-thoughts-on-good-typography
 title: "Enjoying Typography"
 date: 2025-12-26
 tags: [typography, opinion]

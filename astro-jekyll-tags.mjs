@@ -1,9 +1,40 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { imageSize } from "image-size";
 import { liteAdaptor } from "mathjax-full/js/adaptors/liteAdaptor.js";
 import { RegisterHTMLHandler } from "mathjax-full/js/handlers/html.js";
 import { AllPackages } from "mathjax-full/js/input/tex/AllPackages.js";
 import { TeX } from "mathjax-full/js/input/tex.js";
 import { SVG } from "mathjax-full/js/output/svg.js";
 import { mathjax } from "mathjax-full/js/mathjax.js";
+
+// Intrinsic-dimension lookup for images served from /public.
+// Adds width/height (prevents layout shift) plus lazy/async loading hints.
+// Reads each file's header once and caches the result; failures degrade
+// gracefully to just the loading hints so a missing/remote image never
+// breaks the build.
+const _imgDimCache = new Map();
+
+function imageDimensions(src) {
+  if (!src || /^(?:https?:)?\/\//.test(src)) return null; // skip remote
+  if (_imgDimCache.has(src)) return _imgDimCache.get(src);
+  let result = null;
+  try {
+    const filePath = path.join(process.cwd(), "public", src.replace(/^\//, ""));
+    const { width, height } = imageSize(readFileSync(filePath));
+    if (width && height) result = { width, height };
+  } catch {
+    result = null;
+  }
+  _imgDimCache.set(src, result);
+  return result;
+}
+
+function imageAttrs(src) {
+  const dims = imageDimensions(src);
+  const size = dims ? ` width="${dims.width}" height="${dims.height}"` : "";
+  return `${size} loading="lazy" decoding="async"`;
+}
 
 let _mjxAdapter;
 let _mjxDoc;
@@ -395,10 +426,11 @@ function serializeInlineNode(node) {
     return `<a href="${href}"${title}>${serializeInlineChildren(node)}</a>`;
   }
   if (node.type === "image") {
-    const src = escapeAttr(node.url ?? "");
+    const url = node.url ?? "";
+    const src = escapeAttr(url);
     const alt = escapeAttr(node.alt ?? "");
     const title = node.title ? ` title="${escapeAttr(node.title)}"` : "";
-    return `<img src="${src}" alt="${alt}"${title}>`;
+    return `<img src="${src}" alt="${alt}"${title}${imageAttrs(url)}>`;
   }
   if (Array.isArray(node.children)) return serializeInlineChildren(node);
   if (typeof node.value === "string") return escapeHtml(node.value);
@@ -459,7 +491,7 @@ function renderFigure(src, caption, className = "") {
   const fullSrc = normalizeSrc(src);
   const classAttr = className ? ` class="${className}"` : "";
   const safeCaption = caption ? `<figcaption>${caption}</figcaption>` : "";
-  return `<figure${classAttr}>${safeCaption}<img src="${escapeAttr(fullSrc)}" alt="${escapeAttr(stripHtml(caption))}" /></figure>`;
+  return `<figure${classAttr}>${safeCaption}<img src="${escapeAttr(fullSrc)}" alt="${escapeAttr(stripHtml(caption))}"${imageAttrs(fullSrc)} /></figure>`;
 }
 
 function renderMarginFigure(id, src, caption) {
@@ -468,7 +500,7 @@ function renderMarginFigure(id, src, caption) {
   return [
     `<label for="${escapeAttr(cleanId)}" class="margin-toggle">&#8853;</label>`,
     `<input type="checkbox"${cleanId ? ` id="${escapeAttr(cleanId)}"` : ""} class="margin-toggle" checked />`,
-    `<span class="marginnote"><img class="fullwidth" src="${escapeAttr(fullSrc)}" alt="" /><br>${caption}</span>`,
+    `<span class="marginnote"><img class="fullwidth" src="${escapeAttr(fullSrc)}" alt=""${imageAttrs(fullSrc)} /><br>${caption}</span>`,
   ].join("");
 }
 

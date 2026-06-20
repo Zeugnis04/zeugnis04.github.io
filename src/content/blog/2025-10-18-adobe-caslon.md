@@ -1,4 +1,5 @@
 ---
+slug: adobe-caslon
 title: "Adobe Caslon Pro — Curated Font # 1"
 date: 2025-10-18
 tags: [typography, curated-font, adobe-originals]
