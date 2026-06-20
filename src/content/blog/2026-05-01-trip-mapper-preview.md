@@ -3,7 +3,6 @@ slug: trip-mapper-preview
 title: "Trip Mapper Test"
 date: 2026-05-01
 tags: [test]
-draft: true
 ---
 
 <div class="trip-map-embed">
