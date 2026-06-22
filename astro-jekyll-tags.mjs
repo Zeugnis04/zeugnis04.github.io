@@ -215,14 +215,20 @@ function transformRootBlocks(tree) {
 
     const text = nodeText(node);
 
-    if (text.includes("{% epigraph %}")) {
+    if (/\{%\s*epigraph\s*%\}/.test(text)) {
       const collected = [text];
       let cursor = index;
-      while (!collected.join("\n\n").includes("{% endepigraph %}") && cursor + 1 < children.length) {
+      while (!/\{%\s*endepigraph\s*%\}/.test(collected.join("\n\n")) && cursor + 1 < children.length) {
         cursor += 1;
         collected.push(nodeText(children[cursor]));
       }
       const joined = collected.join("\n\n");
+      // If no closing tag was found, leave the node untouched instead of
+      // swallowing the rest of the document.
+      if (!/\{%\s*endepigraph\s*%\}/.test(joined)) {
+        nextChildren.push(node);
+        continue;
+      }
       const body = joined
         .replace(/^[\s\S]*?\{%\s*epigraph\s*%\}/, "")
         .replace(/\{%\s*endepigraph\s*%\}[\s\S]*$/, "");

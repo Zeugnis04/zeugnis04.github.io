@@ -59,6 +59,10 @@ span[lang="ja"] ruby rt {
 :lang(bo) {
     font-family: 'Noto Serif Tibetan', serif;
 }
+:lang(ipa), :lang(und-fonipa) {
+    font-family: minion-3, et-book, serif;
+    font-style: normal;
+}
 
 h1 {
     font-weight: 400;

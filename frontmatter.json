@@ -13,7 +13,7 @@
     {
       "name": "default",
       "pageBundle": false,
-      "previewPath": "'blog/{{fm.slug}}'",
+      "previewPath": "blog",
       "filePrefix": null,
       "clearEmpty": true,
       "fields": [
@@ -26,7 +26,8 @@
         {
           "title": "Slug",
           "name": "slug",
-          "type": "string"
+          "type": "string",
+          "isSlug": true
         },
         {
           "title": "Description",
