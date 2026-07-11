@@ -4,10 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "ensure:slugs": "node scripts/ensure-slugs.mjs",
-    "predev": "npm run ensure:slugs",
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
-    "prebuild": "npm run ensure:slugs",
     "build": "ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build",
     "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
     "migrate:posts": "node scripts/migrate-posts.mjs",
