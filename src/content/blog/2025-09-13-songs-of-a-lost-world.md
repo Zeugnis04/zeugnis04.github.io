@@ -1,6 +1,6 @@
 ---
 slug: songs-of-a-lost-world
-title: "Songs For a Lost World - The Cure Review"
+title: "Songs For a Lost World – The Cure Review"
 category: album-review
 date: 2025-09-13
 tags: [album-review, featured-albums-archive, music, the-cure, rock, draft]

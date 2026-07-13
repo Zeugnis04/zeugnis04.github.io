@@ -1,4 +1,11 @@
 items:
+  - title: "Holy Diamond Blue"
+    creator: "Kamikaze Prom Night"
+    photo: "https://i.scdn.co/image/ab67616d000082c1bce9737ba7cfa44fe246c3fa"
+    date: "2026-07-12"
+    review: "travel through your imaginary paradise"
+    url: "/blog/holy-diamond-blue/"
+    featured: true
   - title: "Inferno"
     creator: "Boards of Canada"
     photo: "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/18/f7/ee/18f7ee40-b891-3d7f-e0b3-e4e2470cbdac/5056818808906.png/600x600bf-60.jpg"

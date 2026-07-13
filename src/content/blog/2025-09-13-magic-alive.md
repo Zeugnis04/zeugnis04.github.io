@@ -1,6 +1,6 @@
 ---
 slug: magic-alive
-title: "Magic, Alive! - McKinley Dixon Review"
+title: "Magic, Alive! – McKinley Dixon Review"
 category: album-review
 date: 2025-09-13
 tags: [album-review, featured-albums-archive, music, mckinley-dixon, hip-hop, draft]

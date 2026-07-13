@@ -1,8 +1,24 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getMediaItems } from "@/lib/media";
 import { getPosts } from "@/lib/posts";
 
-const albums = (await getPosts()).filter((post) => post.tags.includes("album-review"));
+const mediaByUrl = new Map(
+  (await getMediaItems())
+    .filter((item) => item.url)
+    .map((item) => [item.url!, item]),
+);
+
+const albums = (await getPosts())
+  .filter((post) => post.tags.includes("album-review"))
+  .map((post) => {
+    const media = mediaByUrl.get(post.url);
+    return {
+      ...post,
+      albumTitle: media?.title ?? post.title,
+      creator: media?.creator,
+    };
+  });
 ---
 <BaseLayout title="Featured Albums Archive">
   <h1>Featured Albums Archive</h1>
@@ -15,7 +31,7 @@ const albums = (await getPosts()).filter((post) => post.tags.includes("album-rev
           {post.cover && <img src={post.cover} alt={`${post.title} cover`} />}
         </a>
         <div class="album-info">
-          <h4>{post.title}</h4>
+          <h4>{post.albumTitle}{post.creator && ` – ${post.creator}`}</h4>
           {post.excerpt && <p><em>{post.excerpt}</em></p>}
         </div>
       </div>
