@@ -4,8 +4,11 @@ import remarkMath from "remark-math";
 import remarkSmartypants from "remark-smartypants";
 import rehypeMathjax from "rehype-mathjax";
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   site: "https://zeugnis04.github.io",
+
   markdown: {
     // Disable Astro's built-in SmartyPants so we can use kramdown-style dashes
     // (matching the old Jekyll site): `--` -> en dash, `---` -> em dash.
@@ -21,4 +24,6 @@ export default defineConfig({
       theme: "github-light",
     },
   },
+
+  adapter: cloudflare()
 });
