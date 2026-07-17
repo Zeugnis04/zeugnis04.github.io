@@ -13,6 +13,8 @@ type Props = {
     full_width?: boolean;
     korean?: boolean;
     hidden?: boolean;
+    cover?: string;
+    excerpt?: string;
   };
 };
 
@@ -28,10 +30,13 @@ const tags = frontmatter.tags ?? [];
 ---
 <BaseLayout
   title={frontmatter.title}
-  description={frontmatter.description}
+  description={frontmatter.description ?? frontmatter.excerpt}
   fullWidth={frontmatter.full_width}
   korean={frontmatter.korean}
   noindex={frontmatter.hidden}
+  image={frontmatter.cover}
+  imageAlt={frontmatter.cover ? `Cover art for ${frontmatter.title}` : undefined}
+  ogType="article"
 >
   <h1>{frontmatter.title}</h1>
   {frontmatter.subtitle && <p class="subtitle">{frontmatter.subtitle}</p>}
