@@ -28,6 +28,7 @@ const pageTitle = headTitle ?? (title === "Random Access Memories"
   ? title
   : `${title} | Random Access Memories`);
 const currentPath = Astro.url.pathname;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
 const activeSection = currentPath.startsWith("/blog/")
   ? "blog"
   : currentPath.startsWith("/tags/")
@@ -44,7 +45,13 @@ const activeSection = currentPath.startsWith("/blog/")
     <title>{pageTitle}</title>
     <ViewTransitions />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL.href} />
     {noindex && <meta name="robots" content="noindex,nofollow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta name="twitter:card" content="summary" />
     <script is:inline>
       (function(d) {
         var config = {

@@ -12,6 +12,7 @@ type Props = {
     comments?: boolean;
     full_width?: boolean;
     korean?: boolean;
+    hidden?: boolean;
   };
 };
 
@@ -30,6 +31,7 @@ const tags = frontmatter.tags ?? [];
   description={frontmatter.description}
   fullWidth={frontmatter.full_width}
   korean={frontmatter.korean}
+  noindex={frontmatter.hidden}
 >
   <h1>{frontmatter.title}</h1>
   {frontmatter.subtitle && <p class="subtitle">{frontmatter.subtitle}</p>}
