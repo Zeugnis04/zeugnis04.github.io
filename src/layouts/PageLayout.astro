@@ -1,0 +1,21 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+type Props = {
+  frontmatter: {
+    title: string;
+    headTitle?: string;
+    description?: string;
+  };
+};
+
+const { frontmatter } = Astro.props;
+---
+<BaseLayout
+  title={frontmatter.title}
+  headTitle={frontmatter.headTitle}
+  description={frontmatter.description}
+>
+  <h1>{frontmatter.title}</h1>
+  <slot />
+</BaseLayout>

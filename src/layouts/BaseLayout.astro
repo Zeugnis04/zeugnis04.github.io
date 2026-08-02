@@ -48,7 +48,9 @@ const activeSection = currentPath.startsWith("/blog/")
     ? "tags"
     : currentPath.startsWith("/zeugnis/")
       ? "zeugnis"
-      : "home";
+      : currentPath.startsWith("/misc/")
+        ? "misc"
+        : "home";
 ---
 <!doctype html>
 <html lang="en">
@@ -116,6 +118,7 @@ const activeSection = currentPath.startsWith("/blog/")
           <li><a class:list={[activeSection === "blog" && "active"]} href="/blog/blog-list/">Blog</a></li>
           <li><a class:list={[activeSection === "tags" && "active"]} href="/tags/">Tags</a></li>
           <li><a class:list={[activeSection === "zeugnis" && "active"]} href="/zeugnis/">Zeugnis</a></li>
+          <li><a class:list={["ornament-tab", activeSection === "misc" && "active"]} href="/misc/" aria-label="Sundries" title="Sundries"><span class="nav-ornament">j</span></a></li>
         </ul>
       </nav>
     </header>

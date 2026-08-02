@@ -768,6 +768,37 @@ header nav a {
   transition: color 0.3s ease;
 }
 
+/* Reusable vertical-writing utility: upright glyphs with the font's vertical
+   punctuation forms (vert) plus contextual alternates/ligatures. */
+.vert-text {
+  -webkit-writing-mode: vertical-rl;
+  writing-mode: vertical-rl;
+  -webkit-text-orientation: upright;
+  text-orientation: upright;
+  -webkit-font-feature-settings: "vert" 1, "clig" 1, "calt" 1;
+  font-feature-settings: "vert" 1, "clig" 1, "calt" 1;
+}
+
+/* Ornament-only nav tab (Sundries). Swap the letter in the markup to pick a
+   different Adobe Caslon fleuron; see the ornament map in the Adobe Caslon post. */
+.nav-ornament {
+  font-family: adobe-caslon-pro, serif;
+  font-feature-settings: "ornm";
+  font-size: 2rem; /* larger than the 1.3rem nav text so the fleuron reads at a matching weight */
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle; /* fallback for non-WebKit */
+  vertical-align: -webkit-baseline-middle; /* only applied in WebKit */
+}
+
+/* Keep the ornament tab on the baseline when active: the shared a.active rule
+   switches to inline-flex + align-items:center, which ignores the span's
+   vertical-align and makes the glyph jump upward. Hold it as inline-block. */
+nav.group a.ornament-tab.active {
+  display: inline-block;
+  align-items: initial;
+}
+
 nav.group a.active {
   white-space: nowrap;
   display: inline-flex;

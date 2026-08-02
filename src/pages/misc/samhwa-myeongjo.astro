@@ -1,0 +1,125 @@
+---
+import "@/styles/site.scss";
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>삼화명조 · Samhwa Myeongjo</title>
+    <link rel="icon" href="/favicons/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />
+  </head>
+  <body class="samhwa-showcase">
+    <main class="samhwa-stage">
+      <h1 class="samhwa-title" lang="ko">삼화명조</h1>
+      <div class="samhwa-passage" lang="ko">
+          “자연은 보석을 만들기 위해 얼마나 많은 세월을 보냈는가? 또 그 보석이 채굴의 운을 만나기까지 얼마나 많은 세월을 조용히 빛나고 있었는가?”라는 구절이다. 그 외에는 요령부득으로 끝났다. 그 대신 이 시간에는 끝까지 스트레이 십이라는 글자를 한 번도 쓰지 않았다.
+        <cite>현암사 역 『산시로』 발췌</cite>
+      </div>
+      <div class="samhwa-back">
+        <a href="/misc/">← 돌아가기</a>
+      </div>
+    </main>
+  </body>
+</html>
+
+<style>
+  /* Override the site's constrained body for a full-page showcase. */
+  body.samhwa-showcase {
+    width: 100%;
+    max-width: none;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+
+  .samhwa-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 8vw 1.5rem;
+    box-sizing: border-box;
+  }
+
+  /* 삼화명조, large and horizontal. */
+  .samhwa-title {
+    font-family: "OnulSamhwa", "source-han-serif-sc", serif;
+    font-size: clamp(3.5rem, 16vw, 14rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    margin: 0 0 2.5rem;
+    text-align: center;
+  }
+
+  .samhwa-passage {
+    max-width: 60rem;
+    font-family: "OnulSamhwa", "source-han-serif-sc", serif;
+    font-size: 3rem !important; /* large body text */
+    line-height: 1.8;
+  }
+
+  .samhwa-passage p {
+    margin: 0;
+    text-align: justify;
+  }
+
+  .samhwa-passage cite {
+    display: block;
+    margin-top: 1.75rem;
+    font-size: 2.0rem !important;
+    font-style: normal;
+    text-align: right;
+    opacity: 0.7;
+  }
+
+  /* Back button: a black-outlined rectangle, aligned right, with a quick
+     hover/press response. */
+  /* Same width + centering as .samhwa-passage, so its right edge lines up
+     with the paragraph's right end; text-align pins the button there. */
+  .samhwa-back {
+    width: 100%;
+    max-width: 60rem;
+    margin-top: 2.5rem;
+    padding-bottom: 2.5rem;
+    text-align: right;
+  }
+
+  .samhwa-back a {
+    display: inline-block;
+    padding: 0.55em 1.4em;
+    border: 2.5pt solid currentColor;
+    color: var(--text-color);
+    background-color: transparent;
+    font-family: "OnulSamhwa", adobe-caslon-pro, serif;
+    font-size: 1.25rem;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease,
+      transform 0.08s ease;
+  }
+
+  .samhwa-back a:hover,
+  .samhwa-back a:focus-visible {
+    background-color: var(--text-color);
+    color: var(--bg-color); /* invert fill on hover */
+  }
+
+  .samhwa-back a:active {
+    transform: translateY(1px) scale(0.98); /* brief press feedback */
+  }
+
+  @media (max-width: 40rem) {
+    .samhwa-passage {
+      font-size: 2rem;
+    }
+    .samhwa-passage cite {
+      font-size: 1.4rem;
+    }
+  }
+</style>
