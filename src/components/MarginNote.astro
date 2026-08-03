@@ -1,0 +1,11 @@
+---
+// MDX equivalent of `{% marginnote 'id' 'note' %}` — a sidenote without the
+// numbered reference. Same markup and classes as renderInlineTag in
+// astro-jekyll-tags.mjs.
+type Props = { id?: string };
+
+const { id } = Astro.props;
+---
+<label for={id} class="margin-toggle">&#8853;</label>
+<input type="checkbox" id={id} class="margin-toggle" checked />
+<span class="marginnote"><slot /></span>

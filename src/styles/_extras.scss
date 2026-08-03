@@ -49,6 +49,16 @@ article {
     p, li, footer, table, .ipa-chart {
         width: 55%;
     }
+
+    /* The 55% column should only be applied once. Where one of these sits
+       inside another — a <p> inside an <li> on the tags page, say — the inner
+       one was taking 55% of an element that was already 55%, squeezing it to
+       roughly a third of the page. */
+    li {
+        p, li, footer, table, .ipa-chart {
+            width: 100%;
+        }
+    }
 }
 footer {
     width: 55%;

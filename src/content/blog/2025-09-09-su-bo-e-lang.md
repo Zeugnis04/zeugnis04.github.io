@@ -52,7 +52,7 @@ In my dream, hard to part and leave
 Guide me towards you  
 <span lang="ko">저를 당신에게로 이끌어 </span>
 
-更加 心 綿綿 茫茫{% sidenote 'min' 'This rendition and the original song both use 白讀 (colloquial reading) bâng. 文讀 (Literary reading) is bông.'%} 過{% sidenote 'min' ' kuè is a more common reading in modern day Taiwan, and this rendition also uses this reading. Other common reading is kè.'%} 日子  
+更加 心 綿綿 茫茫{% sidenote 'min' 'This rendition and the original song both use 白讀 (colloquial reading) bâng. 文讀 (Literary reading) is bông.'%} 過{% sidenote 'min' 'kuè is a more common reading in modern day Taiwan, and this rendition also uses this reading. Other common reading is kè.'%} 日子  
 <span class="poj-text">kìng-ka sim mî-mî bâng-bâng kuè jt-chí</span>  
 Make my heart tender and aimless as I pass the days  
 <span lang="ko">마음을 더 부드럽게 만들고 막막하게 날을 보내요 </span>   

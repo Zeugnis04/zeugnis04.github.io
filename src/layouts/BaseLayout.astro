@@ -74,11 +74,22 @@ const activeSection = currentPath.startsWith("/blog/")
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageURL} />
     <meta name="twitter:image:alt" content={imageAlt ?? pageTitle} />
+    <!-- The kit's JS and the font files it pulls come from two different
+         origins; opening both connections early shaves a round trip off the
+         race against `scriptTimeout` below. -->
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin />
+    <link rel="preconnect" href="https://p.typekit.net" crossorigin />
     <script is:inline>
       (function(d) {
         var config = {
           kitId: "baf3roc",
-          scriptTimeout: 3000,
+          // When this fires, Typekit.load() never runs and no @font-face is
+          // injected — so every CJK run on the page silently falls back to a
+          // system serif. The timeout exists only to stop `wf-loading` from
+          // hiding text forever, and nothing in our CSS uses the wf-* classes,
+          // so it can afford to be generous: a slow connection loading a large
+          // CJK kit should still get the right typeface.
+          scriptTimeout: 10000,
           async: true,
         };
         var h = d.documentElement;

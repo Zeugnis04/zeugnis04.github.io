@@ -1,0 +1,11 @@
+---
+// MDX equivalent of `{% sidenote 'id' 'note' %}`. The checkbox is the Tufte
+// mobile toggle: the label is what a reader taps to reveal the note.
+// Same markup and classes as renderInlineTag in astro-jekyll-tags.mjs.
+type Props = { id?: string };
+
+const { id } = Astro.props;
+---
+<label for={id} class="margin-toggle sidenote-number"></label>
+<input type="checkbox" id={id} class="margin-toggle" checked />
+<span class="sidenote"><slot /></span>
