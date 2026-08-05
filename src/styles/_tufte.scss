@@ -29,20 +29,27 @@ body {
     font-family: adobe-tamil, serif;
     font-style: normal;
     }
+/* OnulSamhwa is Hangul-only by unicode-range, so Hanja inside Korean text had
+   no CJK family to land on and fell through to whatever the system picked —
+   on macOS that is Hiragino Kaku Gothic, a sans, which stands out badly in
+   running serif text. The Mincho families catch those characters. */
 :lang(ko)   {
-    font-family: "OnulSamhwa", adobe-caslon-pro, sandoll-myeongjoneo1, serif;
+    font-family: "OnulSamhwa", adobe-caslon-pro, sandoll-myeongjoneo1, fot-tsukuaoldmin-pr6n, "source-han-serif-sc", serif;
     font-style: normal;
     font-synthesis: none;
     // line-height: 1.8;
     // font-size:95%;
 }
+/* Source Han Serif backs up TsukuMin: TsukuMin covers Adobe-Japan1, so a
+   Traditional- or Simplified-only character used to drop straight to the
+   system font. */
 :lang(ja)   {
-    font-family: fot-tsukuaoldmin-pr6n, serif;
+    font-family: fot-tsukuaoldmin-pr6n, "source-han-serif-sc", serif;
     font-size:100%;
     font-style: normal;
 }
 :lang(zh)   {
-    font-family: fot-tsukuaoldmin-pr6n, serif;
+    font-family: fot-tsukuaoldmin-pr6n, "source-han-serif-sc", serif;
     font-size:100%;
     font-style: normal;
 }
@@ -144,6 +151,34 @@ p {
     padding-right: 0;
     vertical-align: baseline;
     text-align: justify;
+    /* Justifying a 55% column without hyphenation opens rivers of white space
+       between words. The browser hyphenates from its dictionary for the
+       document language, so this depends on <html lang> being set. */
+    -webkit-hyphens: auto; /* Safari */
+    hyphens: auto;
+    /* Only break words of 6+ characters, leaving at least 3 before the hyphen
+       and 3 after — avoids the stranded two-letter fragments that automatic
+       hyphenation otherwise produces. */
+    hyphenate-limit-chars: 6 3 3;
+}
+
+/* Code, URLs and anything in another script have no business being
+   hyphenated by an English dictionary. */
+code,
+kbd,
+samp,
+pre,
+a[href^="http"],
+.poj-text,
+:lang(ko),
+:lang(ja),
+:lang(zh),
+:lang(my),
+:lang(bo),
+:lang(ipa),
+:lang(und-fonipa) {
+    -webkit-hyphens: none;
+    hyphens: none;
 }
 
 /* Chapter Epigraphs */

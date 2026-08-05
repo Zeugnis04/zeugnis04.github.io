@@ -21,8 +21,14 @@ function imageDimensions(src) {
   let result = null;
   try {
     const filePath = path.join(process.cwd(), "public", src.replace(/^\//, ""));
-    const { width, height } = imageSize(readFileSync(filePath));
-    if (width && height) result = { width, height };
+    const { width, height, orientation } = imageSize(readFileSync(filePath));
+    // EXIF orientations 5-8 rotate the image by 90 degrees, so the stored
+    // dimensions are transposed relative to what the browser displays (phone
+    // photos hit this constantly). Report the displayed size.
+    const rotated = orientation !== undefined && orientation >= 5 && orientation <= 8;
+    if (width && height) {
+      result = rotated ? { width: height, height: width } : { width, height };
+    }
   } catch {
     result = null;
   }
@@ -67,6 +73,155 @@ export function rehypeWrapLoosePhrasing() {
   return (tree) => {
     wrapLoosePhrasingChildren(tree);
   };
+}
+
+// A justified line is filled until its photos' aspect ratios add up to about
+// this much, so a line of landscape photos holds fewer of them than a line of
+// portraits and every line comes out a sensible height. The cap keeps a long
+// run from cramming one line with thumbnails too small to read.
+const TARGET_LINE_RATIO = 4;
+const MAX_PER_LINE = 4;
+const DEFAULT_ASPECT_RATIO = 1.5;
+
+const FIGURE_RE = /<figure\b[\s\S]*?<\/figure>/g;
+
+/**
+ * Collapse runs of consecutive `{% maincolumn %}` figures into justified rows,
+ * so a burst of photos reads as one gallery instead of a stack of column-width
+ * images. Opt in per post with `lightbox: true`; posts without the flag keep
+ * the one-photo-per-block layout they have always had.
+ *
+ * This runs in the remark phase because the tags expand to raw HTML nodes that
+ * only become real elements after Astro's own rehype-raw pass, well past where
+ * a rehype plugin of ours could see them.
+ */
+export function remarkGroupFigures() {
+  return (tree, file) => {
+    if (file?.data?.astro?.frontmatter?.lightbox !== true) return;
+    groupFigureRuns(tree);
+  };
+}
+
+function groupFigureRuns(parent) {
+  if (!parent || typeof parent !== "object" || !Array.isArray(parent.children)) {
+    return;
+  }
+
+  const nextChildren = [];
+  let run = [];
+  // Whitespace, and the empty paragraph shells left where a tag was lifted out
+  // of a paragraph, sit between figures. They are only dropped once the run is
+  // known to continue, so everything else keeps the spacing it had.
+  let separators = [];
+
+  const flushRun = () => {
+    if (run.length >= 2) {
+      nextChildren.push({ type: "html", value: renderFigureRow(run) });
+    } else {
+      nextChildren.push(...run.map((figure) => ({ type: "html", value: figure })));
+    }
+    run = [];
+  };
+
+  for (const child of parent.children) {
+    const figures = groupableFigures(child);
+    if (figures) {
+      if (run.length) separators = [];
+      run.push(...figures);
+      continue;
+    }
+
+    if (run.length && isBlankNode(child)) {
+      separators.push(child);
+      continue;
+    }
+
+    flushRun();
+    nextChildren.push(...separators, child);
+    separators = [];
+  }
+
+  flushRun();
+  nextChildren.push(...separators);
+  parent.children = nextChildren;
+}
+
+/**
+ * The figures in a node that consists of nothing but figures, or null if the
+ * node is anything else. Full-width figures are meant to break out of the
+ * column, so a run stops at one.
+ */
+function groupableFigures(node) {
+  if (node?.type !== "html") return null;
+  const value = (node.value ?? "").trim();
+  if (!value.startsWith("<figure")) return null;
+  const figures = value.match(FIGURE_RE) ?? [];
+  if (!figures.length) return null;
+  // Splitting a paragraph around a tag leaves an orphan `</p>` behind, which
+  // the HTML parser turns into one of the empty paragraphs that litter these
+  // posts. Those are the only leftovers a run tolerates — and dropping them is
+  // what closes the stray gap between the photos.
+  if (value.replace(FIGURE_RE, "").replace(/<\/?p>/g, "").trim()) return null;
+  if (figures.some((figure) => /^<figure[^>]*\bclass="[^"]*\bfullwidth\b/.test(figure))) {
+    return null;
+  }
+  return figures;
+}
+
+function isBlankNode(node) {
+  if (node?.type === "html" || node?.type === "text") return !/\S/.test(node.value ?? "");
+  if (node?.type !== "paragraph") return false;
+  return (node.children ?? []).every(isBlankNode);
+}
+
+function renderFigureRow(figures) {
+  const lines = splitIntoLines(figures)
+    .map((line) => `<div class="figure-row-line">${line.map(withAspectRatio).join("")}</div>`)
+    .join("");
+  return `<div class="figure-row">${lines}</div>`;
+}
+
+/**
+ * Greedily fill lines up to TARGET_LINE_RATIO, keeping whichever break leaves
+ * the line closest to the target.
+ */
+function splitIntoLines(figures) {
+  const lines = [];
+  let line = [];
+  let total = 0;
+
+  for (const figure of figures) {
+    const ratio = figureAspectRatio(figure);
+    const overshoots = Math.abs(total + ratio - TARGET_LINE_RATIO) > Math.abs(total - TARGET_LINE_RATIO);
+    if (line.length && (overshoots || line.length >= MAX_PER_LINE)) {
+      lines.push(line);
+      line = [];
+      total = 0;
+    }
+    line.push(figure);
+    total += ratio;
+  }
+
+  if (line.length) lines.push(line);
+  return lines;
+}
+
+/**
+ * Publish the aspect ratio as a custom property. The stylesheet turns it into
+ * `flex: var(--ar) 1 0`, which makes each photo's width proportional to its
+ * aspect ratio — so everything sharing a line lands on the same height — while
+ * still letting a media query override the flex entirely on narrow screens.
+ */
+function withAspectRatio(figure) {
+  const ratio = figureAspectRatio(figure);
+  return figure.replace(/^<figure/, `<figure style="--ar:${ratio.toFixed(4)}"`);
+}
+
+function figureAspectRatio(figure) {
+  const width = Number(figure.match(/<img[^>]*\bwidth="(\d+)"/)?.[1]);
+  const height = Number(figure.match(/<img[^>]*\bheight="(\d+)"/)?.[1]);
+  if (!width || !height) return DEFAULT_ASPECT_RATIO;
+  return width / height;
 }
 
 function wrapLoosePhrasingChildren(parent) {
@@ -649,7 +804,9 @@ function parseArgs(input) {
     } else {
       const start = index;
       while (index < input.length && !/\s/.test(input[index])) index += 1;
-      args.push(input.slice(start, index));
+      const token = input.slice(start, index);
+      // The leftover of a smartypants-mangled empty `''` argument.
+      args.push(/^[”’"']+$/.test(token) ? "" : token);
     }
   }
 
@@ -666,7 +823,17 @@ function quoteCloser(opener) {
 
 function isArgumentBoundary(input, index) {
   const rest = input.slice(index);
-  return rest.length === 0 || /^\s+(?:["'“‘]|\S+=|$)/.test(rest) || /^\s*$/.test(rest);
+  return (
+    rest.length === 0 ||
+    /^\s+(?:["'“‘]|\S+=|$)/.test(rest) ||
+    // remark-smartypants runs before this plugin and collapses an empty `''`
+    // caption into a single closing curly quote. Without this, the quote is
+    // not read as a boundary and gets swallowed into the preceding argument —
+    // which silently corrupted the image path of every tag written with an
+    // empty caption.
+    /^\s*[”’]\s*$/.test(rest) ||
+    /^\s*$/.test(rest)
+  );
 }
 
 function isQuoted(input) {

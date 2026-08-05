@@ -1,6 +1,11 @@
 /* This file contains all the constants for colors and font styles */
 
-$body-font: adobe-caslon-pro, et-book, "OnulSamhwa", "source-han-serif-sc", sandoll-myeongjoneo1, adobe-tamil, linotype-devanagari, "Times New Roman", POJGaramond, "Noto Serif Tibetan", "Noto Serif Myanmar", serif;
+/* The body font stack is declared directly on `body` in _tufte.scss — that is
+   the one to edit. A `$body-font` variable used to sit here, unreferenced and
+   listing a different set of families (source-han-serif-sc where the real
+   stack has fot-tsukuaoldmin-pr6n first), which made it look as though
+   untagged CJK was falling back to Source Han when it never was.
+   Per-script families come from the `:lang()` rules in _tufte.scss. */
 /*
  * The tufte-css preferred sans font is Gill Sans, but this is not freely available.
  * We use Lato instead, which is royalty free.

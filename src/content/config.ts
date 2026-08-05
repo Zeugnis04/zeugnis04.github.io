@@ -17,6 +17,7 @@ const blog = defineCollection({
     comments: z.boolean().optional(),
     full_width: z.boolean().optional(),
     korean: z.boolean().optional(),
+    lightbox: z.boolean().optional(),
   }),
 });
 

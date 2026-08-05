@@ -1,0 +1,48 @@
+---
+// Justified photo gallery for `.mdx` posts.
+//
+// Photos are laid out in rows where every image on a row shares one height and
+// keeps its own aspect ratio (no cropping). The row breaks are computed here,
+// at build time, by filling a line until the aspect ratios sum to roughly
+// `targetLineRatio` — so a line holds fewer wide photos than tall ones.
+//
+// Emits the same `.figure-row` markup that remarkGroupFigures produces for
+// `.md` posts, so one stylesheet and one PhotoSwipe setup serve both.
+import Figure from "@/components/Figure.astro";
+import { resolvePhotos, splitIntoLines, type PhotoInput } from "@/lib/images";
+
+type Props = {
+  images: PhotoInput[];
+  /** Folder under `src/assets/img/` prefixed onto every `src`. */
+  base?: string;
+  /** Roughly how many "square photos" wide a line should be. */
+  targetLineRatio?: number;
+  /** Hard cap on photos per line, whatever their shape. */
+  maxPerLine?: number;
+};
+
+const { images, base = "", targetLineRatio = 4, maxPerLine = 4 } = Astro.props;
+
+const photos = await resolvePhotos(images, base);
+const lines = splitIntoLines(photos, targetLineRatio, maxPerLine);
+
+// A row photo occupies at most a quarter or so of the main column.
+const widths = [220, 440, 660];
+const sizes = "(max-width: 760px) 50vw, 220px";
+---
+
+{photos.length === 1 ? (
+  // A lone photo is not a gallery — render the plain Tufte figure it would
+  // have been, caption floated into the margin, not a one-item row.
+  <Figure photo={photos[0]} />
+) : (
+  <div class="figure-row">
+    {lines.map((line) => (
+      <div class="figure-row-line">
+        {line.map((photo) => (
+          <Figure photo={photo} widths={widths} sizes={sizes} inRow />
+        ))}
+      </div>
+    ))}
+  </div>
+)}

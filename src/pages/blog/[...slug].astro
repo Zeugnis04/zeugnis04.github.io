@@ -6,7 +6,7 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) =>
     import.meta.env.PROD ? !data.draft : true,
   );
-  const deriveSlug = (id: string) => id.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
+  const deriveSlug = (id: string) => id.replace(/\.mdx?$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
   return posts.map(entry => ({
     // Prefer an explicit `slug` field (lets Front Matter's preview match the
     // route); fall back to the filename with its date prefix stripped.

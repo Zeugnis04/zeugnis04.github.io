@@ -12,8 +12,11 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.3.14",
     "@astrojs/rss": "^4.0.12",
     "astro": "^5.0.0",
+    "photoswipe": "^5.4.4",
+    "photoswipe-dynamic-caption-plugin": "^1.2.7",
     "rehype-mathjax": "^7.1.0",
     "remark-math": "^6.0.0",
     "sass": "^1.83.0",

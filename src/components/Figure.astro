@@ -1,0 +1,68 @@
+---
+// A single optimized figure — the MDX equivalent of `{% maincolumn %}`.
+//
+// Used directly for a standalone photo, and by <Gallery> for each photo in a
+// justified row. `data-pswp-*` tells the lightbox to open the capped WebP
+// instead of the thumbnail shown on the page.
+import { Image } from "astro:assets";
+import { resolvePhotos, type PhotoInput, type ResolvedPhoto } from "@/lib/images";
+
+type Props = {
+  /** Pre-resolved photo, as passed down by <Gallery>. */
+  photo?: ResolvedPhoto;
+  /** Or the same authoring fields <Gallery> takes, for standalone use. */
+  src?: string;
+  base?: string;
+  caption?: string;
+  alt?: string;
+  widths?: number[];
+  sizes?: string;
+  /** Set by <Gallery>: sized by the row rather than the column. */
+  inRow?: boolean;
+  /** `{% fullwidth %}`: break out of the main column across the page. */
+  fullWidth?: boolean;
+};
+
+const {
+  photo: resolved,
+  src,
+  base = "",
+  caption,
+  alt,
+  inRow = false,
+  fullWidth = false,
+  // A row photo gets a share of the column, a standalone figure the whole
+  // column, a full-width figure the whole page. The srcset covers denser
+  // screens in every case.
+  widths = inRow ? [220, 440, 660] : fullWidth ? [1100, 1650, 2200] : [660, 990, 1320],
+  sizes = inRow
+    ? "(max-width: 760px) 50vw, 220px"
+    : fullWidth
+      ? "(max-width: 760px) 100vw, 1100px"
+      : "(max-width: 760px) 100vw, 660px",
+} = Astro.props;
+
+if (!resolved && !src) {
+  throw new Error("<Figure> needs either a `photo` or a `src`.");
+}
+
+const photo = resolved ?? (await resolvePhotos([{ src: src!, caption, alt } as PhotoInput], base))[0];
+---
+
+<figure
+  class:list={[fullWidth && "fullwidth"]}
+  style={inRow ? `--ar:${photo.ratio.toFixed(4)}` : undefined}
+  data-pswp-src={photo.fullSrc}
+  data-pswp-width={photo.fullWidth}
+  data-pswp-height={photo.fullHeight}
+>
+  {photo.caption && <figcaption set:html={photo.caption} />}
+  <Image
+    src={photo.metadata}
+    alt={photo.alt}
+    widths={widths}
+    sizes={sizes}
+    loading="lazy"
+    decoding="async"
+  />
+</figure>

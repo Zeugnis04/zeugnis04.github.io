@@ -1,0 +1,138 @@
+---
+// PhotoSwipe 5 lightbox for post figures.
+//
+// The Tufte tags in astro-jekyll-tags.mjs keep emitting exactly the markup
+// they always have; the only structural addition is the `.figure-row` wrapper
+// that remarkGroupFigures puts around a run of consecutive photos, and that
+// wrapper doubles as the gallery boundary here — one row is one browsable
+// gallery, standalone figures open on their own.
+//
+// Gallery items are `<figure>` / `.marginnote` elements rather than the anchors
+// PhotoSwipe's getting-started guide uses, since wrapping the images in links
+// would change what `_tufte.scss` selectors match. `domItemData` supplies the
+// src and dimensions that the anchor would normally carry.
+import "photoswipe/style.css";
+import "photoswipe-dynamic-caption-plugin/photoswipe-dynamic-caption-plugin.css";
+---
+
+<script>
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import PhotoSwipeDynamicCaption from "photoswipe-dynamic-caption-plugin";
+
+  /** Caption markup for a gallery item — the `<figcaption>` of a figure, or
+   * everything after the image inside a margin figure's `.marginnote`. */
+  function captionFor(element: HTMLElement | undefined): string {
+    if (!element) return "";
+    if (element.tagName === "FIGURE") {
+      return element.querySelector("figcaption")?.innerHTML ?? "";
+    }
+    const clone = element.cloneNode(true) as HTMLElement;
+    clone.querySelectorAll("img, br, label, input").forEach((el) => el.remove());
+    return clone.innerHTML.trim();
+  }
+
+  /** An item is usable only if we can hand PhotoSwipe real dimensions, so
+   * items are limited to those whose image carries the intrinsic width/height
+   * that astro-jekyll-tags.mjs resolves at build time. */
+  function hasSizedImage(element: HTMLElement): boolean {
+    return Boolean(element.querySelector("img[width][height]"));
+  }
+
+  let instances: PhotoSwipeLightbox[] = [];
+
+  function destroy() {
+    instances.forEach((instance) => instance.destroy());
+    instances = [];
+  }
+
+  function createLightbox(gallery: HTMLElement[] | HTMLElement, children?: string) {
+    const lightbox = new PhotoSwipeLightbox({
+      gallery,
+      children,
+      pswpModule: () => import("photoswipe"),
+      bgOpacity: 0.94,
+      padding: { top: 20, bottom: 20, left: 20, right: 20 },
+      wheelToZoom: true,
+      showHideAnimationType: "zoom",
+    });
+
+    lightbox.addFilter("domItemData", (itemData, element) => {
+      const img = element.querySelector("img");
+      if (!img) return itemData;
+
+      const thumb = img.currentSrc || img.src;
+      // <Gallery> publishes a capped-size WebP for the lightbox to open; the
+      // thumbnail in the page is far too small to zoom into. Markdown figures
+      // have no such attribute and fall back to the image they already show.
+      const { pswpSrc, pswpWidth, pswpHeight } = (element as HTMLElement).dataset;
+      itemData.src = pswpSrc || thumb;
+      itemData.msrc = thumb;
+      // `naturalWidth`/`naturalHeight` are EXIF-orientation corrected by the
+      // browser, so they are the source of truth once the image has decoded;
+      // the attributes cover images that are still lazy-loading offscreen.
+      itemData.width = Number(pswpWidth) || img.naturalWidth || Number(img.getAttribute("width"));
+      itemData.height = Number(pswpHeight) || img.naturalHeight || Number(img.getAttribute("height"));
+      itemData.alt = img.getAttribute("alt") ?? "";
+      return itemData;
+    });
+
+    new PhotoSwipeDynamicCaption(lightbox, {
+      type: "auto",
+      captionContent: (slide) => captionFor(slide.data.element),
+    });
+
+    lightbox.init();
+    return lightbox;
+  }
+
+  function init() {
+    destroy();
+
+    const article = document.querySelector("article");
+    if (!article) return;
+
+    // A run of consecutive photos browses as one gallery...
+    const rows = Array.from(
+      article.querySelectorAll<HTMLElement>(".figure-row"),
+    ).filter(hasSizedImage);
+    if (rows.length) instances.push(createLightbox(rows, "figure"));
+
+    // ...while every other figure is a gallery of one, so the arrows never
+    // jump across the prose between two unrelated photos.
+    const singles = Array.from(
+      article.querySelectorAll<HTMLElement>("figure, .marginnote"),
+    ).filter((el) => !el.closest(".figure-row") && hasSizedImage(el));
+    singles.forEach((element) => instances.push(createLightbox(element)));
+  }
+
+  // `astro:page-load` covers client-side (ViewTransitions) navigation, but on a
+  // cold load this module can finish executing after the event has already
+  // fired — in which case the listener alone never runs. `init` starts by
+  // tearing down whatever it built last time, so calling it twice is harmless.
+  document.addEventListener("astro:page-load", init);
+  document.addEventListener("astro:before-swap", destroy);
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+</script>
+
+<style is:global>
+  /* Only the images the lightbox actually picks up get the zoom affordance. */
+  article figure > img[width][height],
+  article .marginnote > img[width][height] {
+    cursor: zoom-in;
+  }
+
+  .pswp__dynamic-caption {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #f2f2f2;
+  }
+
+  .pswp__dynamic-caption a {
+    color: #f2f2f2;
+  }
+</style>

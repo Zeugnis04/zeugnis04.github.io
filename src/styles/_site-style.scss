@@ -203,6 +203,55 @@ article p.marginfigure-block .marginnote {
   width: 50%;
 }
 
+/* Justified rows of consecutive photos (see remarkGroupFigures). The line
+   breaks are decided at build time; here each photo just takes a share of its
+   line proportional to its aspect ratio, which lands every photo on a line at
+   exactly the same height without cropping any of them. */
+.figure-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 55%;
+  margin: 0 0 3em 0;
+}
+
+.figure-row-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+/* `renderFigure` emits the caption before the image (Tufte floats it into the
+   margin); column-reverse puts it back under the photo without reordering the
+   markup that the standalone-figure layout depends on. */
+.figure-row figure {
+  flex: var(--ar, 1.5) 1 0;
+  display: flex;
+  flex-direction: column-reverse;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+}
+
+.figure-row figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* In a row the caption belongs under its own thumbnail, not floated into the
+   margin the way a solitary figure's caption is. */
+.figure-row figcaption {
+  float: none;
+  clear: none;
+  max-width: none;
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  text-align: left;
+  hyphens: auto;
+}
+
 .trip-map-embed {
   width: 55%;
   margin: 2rem 0 3rem;
@@ -220,6 +269,20 @@ article p.marginfigure-block .marginnote {
 @media (max-width: 760px) {
   article p.marginfigure-block {
     width: 100%;
+  }
+
+  .figure-row {
+    width: 100%;
+  }
+
+  /* Build-time line breaks assume the desktop column; on a phone two per line
+     is the most that stays legible, whatever the run looked like. */
+  .figure-row-line {
+    flex-wrap: wrap;
+  }
+
+  .figure-row figure {
+    flex: 1 1 calc(50% - 0.3rem);
   }
 
   .trip-map-embed {
@@ -490,8 +553,10 @@ article p.marginfigure-block .marginnote {
   font-style: normal;
 }
 
+/* POJGaramond is Latin-only; Han characters quoted inside a POJ run need a
+   CJK family behind it or they drop to the system font. */
 .poj-text {
-  font-family: 'POJGaramond', serif;
+  font-family: 'POJGaramond', fot-tsukuaoldmin-pr6n, "source-han-serif-sc", serif;
 }
 
 @font-face {

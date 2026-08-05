@@ -20,7 +20,7 @@ export async function getPosts(): Promise<BlogPost[]> {
   return entries
     .map(entry => {
       const date = entry.data.date ?? new Date('1970-01-01');
-      const slug = entry.id.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
+      const slug = entry.id.replace(/\.mdx?$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
       return {
         slug,
         url: `/blog/${slug}/`,

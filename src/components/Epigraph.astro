@@ -1,0 +1,14 @@
+---
+// MDX equivalent of `{% epigraph %} ... {% endepigraph %}`.
+//
+// The tag version splits its body on blank lines and wraps each chunk in a
+// `<p>`, turning single newlines into `<br />`. MDX parses the children as
+// markdown instead, which produces the same paragraphs — so a quote written
+// across several lines needs its line breaks kept explicitly, the same way it
+// would anywhere else in markdown.
+---
+<div class="epigraph">
+  <blockquote>
+    <slot />
+  </blockquote>
+</div>

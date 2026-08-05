@@ -1,0 +1,42 @@
+---
+// MDX equivalent of `{% marginfigure 'id' 'src' 'caption' %}` — a photo in the
+// margin, collapsed behind a ⊕ toggle on narrow screens. Same markup and
+// classes as renderMarginFigure in astro-jekyll-tags.mjs, with the image
+// optimized and the lightbox pointed at a capped WebP.
+import { Image } from "astro:assets";
+import { resolvePhotos } from "@/lib/images";
+
+type Props = {
+  id?: string;
+  src: string;
+  base?: string;
+  caption?: string;
+};
+
+const { id, src, base = "", caption } = Astro.props;
+const photo = (await resolvePhotos([{ src, caption }], base))[0];
+
+// A margin note is at most 50% of the column, so it never needs a big file.
+const widths = [200, 400, 600];
+---
+
+<label for={id} class="margin-toggle">&#8853;</label>
+<input type="checkbox" id={id} class="margin-toggle" checked />
+<span
+  class="marginnote"
+  data-pswp-src={photo.fullSrc}
+  data-pswp-width={photo.fullWidth}
+  data-pswp-height={photo.fullHeight}
+>
+  <Image
+    class="fullwidth"
+    src={photo.metadata}
+    alt={photo.alt}
+    widths={widths}
+    sizes="(max-width: 760px) 95vw, 200px"
+    loading="lazy"
+    decoding="async"
+  />
+  <br />
+  {photo.caption && <Fragment set:html={photo.caption} />}
+</span>
