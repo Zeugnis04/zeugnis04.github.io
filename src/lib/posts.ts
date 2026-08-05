@@ -73,10 +73,22 @@ const INLINE_TAGS = new Set([
   'span', 'strong', 'sub', 'sup', 'time', 'u', 'var', 'wbr',
 ]);
 
+// .mdx components cleanText knows how to handle -- it either unwraps them to
+// their text (<NewThought>, the lede of a post) or removes them outright
+// (<Figure>, <Sidenote>, ...). A block opening with one of these is not skipped,
+// so prose sharing the block with a photo still counts. Any other component is
+// markup of unknown shape and the block is passed over.
+const KNOWN_COMPONENTS = new Set([
+  'NewThought', 'Figure', 'MarginFigure', 'Gallery', 'Epigraph', 'Notice',
+  'Sidenote', 'MarginNote',
+]);
+
 function opensWithMarkup(block: string) {
-  if (block.startsWith('<!--')) return true;
+  if (block.startsWith('<!--') || block.startsWith('{/*')) return true;
   const tag = block.match(/^<\s*([A-Za-z][A-Za-z0-9-]*)/);
-  return tag ? !INLINE_TAGS.has(tag[1].toLowerCase()) : false;
+  if (!tag) return false;
+  if (KNOWN_COMPONENTS.has(tag[1])) return false;
+  return !INLINE_TAGS.has(tag[1].toLowerCase());
 }
 
 function buildExcerpt(raw: string | undefined) {
@@ -100,6 +112,12 @@ function buildExcerpt(raw: string | undefined) {
 
 function cleanText(input: string) {
   return input
+    // An .mdx body opens with the imports for its components. Matching is kept
+    // narrow -- a `from "…"` clause, or an export keyword -- so that a sentence
+    // merely starting with the word "import" survives.
+    .replace(/^import\s[\s\S]*?from\s*["'][^"']*["'];?[ \t]*$/gm, '')
+    .replace(/^import\s*["'][^"']*["'];?[ \t]*$/gm, '')
+    .replace(/^export\s+(?:const|let|var|function|default|\{)[^\n]*$/gm, '')
     .replace(/\{%\s*newthought\b\s*([^%]*?)\s*%\}/g, (_match, args) => `${firstLiquidArg(args)} `)
     // These hug the word they annotate (`한국어{% sidenote … %}로`), so they are
     // dropped outright -- a space here would split the word.
@@ -108,6 +126,14 @@ function cleanText(input: string) {
     // Anything else in Liquid syntax is markup, not prose.
     .replace(/\{%[\s\S]*?%\}/g, ' ')
     .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, ' ')
+    // The .mdx counterparts of the Liquid tags above. Annotations hug their
+    // word and are dropped outright; media components carry no prose at all.
+    // <NewThought> is absent by design -- its text is the post's opening line,
+    // so the generic tag strip below is left to unwrap it.
+    .replace(/<(Sidenote|MarginNote)\b[^>]*>[\s\S]*?<\/\1>/g, '')
+    .replace(/<(Figure|MarginFigure|Gallery|Epigraph|Notice)\b[^>]*>[\s\S]*?<\/\1>/g, ' ')
+    .replace(/<(Figure|MarginFigure|Gallery|Epigraph|Notice)\b[^>]*\/>/g, ' ')
     .replace(/<(style|script)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ')
     .replace(/<span class="(?:side|margin)note">[\s\S]*?<\/span>/g, ' ')
     .replace(/<label[\s\S]*?<\/label>/g, ' ')
