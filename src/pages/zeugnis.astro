@@ -2,14 +2,14 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 ---
 <BaseLayout title="Zeugnis" headTitle="About Zeugnis">
-  <figure>
+  <figure class="banner">
     <img src="/assets/img/zeugnis/ram.png" alt="Random Access Memories by Daft Punk" />
   </figure>
 
   <div class="index-title">Welcome to Random Access Memories!</div>
   <p><em>The banner above features the album Random Access Memories by Daft Punk.</em></p>
 
-  <h2>Why "Random Access Memories"?</h2>
+  <h2>Why “Random Access Memories”?</h2>
   <p>
     The name of this blog, Random Access Memories, is a homage to both the iconic Daft Punk album and the electronic
     computer memory. I hope this blog works as a space to capture and revisit thoughts, languages, music, and random
@@ -18,11 +18,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     access it freely.
   </p>
 
-  <h2>Why "Zeugnis"?</h2>
+  <h2>Why “Zeugnis”?</h2>
   <p>
-    One of my nicknames that I choose to use --- Zeugnis, comes from the German word Zeugnis /ˈtsɔɪ̯k.nɪs/. In
+    One of my nicknames that I choose to use — Zeugnis, comes from the German word Zeugnis /ˈtsɔɪ̯k.nɪs/. In
     contemporary German, it usually means <em>certificate</em> or <em>report card</em>, otherwise <em>testimony</em> or
-    <em>witness declaration</em>. Meanwhile, Zeugnis in my nickname actually comes from Johann Sebastian Bach's church
+    <em>witness declaration</em>. Meanwhile, Zeugnis in my nickname actually comes from Johann Sebastian Bach’s church
     cantata <em>Herz und Mund und Tat und Leben, BWV 147</em>, famous for the tenth movement chorale
     <em>Jesus bleibet meine Freude</em>. The term Zeugnis appears in the opening chorus
     <em>Herz und Mund und Tat und Leben</em> as follows.
@@ -38,11 +38,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   </div>
 
   <p>
-    This literally means 'must bear witness to Christ'. While I am not a religious person, I have interests in religious
-    studies and also like making connections with religious motifs --- and this is how I came up with my nickname.
+    This literally means ‘must bear witness to Christ’. While I am not a religious person, I have interests in religious
+    studies and also like making connections with religious motifs — and this is how I came up with my nickname.
   </p>
 
-  <h2>What's on the favicon?</h2>
+  <h2>What’s on the favicon?</h2>
   <p>
     The favicon changes from time to time, so I keep a small archive here<label
       for="favicons"
@@ -70,7 +70,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     <li>Languages: <em>I love linguistics and languages</em></li>
     <li>
       Typography and Calligrpahy:
-      <em>I love all types of art related to letters --- including typography and calligraphy</em>
+      <em>I love all types of art related to letters — including typography and calligraphy</em>
     </li>
     <li>
       Food Culture:
@@ -80,3 +80,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
   <p>and maybe much more.</p>
 </BaseLayout>
+
+<style>
+  /* This page opens on the banner rather than an <h1>, so nothing supplies the
+     gap below the nav that `h1 { margin-top: 4rem }` gives every other page —
+     figures are flush by default (`figure { margin: 0 0 3em 0 }`). The <article>
+     belongs to BaseLayout, so it cannot be part of this selector: Astro would
+     scope it to this page and the rule would never match. */
+  figure.banner {
+    margin-top: 4rem;
+  }
+</style>
