@@ -9,6 +9,12 @@ description: "A grab-bag of odds and ends --- notes, curiosities, and links to a
 
 **[삼화명조 쇼케이스](/misc/samhwa-myeongjo/)** 오늘폰트의 삼화명조를 가로로 크게 담아 쇼케이스.
 
+**[Minion 3 Showcase site](https://minion.typekit.com/)** Adobe's site for the third cut of Robert Slimbach's Minion --- and a great demonstration of the typeface itself, which is what the site is set in. Their own summary:
+
+<span class="minion"><span class="swash">Minion 3</span> is an updated and expanded version of Robert Slimbach’s iconic text typeface. It introduces a new script, Armenian, as well as full <abbr>IPA</abbr> coverage. Other enhancements include an additional style of Greek with a traditional reverse-oblique pen angle, as well as refinements to the Cyrillic designs. Newly refined optical sizes are now available, which take advantage of the latest font technology to make <span class="swash">Minion 3</span> an even more versatile tool for digital typesetting.</span>
+
 **[Wakamai Fondue](https://wakamaifondue.com/)** Drop in a font file and it tells you everything the font can do --- every OpenType feature, every glyph, and the CSS to switch them on.
 
 **[Compositor](https://compositor.bham.ac.uk/)** Database of eighteenth-century printers' ornaments.
+
+**[Trip Mapper](https://zeugnis04.github.io/trip-mapper/)** Map your trips.

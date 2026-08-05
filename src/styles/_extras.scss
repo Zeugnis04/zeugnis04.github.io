@@ -11,6 +11,40 @@
     .faded { color: rgba(255, 255, 255, 0.5); }
 }
 
+/* Set a block in Minion 3 with the family's own default typographic
+ * settings: kerning, common + contextual ligatures, oldstyle figures.
+ * Inside it, .swash and <abbr> demonstrate two of the family's OpenType
+ * features and are picked out in red so the demonstration reads as one.
+ * Both mirror what Adobe's own Minion 3 showcase site does. */
+$minion-accent: #9b2226;
+$minion-accent-dark: #e07a70;
+
+.minion {
+    font-family: minion-3, et-book, serif;
+    font-kerning: normal;
+    font-variant-ligatures: common-ligatures contextual;
+    font-variant-numeric: oldstyle-nums proportional-nums;
+
+    // Swash capitals live in the italic only, so the italic is required.
+    .swash {
+        font-style: italic;
+        font-feature-settings: "swsh" 1;
+        color: $minion-accent;
+    }
+
+    // "IPA" is already capitals, so c2sc is what does the work; all-small-caps
+    // sets smcp + c2sc together.
+    abbr {
+        font-variant-caps: all-small-caps;
+        letter-spacing: 0.03em;
+        color: $minion-accent;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .minion .swash, .minion abbr { color: $minion-accent-dark; }
+}
+
 /* Reusable minimal (booktabs-style) phonology / IPA chart.
  * Wrap any plain <table> in <div class="ipa-chart">. Data cells render
  * in Minion 3; only horizontal rules are drawn. */
