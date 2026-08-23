@@ -1,0 +1,877 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Brahmic Scripts"
+  description="Interactive comparison of Brahmic consonants, vowels, and numerals."
+  fullWidth
+>
+  <div class="brahmic-page">
+    <header class="brahmic-header">
+      <h1>Brahmic Scripts</h1>
+    </header>
+
+    <div class="brahmic-workspace">
+      <main class="brahmic-main">
+        <section class="chart-section" aria-labelledby="consonants-heading">
+          <h2 id="consonants-heading">Consonants</h2>
+          <div class="sound-chart" id="consonant-chart"></div>
+        </section>
+
+        <section class="chart-section" aria-labelledby="vowels-heading">
+          <h2 id="vowels-heading">Vowels</h2>
+          <div class="sound-chart" id="vowel-chart"></div>
+        </section>
+
+        <section class="chart-section" aria-labelledby="numerals-heading">
+          <h2 id="numerals-heading">Numerals</h2>
+          <div class="sound-chart" id="numeral-chart"></div>
+        </section>
+
+      </main>
+
+      <aside class="display-panel" id="display-panel" aria-label="Display options">
+        <div class="display-panel-inner">
+          <button class="panel-close" id="panel-close" type="button" aria-label="Close display options" title="Close">
+            &times;
+          </button>
+          <label class="panel-title" for="default-script">Script</label>
+          <select id="default-script" class="panel-select"></select>
+
+          <div class="panel-group-title">Compare</div>
+          <label class="panel-master-toggle">
+            <input id="all-script-controls" type="checkbox" />
+            <span>All</span>
+          </label>
+          <div class="panel-list" id="script-controls"></div>
+        </div>
+      </aside>
+    </div>
+
+    <button
+      class="panel-trigger"
+      id="panel-trigger"
+      type="button"
+      aria-label="Open display options"
+      aria-controls="display-panel"
+      aria-expanded="false"
+      title="Display options"
+    >
+      &#9776;
+    </button>
+    <button class="panel-backdrop" id="panel-backdrop" type="button" aria-label="Close display options"></button>
+  </div>
+</BaseLayout>
+
+<script>
+  import {
+    consonantRows,
+    numeralRows,
+    scriptGroups,
+    scripts,
+    vowelRows,
+    type BrahmicScript,
+    type VowelGlyph,
+  } from "@/data/brahmic-scripts";
+
+  type Entry = {
+    kind: "consonant" | "vowel" | "numeral";
+    key: string;
+    transliteration: string;
+    values: Record<string, string | VowelGlyph>;
+  };
+
+  type Prefs = {
+    defaultScript: string;
+    visibleScripts: string[];
+  };
+
+  const PREFS_KEY = "brahmic-script-display";
+  const DEFAULT_SCRIPT = "Devanagari";
+  const defaultSelect = document.querySelector<HTMLSelectElement>("#default-script");
+  const allScriptsToggle = document.querySelector<HTMLInputElement>("#all-script-controls");
+  const scriptControls = document.querySelector<HTMLElement>("#script-controls");
+  const consonantChart = document.querySelector<HTMLElement>("#consonant-chart");
+  const vowelChart = document.querySelector<HTMLElement>("#vowel-chart");
+  const numeralChart = document.querySelector<HTMLElement>("#numeral-chart");
+  const displayPanel = document.querySelector<HTMLElement>("#display-panel");
+  const panelTrigger = document.querySelector<HTMLButtonElement>("#panel-trigger");
+  const panelClose = document.querySelector<HTMLButtonElement>("#panel-close");
+  const panelBackdrop = document.querySelector<HTMLButtonElement>("#panel-backdrop");
+  const compactPanelQuery = window.matchMedia("(max-width: 900px)");
+  let selectedEntryKey: string | null = null;
+
+  const orderedScripts = scriptGroups.flatMap((group) =>
+    group.scripts.flatMap(({ key }) => {
+      const script = scripts.find((candidate) => candidate.key === key);
+      return script ? [script] : [];
+    }),
+  );
+  const prefs = loadPrefs();
+
+  function loadPrefs(): Prefs {
+    const fallback: Prefs = {
+      defaultScript: DEFAULT_SCRIPT,
+      visibleScripts: orderedScripts.map((script) => script.key),
+    };
+
+    try {
+      const parsed = JSON.parse(localStorage.getItem(PREFS_KEY) ?? "null") as Partial<Prefs> | null;
+      return {
+        defaultScript: scripts.some((script) => script.key === parsed?.defaultScript)
+          ? parsed!.defaultScript!
+          : fallback.defaultScript,
+        visibleScripts: Array.isArray(parsed?.visibleScripts)
+          ? parsed.visibleScripts.filter((key) => scripts.some((script) => script.key === key))
+          : fallback.visibleScripts,
+      };
+    } catch {
+      return fallback;
+    }
+  }
+
+  function savePrefs() {
+    try {
+      localStorage.setItem(PREFS_KEY, JSON.stringify(prefs));
+    } catch {
+      // The controls remain usable if storage is unavailable.
+    }
+  }
+
+  function scriptByKey(key: string): BrahmicScript {
+    return scripts.find((script) => script.key === key) ?? scripts[0];
+  }
+
+  function valueText(value: string | VowelGlyph | undefined): string {
+    if (!value) return "";
+    return typeof value === "string" ? value : value.independent || value.dependent;
+  }
+
+  function entriesForRows(kind: Entry["kind"], rows: string[][]): Entry[][] {
+    let sourceIndex = 0;
+    return rows.map((row) =>
+      row.map((transliteration) => {
+        const index = sourceIndex++;
+        return {
+          kind,
+          key: `${kind}:${transliteration}`,
+          transliteration,
+          values: Object.fromEntries(
+            scripts.map((script) => [
+              script.key,
+              kind === "consonant"
+                ? script.consonants[index]
+                : kind === "vowel"
+                  ? script.vowels[index]
+                  : script.numerals[index],
+            ]),
+          ),
+        };
+      }),
+    );
+  }
+
+  const consonantEntries = entriesForRows("consonant", consonantRows);
+  const vowelEntries = entriesForRows("vowel", vowelRows);
+  const numeralEntries = entriesForRows("numeral", numeralRows);
+
+  function setVisibleScripts(keys: string[], visible: boolean) {
+    const next = new Set(prefs.visibleScripts);
+    for (const key of keys) {
+      if (visible) next.add(key);
+      else next.delete(key);
+    }
+    prefs.visibleScripts = [...next];
+    savePrefs();
+    renderControls();
+    renderCharts();
+  }
+
+  function renderControls() {
+    if (!defaultSelect || !scriptControls) return;
+
+    defaultSelect.replaceChildren(
+      ...scriptGroups.map((group) => {
+        const options = document.createElement("optgroup");
+        options.label = group.label;
+        for (const { key } of group.scripts) {
+          const script = scriptByKey(key);
+          const option = document.createElement("option");
+          option.value = script.key;
+          option.textContent = script.label;
+          option.selected = script.key === prefs.defaultScript;
+          options.append(option);
+        }
+        return options;
+      }),
+    );
+
+    if (allScriptsToggle) {
+      const selectedCount = orderedScripts.filter((script) =>
+        prefs.visibleScripts.includes(script.key),
+      ).length;
+      allScriptsToggle.checked = selectedCount === orderedScripts.length;
+      allScriptsToggle.indeterminate = selectedCount > 0 && selectedCount < orderedScripts.length;
+    }
+
+    scriptControls.replaceChildren();
+    for (const group of scriptGroups) {
+      const groupNode = document.createElement("div");
+      groupNode.className = "panel-script-group";
+
+      const groupKeys = group.scripts.map(({ key }) => key);
+      const groupSelectedCount = groupKeys.filter((key) => prefs.visibleScripts.includes(key)).length;
+      const groupTitle = document.createElement("label");
+      groupTitle.className = "panel-subgroup-title";
+      const groupInput = document.createElement("input");
+      groupInput.type = "checkbox";
+      groupInput.checked = groupSelectedCount === groupKeys.length;
+      groupInput.indeterminate = groupSelectedCount > 0 && groupSelectedCount < groupKeys.length;
+      groupInput.addEventListener("change", () => {
+        setVisibleScripts(groupKeys, groupInput.checked);
+      });
+      const groupName = document.createElement("span");
+      groupName.textContent = group.label;
+      groupTitle.append(groupInput, groupName);
+      groupNode.append(groupTitle);
+
+      for (const { key, depth = 0 } of group.scripts) {
+        const script = scriptByKey(key);
+        const label = document.createElement("label");
+        label.className = "panel-toggle";
+        label.style.setProperty("--script-indent", `${1.2 + depth * 0.9}rem`);
+
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.checked = prefs.visibleScripts.includes(script.key);
+        input.addEventListener("change", () => {
+          setVisibleScripts([script.key], input.checked);
+        });
+
+        const name = document.createElement("span");
+        name.textContent = script.label;
+        label.append(input, name);
+        groupNode.append(label);
+      }
+
+      scriptControls.append(groupNode);
+    }
+  }
+
+  function renderComparison(entry: Entry): HTMLElement {
+    const comparison = document.createElement("span");
+    comparison.className = "comparison-grid";
+
+    const visible = orderedScripts.filter(
+      (script) => script.key !== prefs.defaultScript && prefs.visibleScripts.includes(script.key),
+    );
+    for (const script of visible) {
+      const value = entry.values[script.key];
+      if (!valueText(value)) continue;
+
+      const item = document.createElement("span");
+      item.className = "comparison-item";
+
+      const glyph = document.createElement("span");
+      glyph.className = `comparison-glyph ${script.fontClass}`;
+      glyph.classList.toggle("compact-glyph", Array.from(valueText(value)).length > 4);
+      if (typeof value === "string") {
+        glyph.textContent = value;
+      } else {
+        const independent = document.createElement("span");
+        independent.textContent = value.independent || value.dependent;
+        glyph.append(independent);
+        if (value.independent && value.dependent) {
+          const dependent = document.createElement("small");
+          dependent.textContent = value.dependent;
+          glyph.append(dependent);
+        }
+      }
+
+      const name = document.createElement("span");
+      name.className = "comparison-name";
+      name.textContent = script.label;
+      item.append(glyph, name);
+      comparison.append(item);
+    }
+
+    return comparison;
+  }
+
+  function renderEntry(entry: Entry): HTMLButtonElement {
+    const selected = selectedEntryKey === entry.key;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `origin-tile${selected ? " selected" : ""}`;
+    button.setAttribute("aria-pressed", String(selected));
+    button.setAttribute("aria-label", `${entry.transliteration}, ${scriptByKey(prefs.defaultScript).label}`);
+    button.addEventListener("click", () => {
+      selectedEntryKey = selected ? null : entry.key;
+      renderCharts();
+    });
+
+    const activeScript = scriptByKey(prefs.defaultScript);
+    const value = entry.values[activeScript.key];
+    const glyph = document.createElement("span");
+    glyph.className = `default-letter ${activeScript.fontClass}`;
+    glyph.textContent = valueText(value) || "·";
+    glyph.classList.toggle("compact-glyph", Array.from(valueText(value)).length > 4);
+    button.append(glyph);
+
+    if (entry.kind === "vowel" && typeof value !== "string" && value?.independent && value.dependent) {
+      const dependent = document.createElement("span");
+      dependent.className = `dependent-letter ${activeScript.fontClass}`;
+      dependent.textContent = value.dependent;
+      button.append(dependent);
+    }
+
+    if (selected) button.append(renderComparison(entry));
+
+    const transliteration = document.createElement("span");
+    transliteration.className = "transliteration";
+    transliteration.textContent = entry.transliteration;
+    button.append(transliteration);
+    return button;
+  }
+
+  function renderChart(target: HTMLElement | null, rows: Entry[][]) {
+    if (!target) return;
+    target.replaceChildren(
+      ...rows.map((entries) => {
+        const row = document.createElement("div");
+        row.className = "sound-row";
+        row.replaceChildren(...entries.map(renderEntry));
+        return row;
+      }),
+    );
+  }
+
+  function renderCharts() {
+    renderChart(consonantChart, consonantEntries);
+    renderChart(vowelChart, vowelEntries);
+    renderChart(numeralChart, numeralEntries);
+  }
+
+  defaultSelect?.addEventListener("change", () => {
+    prefs.defaultScript = defaultSelect.value;
+    if (!prefs.visibleScripts.includes(prefs.defaultScript)) {
+      prefs.visibleScripts = [...prefs.visibleScripts, prefs.defaultScript];
+    }
+    savePrefs();
+    renderControls();
+    renderCharts();
+  });
+
+  allScriptsToggle?.addEventListener("change", () => {
+    setVisibleScripts(
+      orderedScripts.map((script) => script.key),
+      allScriptsToggle.checked,
+    );
+  });
+
+  function setPanelOpen(open: boolean, restoreFocus = true) {
+    if (!displayPanel || !panelTrigger || !panelBackdrop) return;
+
+    const isOpen = compactPanelQuery.matches && open;
+    displayPanel.classList.toggle("open", isOpen);
+    panelBackdrop.classList.toggle("open", isOpen);
+    panelTrigger.setAttribute("aria-expanded", String(isOpen));
+    document.documentElement.classList.toggle("brahmic-panel-open", isOpen);
+
+    if (compactPanelQuery.matches) {
+      displayPanel.inert = !isOpen;
+      displayPanel.setAttribute("aria-hidden", String(!isOpen));
+      displayPanel.setAttribute("role", "dialog");
+      displayPanel.setAttribute("aria-modal", "true");
+    } else {
+      displayPanel.inert = false;
+      displayPanel.removeAttribute("aria-hidden");
+      displayPanel.removeAttribute("role");
+      displayPanel.removeAttribute("aria-modal");
+    }
+
+    if (isOpen) panelClose?.focus();
+    else if (restoreFocus && compactPanelQuery.matches) panelTrigger.focus();
+  }
+
+  panelTrigger?.addEventListener("click", () => setPanelOpen(true));
+  panelClose?.addEventListener("click", () => setPanelOpen(false));
+  panelBackdrop?.addEventListener("click", () => setPanelOpen(false));
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && displayPanel?.classList.contains("open")) {
+      setPanelOpen(false);
+    }
+  });
+  compactPanelQuery.addEventListener("change", () => setPanelOpen(false, false));
+
+  setPanelOpen(false, false);
+  renderControls();
+  renderCharts();
+</script>
+
+<style is:global>
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600&family=Noto+Serif+Devanagari:wght@400;600&family=Noto+Serif+Gujarati:wght@400;600&family=Noto+Serif+Gurmukhi:wght@400;600&family=Noto+Serif+Kannada:wght@400;600&family=Noto+Serif+Malayalam:wght@400;600&family=Noto+Serif+Oriya:wght@400;600&family=Noto+Serif+Sinhala:wght@400;600&family=Noto+Serif+Tamil:wght@400;600&family=Noto+Serif+Telugu:wght@400;600&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Brahmi&family=Noto+Sans+Javanese&family=Noto+Serif+Balinese&family=Noto+Serif+Khmer&family=Noto+Serif+Lao&family=Noto+Serif+Myanmar&family=Noto+Serif+Thai&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Cham&family=Noto+Sans+Meetei+Mayek&family=Noto+Sans+Newa&family=Noto+Sans+Tirhuta&family=Noto+Serif+Tibetan&display=swap");
+
+  body.full-width:has(.brahmic-page) {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: none;
+    padding-right: clamp(1rem, 3vw, 3rem);
+    padding-left: clamp(1rem, 3vw, 3rem);
+  }
+
+  .brahmic-page,
+  .brahmic-page *,
+  .brahmic-page *::before,
+  .brahmic-page *::after {
+    box-sizing: border-box;
+  }
+
+  .brahmic-page {
+    width: min(108rem, 100%);
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .brahmic-header {
+    margin: 3rem 0 2.5rem;
+  }
+
+  .brahmic-header h1 {
+    margin: 0;
+  }
+
+  .brahmic-workspace {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(2rem, 4vw, 5rem);
+  }
+
+  .brahmic-main {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .chart-section + .chart-section {
+    margin-top: 4rem;
+  }
+
+  .chart-section,
+  .sound-chart,
+  .sound-row {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .chart-section h2 {
+    margin: 0 0 1.25rem;
+    font-size: 1.8rem;
+  }
+
+  .sound-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .sound-row {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(5.5rem, 1fr));
+    align-items: stretch;
+    gap: 0.35rem;
+  }
+
+  .origin-tile {
+    min-width: 0;
+    min-height: 9.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    padding: 1rem 0.25rem;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--text-color);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .default-letter {
+    display: block;
+    max-width: 100%;
+    padding: 0.4rem 0;
+    font-size: clamp(3.1rem, 4vw, 4.5rem);
+    line-height: 1.3;
+    text-align: center;
+    overflow-wrap: anywhere;
+    transition: color 160ms ease, transform 160ms ease;
+  }
+
+  .origin-tile:hover .default-letter,
+  .origin-tile:focus-visible .default-letter {
+    color: var(--link-hover-color);
+    transform: scale(1.1);
+  }
+
+  .origin-tile:focus-visible {
+    outline: 1px solid var(--link-hover-color);
+    outline-offset: -2px;
+  }
+
+  .default-letter.compact-glyph {
+    font-size: clamp(2rem, 2.6vw, 3.1rem);
+  }
+
+  .dependent-letter {
+    padding: 0.15rem 0;
+    color: var(--meta-color);
+    font-size: 1.45rem;
+    line-height: 1.2;
+  }
+
+  .transliteration {
+    margin-top: 0.25rem;
+    color: var(--meta-color);
+    font-family: minion-3, serif;
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+
+  .origin-tile.selected {
+    grid-column: 1 / -1;
+    min-height: 0;
+    justify-content: center;
+    padding: 1.25rem 0;
+  }
+
+  .origin-tile.selected .default-letter {
+    font-size: clamp(3.7rem, 5vw, 5.4rem);
+  }
+
+  .origin-tile.selected .default-letter.compact-glyph {
+    font-size: clamp(2.5rem, 3.5vw, 4rem);
+  }
+
+  .comparison-grid {
+    width: min(100%, 49rem);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+    align-items: start;
+    justify-content: center;
+    gap: 1.2rem 0.75rem;
+    margin: 1.25rem 0;
+  }
+
+  .comparison-item {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.35rem;
+    text-align: center;
+  }
+
+  .comparison-glyph {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 4.75rem;
+    padding: 0.4rem 0;
+    font-size: 2.65rem;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .comparison-glyph small {
+    color: var(--meta-color);
+    font-size: 0.58em;
+  }
+
+  .comparison-glyph.compact-glyph {
+    font-size: 1.85rem;
+  }
+
+  .comparison-name {
+    color: var(--meta-color);
+    font-family: minion-3, serif;
+    font-size: 1rem;
+    line-height: 1.1;
+  }
+
+  .display-panel {
+    position: sticky;
+    top: 1.5rem;
+    flex: 0 0 16rem;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+    font-family: minion-3, serif;
+    font-size: 1.15rem;
+    line-height: 1.4;
+  }
+
+  .display-panel-inner {
+    padding: 0.25rem 0 1.5rem 1.5rem;
+    border-left: 1px solid color-mix(in srgb, var(--border-color) 45%, transparent);
+  }
+
+  .panel-title,
+  .panel-group-title {
+    display: block;
+    margin: 0 0 0.4rem;
+    font-weight: 600;
+  }
+
+  .panel-group-title {
+    margin-top: 1.4rem;
+  }
+
+  .panel-master-toggle,
+  .panel-subgroup-title {
+    align-items: baseline;
+    gap: 0.45rem;
+    cursor: pointer;
+  }
+
+  .panel-master-toggle {
+    display: flex;
+    margin-bottom: 0.75rem;
+  }
+
+  .panel-select {
+    width: 100%;
+    max-width: 100%;
+    min-height: 2.2rem;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-color);
+    font: inherit;
+  }
+
+  .panel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .panel-script-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .panel-subgroup-title {
+    display: inline-flex;
+    margin-bottom: 0.1rem;
+    color: var(--text-color);
+    font-size: 1.15rem;
+  }
+
+  .panel-toggle {
+    padding-left: var(--script-indent, 1.2rem);
+  }
+
+  .panel-toggle {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.45rem;
+    cursor: pointer;
+  }
+
+  .panel-toggle input,
+  .panel-master-toggle input,
+  .panel-subgroup-title input {
+    flex-shrink: 0;
+    margin: 0;
+    accent-color: var(--link-hover-color);
+  }
+
+  .panel-trigger,
+  .panel-backdrop,
+  .panel-close {
+    display: none;
+  }
+
+  .script-devanagari {
+    font-family: linotype-devanagari, "Noto Serif Devanagari", serif;
+  }
+
+  .script-bengali { font-family: "Noto Serif Bengali", serif; }
+  .script-brahmi { font-family: "Noto Sans Brahmi", serif; }
+  .script-burmese { font-family: "Noto Serif Myanmar", serif; }
+  .script-cham { font-family: "Noto Sans Cham", serif; }
+  .script-khmer { font-family: "Noto Serif Khmer", serif; }
+  .script-thai { font-family: "Noto Serif Thai", serif; }
+  .script-lao { font-family: "Noto Serif Lao", serif; }
+  .script-balinese { font-family: "Noto Serif Balinese", serif; }
+  .script-javanese { font-family: "Noto Sans Javanese", serif; }
+  .script-gujarati { font-family: "Noto Serif Gujarati", serif; }
+  .script-gurmukhi { font-family: "Noto Serif Gurmukhi", serif; }
+  .script-kannada { font-family: "Noto Serif Kannada", serif; }
+  .script-malayalam { font-family: "Noto Serif Malayalam", serif; }
+  .script-meitei { font-family: "Noto Sans Meetei Mayek", serif; }
+  .script-newa { font-family: "Noto Sans Newa", serif; }
+  .script-odia { font-family: "Noto Serif Oriya", serif; }
+  .script-sinhala { font-family: "Noto Serif Sinhala", serif; }
+  .script-tamil { font-family: adobe-tamil, "Noto Serif Tamil", serif; }
+  .script-telugu { font-family: "Noto Serif Telugu", serif; }
+  .script-tibetan { font-family: "Noto Serif Tibetan", serif; }
+  .script-tirhuta { font-family: "Noto Sans Tirhuta", serif; }
+
+  @media (prefers-color-scheme: dark) {
+    body.full-width:has(.brahmic-page) {
+      --bg-color: #151515;
+      --text-color: #ddd;
+      --meta-color: #aaa;
+      --border-color: #555;
+      --link-hover-color: #64ffda;
+      color-scheme: dark;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .brahmic-page {
+      width: min(100%, 64rem);
+    }
+
+    .brahmic-workspace {
+      display: block;
+    }
+
+    .sound-row {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .display-panel {
+      position: fixed;
+      z-index: 1002;
+      top: auto;
+      right: max(0.75rem, env(safe-area-inset-right));
+      bottom: max(0.75rem, env(safe-area-inset-bottom));
+      width: min(23rem, calc(100vw - 1.5rem));
+      max-height: min(80vh, 42rem);
+      margin: 0;
+      overflow: auto;
+      overscroll-behavior: contain;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      background: var(--bg-color);
+      box-shadow: 0 0.65rem 2rem rgb(0 0 0 / 18%);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(calc(100% + 2rem));
+      pointer-events: none;
+      transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+    }
+
+    .display-panel.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .display-panel-inner {
+      position: relative;
+      padding: 1.25rem 1.25rem 1.5rem;
+      border-left: 0;
+    }
+
+    .panel-title {
+      padding-right: 2.5rem;
+    }
+
+    .panel-close,
+    .panel-trigger {
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: minion-3, serif;
+      cursor: pointer;
+    }
+
+    .panel-close {
+      position: absolute;
+      z-index: 1;
+      top: 0.65rem;
+      right: 0.65rem;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-color: transparent;
+      font-size: 1.8rem;
+      line-height: 1;
+    }
+
+    .panel-trigger {
+      position: fixed;
+      z-index: 1000;
+      right: max(0.75rem, env(safe-area-inset-right));
+      bottom: max(0.75rem, env(safe-area-inset-bottom));
+      width: 3.25rem;
+      height: 3.25rem;
+      box-shadow: 0 0.3rem 1rem rgb(0 0 0 / 15%);
+      font-size: 1.45rem;
+      line-height: 1;
+    }
+
+    .panel-backdrop {
+      position: fixed;
+      z-index: 1001;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      border: 0;
+      background: rgb(0 0 0 / 20%);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 160ms ease, visibility 160ms ease;
+    }
+
+    .panel-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    html.brahmic-panel-open {
+      overflow: hidden;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .sound-row {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0;
+    }
+
+    .origin-tile {
+      min-height: 8.25rem;
+    }
+
+    .default-letter {
+      font-size: clamp(2.25rem, 12vw, 3.25rem);
+    }
+
+    .transliteration {
+      font-size: 1.05rem;
+    }
+
+    .comparison-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
