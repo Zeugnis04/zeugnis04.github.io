@@ -1,6 +1,6 @@
 ---
 import "@/styles/site.scss";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 
 type Props = {
   title?: string;
@@ -58,7 +58,7 @@ const activeSection = currentPath.startsWith("/blog/")
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
-    <ViewTransitions />
+    <ClientRouter />
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL.href} />
     {noindex && <meta name="robots" content="noindex,nofollow" />}

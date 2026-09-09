@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import { unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import { rehypeWrapLoosePhrasing, remarkGroupFigures, remarkJekyllTags } from "./astro-jekyll-tags.mjs";
 import remarkMath from "remark-math";
@@ -11,17 +12,17 @@ export default defineConfig({
   // and MathJax behave identically in both formats.
   integrations: [mdx()],
   markdown: {
-    // Disable Astro's built-in SmartyPants so we can use kramdown-style dashes
-    // (matching the old Jekyll site): `--` -> en dash, `---` -> em dash.
-    // remark-smartypants still handles smart quotes and ellipses by default.
-    smartypants: false,
-    remarkPlugins: [
-      [remarkSmartypants, { dashes: "oldschool" }],
-      remarkMath,
-      remarkJekyllTags,
-      remarkGroupFigures,
-    ],
-    rehypePlugins: [rehypeWrapLoosePhrasing, rehypeMathjax],
+    processor: unified({
+      // Keep the customized Unified pipeline used by the migrated Jekyll posts.
+      smartypants: false,
+      remarkPlugins: [
+        [remarkSmartypants, { dashes: "oldschool" }],
+        remarkMath,
+        remarkJekyllTags,
+        remarkGroupFigures,
+      ],
+      rehypePlugins: [rehypeWrapLoosePhrasing, rehypeMathjax],
+    }),
     shikiConfig: {
       theme: "github-light",
     },
