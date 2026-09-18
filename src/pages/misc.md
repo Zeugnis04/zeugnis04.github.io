@@ -7,13 +7,15 @@ description: "A grab-bag of odds and ends --- notes, curiosities, and links to a
 
 **[오늘폰트](https://onulfont.com/)** 독립 한글 서체 파운드리. 「원본성」 있는 폰트를 제작한다. 많은 현대 라틴 알파벳 활자는 금속 활자 대의 것을 디지털로 재현하는 과정을 가쳐 사용되고 있다{% sidenote '' 'Baskerville, Caslon, Jenson, ...'%}. 오늘폰트는 한글 활자에서의 그런 노력을 하는 귀중한 회사이다. 나는 만나는 활자 enthusiast들에게 이 파운드리를 권한다. 
 
-**[삼화명조 쇼케이스](/misc/samhwa-myeongjo/)** 오늘폰트의 삼화명조를 가로로 크게 담아 쇼케이스.
+**[삼화명조 쇼케이스](/misc/samhwa-myeongjo/)** 오늘폰트의 삼화명조를 세로로 크게 담아 쇼케이스.
 
 **[Brahmic Scripts](/misc/brahmic-scripts/)** Interactive consonant and vowel comparison for major Brahmic scripts of the Indian subcontinent.
 
 **[Minion 3 Showcase site](https://minion.typekit.com/)** Adobe's site for the third cut of Robert Slimbach's Minion --- and a great demonstration of the typeface itself, which is what the site is set in. Their own summary:
 
 <span class="minion"><span class="swash">Minion 3</span> is an updated and expanded version of Robert Slimbach’s iconic text typeface. It introduces a new script, Armenian, as well as full <abbr>IPA</abbr> coverage. Other enhancements include an additional style of Greek with a traditional reverse-oblique pen angle, as well as refinements to the Cyrillic designs. Newly refined optical sizes are now available, which take advantage of the latest font technology to make <span class="swash">Minion 3</span> an even more versatile tool for digital typesetting.</span>
+
+**[Typotheque](https://www.typotheque.com/)** Type foundry with a great collection of references for multilingual typography --- articles, script primers and specimens covering Arabic, Armenian, Devanagari, Hebrew, Inuktitut, Thai and more, written by the people who drew the typefaces. Also informative reads about handwritings and historical developments of type.
 
 **[Wakamai Fondue](https://wakamaifondue.com/)** Drop in a font file and it tells you everything the font can do --- every OpenType feature, every glyph, and the CSS to switch them on.
 

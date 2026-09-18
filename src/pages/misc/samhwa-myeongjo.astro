@@ -14,8 +14,8 @@ import "@/styles/site.scss";
     <main class="samhwa-stage">
       <h1 class="samhwa-title" lang="ko">삼화명조</h1>
       <div class="samhwa-passage" lang="ko">
-          “자연은 보석을 만들기 위해 얼마나 많은 세월을 보냈는가? 또 그 보석이 채굴의 운을 만나기까지 얼마나 많은 세월을 조용히 빛나고 있었는가?”라는 구절이다. 그 외에는 요령부득으로 끝났다. 그 대신 이 시간에는 끝까지 스트레이 십이라는 글자를 한 번도 쓰지 않았다.
-        <cite>현암사 역 『산시로』 발췌</cite>
+          ﹁자연은 보석을 만들기 위해 얼마나 많은 세월을 보냈는가? 또 그 보석이 채굴의 운을 만나기까지 얼마나 많은 세월을 조용히 빛나고 있었는가?﹂라는 구절이다. 그 외에는 요령부득으로 끝났다. 그 대신 이 시간에는 끝까지 스트레이 십이라는 글자를 한 번도 쓰지 않았다.
+        <cite>현암사 역 <span class="vform">﹃</span>산시로<span class="vform">﹄</span> 발췌</cite>
       </div>
       <div class="samhwa-back">
         <a href="/misc/">← 돌아가기</a>
@@ -25,67 +25,115 @@ import "@/styles/site.scss";
 </html>
 
 <style>
+  /* The site-wide "OnulSamhwa" face is clipped to Hangul by unicode-range, so
+     every mark of punctuation falls through to the next family in the stack.
+     That is right for running text on the rest of the site --- it keeps Hanja
+     and Latin off Samhwa --- but wrong for a specimen, and wrong for vertical
+     setting in particular: Samhwa draws its own vertical forms and the
+     fallback face never gets to use them. Same file, so it is the same cached
+     download; this one just doesn't hide anything. */
+  @font-face {
+    font-family: "OnulSamhwaFull";
+    src: url("/fonts/Samhwa/typeface-2d6c81e0.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
   /* Override the site's constrained body for a full-page showcase. */
   body.samhwa-showcase {
     width: 100%;
     max-width: none;
-    min-height: 100vh;
     margin: 0;
     padding: 0;
     background-color: var(--bg-color);
     color: var(--text-color);
   }
 
+  /* The whole page is set vertically, right to left: the title is the
+     rightmost column and the passage runs off to its left, so the page
+     scrolls horizontally rather than down.
+
+     `text-orientation: upright` rather than the default `mixed`: the ASCII
+     punctuation here (?, .) is vo=R in UTR #50, so `mixed` would rotate it 90°.
+     Upright keeps every mark on its feet --- including ﹁ and ﹂, which are
+     already the vertical forms and want to be drawn exactly as they are. */
   .samhwa-stage {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 4rem 8vw 1.5rem;
+    flex-direction: column; /* logical: stacks right-to-left */
+    align-items: flex-start; /* logical: aligns to the top */
+    height: 100dvh;
+    padding: 6vh 4rem;
+    gap: 3rem;
     box-sizing: border-box;
   }
 
-  /* 삼화명조, large and horizontal. */
   .samhwa-title {
-    font-family: "OnulSamhwa", "source-han-serif-sc", serif;
-    font-size: clamp(3.5rem, 16vw, 14rem);
+    font-family: "OnulSamhwaFull", "OnulSamhwa", "source-han-serif-sc", serif;
+    font-size: clamp(3rem, 11vh, 9rem);
     font-weight: 400;
     line-height: 1;
     letter-spacing: 0.04em;
-    margin: 0 0 2.5rem;
-    text-align: center;
+    margin: 0;
+    align-self: flex-start;
   }
 
   .samhwa-passage {
-    max-width: 60rem;
-    font-family: "OnulSamhwa", "source-han-serif-sc", serif;
-    font-size: 3rem !important; /* large body text */
-    line-height: 1.8;
-  }
-
-  .samhwa-passage p {
-    margin: 0;
+    height: 100%;
+    /* The stage's main axis is horizontal (right-to-left), so `margin-block`
+       is the axis the columns advance along. Auto on both sides absorbs the
+       free space left over once the title and the back button have taken
+       theirs, and splits it evenly --- centring the passage in the gap
+       between them instead of on the viewport. Collapses to 0 when the text
+       is long enough to fill the width, which is what you want. */
+    margin-block: auto;
+    font-family: "OnulSamhwaFull", "OnulSamhwa", "source-han-serif-sc", serif;
+    font-size: clamp(1.5rem, 4.4vh, 3rem) !important;
+    line-height: 1.9; /* in vertical text this is the column width */
     text-align: justify;
+    /* Samhwa ships `vert`/`vrt2`, and its coverage is exactly what this page
+       needs: ? . , 「」 “” all have purpose-drawn vertical alternates. Asking
+       for them by hand because `text-orientation: upright` suppresses the
+       UA's own vertical-alternate handling --- without this the marks stand
+       upright but wear their horizontal glyphs, sitting on a baseline that
+       isn't there any more. The two features carry identical mappings in this
+       font, so enabling both is belt and braces, not a double substitution. */
+    font-feature-settings: "vert" 1, "vrt2" 1;
   }
 
   .samhwa-passage cite {
-    display: block;
-    margin-top: 1.75rem;
-    font-size: 2.0rem !important;
+    display: block; /* its own column, to the left of the passage */
+    margin-block-start: 1.75rem;
+    font-size: 0.66em !important;
     font-style: normal;
-    text-align: right;
+    text-align: end; /* logical: bottom of the column */
     opacity: 0.7;
   }
 
-  /* Back button: a black-outlined rectangle, aligned right, with a quick
-     hover/press response. */
-  /* Same width + centering as .samhwa-passage, so its right edge lines up
-     with the paragraph's right end; text-align pins the button there. */
+  /* Samhwa draws vertical alternates for 「」 but has no ﹃﹄ (U+FE43/FE44)
+     at all, so the book title's brackets --- and nothing else on the page ---
+     come from whichever CJK serif the system already has. Serif-first so they
+     don't land on a gothic sitting next to Samhwa's Hangul. */
+  .samhwa-passage cite .vform {
+    font-family:
+      "Noto Serif CJK KR",
+      "Noto Serif KR",
+      "Source Han Serif KR",
+      "Hiragino Mincho ProN",
+      "Apple Myungjo",
+      Batang,
+      "MS Mincho",
+      SimSun,
+      serif;
+  }
+
+  /* Back button: a black-outlined rectangle set horizontally, parked at the
+     bottom of the last (leftmost) column. */
   .samhwa-back {
-    width: 100%;
-    max-width: 60rem;
-    margin-top: 2.5rem;
-    padding-bottom: 2.5rem;
-    text-align: right;
+    writing-mode: horizontal-tb;
+    align-self: flex-end; /* logical: bottom */
   }
 
   .samhwa-back a {
@@ -97,6 +145,7 @@ import "@/styles/site.scss";
     font-family: "OnulSamhwa", adobe-caslon-pro, serif;
     font-size: 1.25rem;
     letter-spacing: 0.05em;
+    white-space: nowrap;
     text-decoration: none;
     transition:
       background-color 0.15s ease,
@@ -115,11 +164,9 @@ import "@/styles/site.scss";
   }
 
   @media (max-width: 40rem) {
-    .samhwa-passage {
-      font-size: 2rem;
-    }
-    .samhwa-passage cite {
-      font-size: 1.4rem;
+    .samhwa-stage {
+      padding: 4vh 1.5rem;
+      gap: 1.5rem;
     }
   }
 </style>
