@@ -2,33 +2,356 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { formatMediaTitle, getMediaItems, groupMediaByMonth } from "@/lib/media";
 
-const groupedMedia = groupMediaByMonth(await getMediaItems());
+const mediaItems = await getMediaItems();
+const groupedMedia = groupMediaByMonth(mediaItems);
+
+const monthFormatter = new Intl.DateTimeFormat("en", { month: "long", year: "numeric", timeZone: "UTC" });
+const formatMonth = (month: string) => monthFormatter.format(new Date(`${month}-01T00:00:00Z`));
+
+const kindLabels: Record<string, string> = {
+  album: "Albums",
+  book: "Books",
+  event: "Events",
+  movie: "Movies",
+  show: "Shows",
+};
+const kinds = [...new Set(mediaItems.map((item) => item.kind))];
+const hasFeatured = mediaItems.some((item) => item.featured);
+const filters = [
+  { value: "all", label: "All", count: mediaItems.length },
+  ...kinds.map((kind) => ({
+    value: kind,
+    label: kindLabels[kind] ?? kind,
+    count: mediaItems.filter((item) => item.kind === kind).length,
+  })),
+  ...(hasFeatured
+    ? [{ value: "featured", label: "Featured", count: mediaItems.filter((item) => item.featured).length }]
+    : []),
+];
 ---
 <BaseLayout title="Media Archive">
   <h1>Media Archive</h1>
 
-  {[...groupedMedia.entries()].map(([month, items]) => (
-    <div class="media-month">
-      <h2 class="media-month-header">{month}</h2>
-      <div class="album-flex inside-text-width">
-        {items.map((item) => (
-          <div class="album">
-            {item.url ? (
-              <a href={item.url} class="album-link"><img src={item.photo} alt={formatMediaTitle(item)} /></a>
-            ) : (
-              <img src={item.photo} alt={formatMediaTitle(item)} />
-            )}
-            <div class="album-info">
-              <h4>{formatMediaTitle(item)} – {item.creator}{item.featured && <span class="featured-star">★<span class="featured-label">Featured!</span></span>}</h4>
-              {item.review && <p><em>{item.review}</em></p>}
-            </div>
-          </div>
+  <div class="ma" data-media-archive>
+    {filters.length > 2 && (
+      <div class="ma-filters" role="group" aria-label="Filter by type">
+        {filters.map((filter, i) => (
+          <button type="button" class="ma-chip" data-filter={filter.value} aria-pressed={i === 0 ? "true" : "false"}>
+            {filter.label} <span class="ma-chip-count">{filter.count}</span>
+          </button>
         ))}
       </div>
-    </div>
-  ))}
+    )}
+
+    {[...groupedMedia.entries()].map(([month, items]) => (
+      <section class="ma-month" data-month>
+        <h2 class="ma-month-header">
+          <span>{formatMonth(month)}</span>
+          <span class="ma-month-count" data-month-count>{items.length}</span>
+        </h2>
+        <ul class="ma-grid">
+          {items.map((item) => {
+            const title = formatMediaTitle(item);
+            const Tag = item.url ? "a" : "div";
+            return (
+              <li class="ma-item ma-reveal" data-kind={item.kind} data-featured={item.featured ? "true" : undefined}>
+                <Tag class="ma-card" href={item.url}>
+                  <img src={item.photo} alt={title} loading="lazy" decoding="async" />
+                  <div class="ma-caption">
+                    <h4 class="ma-meta">
+                      {title}{item.featured && <span class="ma-star" title="Featured">★</span>}
+                      <span class="ma-creator">{item.creator}</span>
+                    </h4>
+                    {item.review && <p class="ma-review"><em>{item.review}</em></p>}
+                  </div>
+                </Tag>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
+    ))}
+  </div>
 
   <p class="backarrow" style="text-align: right;">
     <a href="/">← Back to home</a>
   </p>
 </BaseLayout>
+
+<script>
+  // Re-run on every navigation: the site uses Astro's ClientRouter.
+  document.addEventListener("astro:page-load", () => {
+    const root = document.querySelector<HTMLElement>("[data-media-archive]");
+    if (!root) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const items = [...root.querySelectorAll<HTMLElement>(".ma-item")];
+
+    // Fade covers in once they've decoded, instead of popping in.
+    for (const img of root.querySelectorAll<HTMLImageElement>(".ma-card img")) {
+      const done = () => img.classList.add("is-loaded");
+      if (img.complete) done();
+      else {
+        img.addEventListener("load", done, { once: true });
+        img.addEventListener("error", done, { once: true });
+      }
+    }
+
+    // Staggered reveal as each row scrolls into view.
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+      items.forEach((item) => item.classList.add("is-visible"));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        const entering = entries.filter((entry) => entry.isIntersecting);
+        entering.forEach((entry, i) => {
+          const el = entry.target as HTMLElement;
+          el.style.transitionDelay = `${Math.min(i, 8) * 45}ms`;
+          el.classList.add("is-visible");
+          observer.unobserve(el);
+        });
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+      items.forEach((item) => observer.observe(item));
+    }
+
+    const chips = [...root.querySelectorAll<HTMLButtonElement>(".ma-chip")];
+    const months = [...root.querySelectorAll<HTMLElement>("[data-month]")];
+
+    const applyFilter = (filter: string) => {
+      for (const item of items) {
+        const match = filter === "all"
+          || item.dataset.kind === filter
+          || (filter === "featured" && item.dataset.featured === "true");
+        item.hidden = !match;
+        if (match) {
+          item.style.transitionDelay = "0ms";
+          item.classList.add("is-visible");
+        }
+      }
+      for (const month of months) {
+        const visible = month.querySelectorAll(".ma-item:not([hidden])").length;
+        month.hidden = visible === 0;
+        const count = month.querySelector("[data-month-count]");
+        if (count) count.textContent = String(visible);
+      }
+    };
+
+    for (const chip of chips) {
+      chip.addEventListener("click", () => {
+        if (chip.getAttribute("aria-pressed") === "true") return;
+        chips.forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+        const run = () => applyFilter(chip.dataset.filter ?? "all");
+        // View transitions give a smooth reflow where supported.
+        if (!reduceMotion && document.startViewTransition) document.startViewTransition(run);
+        else run();
+      });
+    }
+  });
+</script>
+
+<style lang="scss">
+  .ma {
+    --ma-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --ma-muted: #777;
+    --ma-line: rgba(0, 0, 0, 0.1);
+    --ma-sticky-bg: rgba(255, 255, 248, 0.85);
+    --ma-accent: #ca4a4a;
+
+    width: 55%;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .ma {
+      --ma-muted: #999;
+      --ma-line: rgba(255, 255, 255, 0.12);
+      --ma-sticky-bg: rgba(21, 21, 21, 0.85);
+    }
+  }
+
+  /* Filters: plain text toggles, same face as the body */
+  .ma-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 1rem;
+    margin: -0.5rem 0 0.75rem;
+  }
+
+  .ma-chip {
+    padding: 0.1em 0;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    background: none;
+    color: var(--ma-muted);
+    font: inherit;
+    cursor: pointer;
+    transition: color 0.2s var(--ma-ease), border-color 0.2s var(--ma-ease);
+
+    &:hover { color: inherit; }
+    &:focus-visible { outline: 1px solid currentColor; outline-offset: 2px; }
+
+    &[aria-pressed="true"] {
+      color: inherit;
+      border-bottom-color: currentColor;
+    }
+  }
+
+  .ma-chip-count {
+    font-size: 0.8em;
+    opacity: 0.7;
+  }
+
+  /* Months */
+  .ma-month {
+    margin: 0 0 0.75rem;
+    padding: 0;
+  }
+
+  .ma-month-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin: 0 0 0.4rem;
+    padding: 0.3rem 0;
+    font-size: 1.6rem;
+    border-bottom: 1px solid var(--ma-line);
+    background: var(--ma-sticky-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .ma-month-count {
+    font-size: 0.9rem;
+    font-style: normal;
+    color: var(--ma-muted);
+  }
+
+  /* Grid: edge-to-edge collage */
+  .ma-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ma-item {
+    width: 100%; /* override the site-wide `article li { width: 55% }` */
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+
+    &[hidden] { display: none; }
+  }
+
+  .ma-reveal {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s var(--ma-ease), transform 0.5s var(--ma-ease);
+
+    &.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .ma-card {
+    position: relative;
+    display: block;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: rgba(127, 127, 127, 0.12);
+    color: #fff;
+    text-decoration: none;
+    text-shadow: none;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.5s var(--ma-ease), transform 0.7s var(--ma-ease);
+
+      &.is-loaded { opacity: 1; }
+    }
+  }
+
+  .ma-caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 2.2rem 0.6rem 0.5rem;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.35) 55%, transparent);
+    transition: padding 0.4s var(--ma-ease);
+  }
+
+  .ma-meta {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    color: #fff;
+    overflow-wrap: anywhere;
+  }
+
+  .ma-creator {
+    display: block;
+    font-weight: 400;
+    font-size: 0.85em;
+    opacity: 0.85;
+  }
+
+  .ma-star {
+    margin-left: 0.25em;
+    color: #ff7b7b;
+    font-style: normal;
+  }
+
+  .ma-review {
+    width: auto;
+    margin: 0.15em 0 0;
+    padding: 0;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  @media (hover: hover) {
+    .ma-card:hover img.is-loaded { transform: scale(1.04); }
+    .ma-card:hover .ma-caption { padding-bottom: 0.7rem; }
+  }
+
+  .ma-card:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -2px;
+  }
+
+  /* Responsive */
+  @media (max-width: 760px) {
+    .ma { width: 100%; }
+
+    .ma-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; }
+    .ma-caption { padding: 1.6rem 0.4rem 0.35rem; }
+    .ma-meta { font-size: 0.8rem; }
+    .ma-month-header { font-size: 1.3rem; }
+    .ma-review { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .ma-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ma-meta { font-size: 0.85rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ma-reveal,
+    .ma-card img,
+    .ma-caption,
+    .ma-chip {
+      transition: none !important;
+    }
+
+    .ma-reveal { opacity: 1; transform: none; }
+  }
+</style>
